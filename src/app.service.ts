@@ -612,8 +612,22 @@ export class LinkList {
   }
 
   reverseList(head: ListNode | null): ListNode | null {
-
+    let newHead: ListNode;
+    let res = this.revIt(head, newHead);
+    head.next = null;
+    this.head = res.newHead;
+    return head;
   };
+
+  revIt(head: ListNode | null, newHead: ListNode): { head: ListNode | null, newHead: ListNode | null } {
+    if (head.next == null) {
+      newHead = head;
+      return { head, newHead };
+    }
+    let res = this.revIt(head.next, newHead);
+    res.head.next = head;
+    return { head, newHead: res.newHead };
+  }
 
   oddEvenList(head: ListNode | null): ListNode | null {
     if (head == null) {

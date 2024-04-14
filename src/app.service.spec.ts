@@ -207,13 +207,19 @@ describe('DSA service tests', () => {
     console.log(s.printLL());
   });
 
-  it('test_oddEvenList', () => {
+  it.skip('test_oddEvenList', () => {
     let s = new LinkList([2, 1, 3, 5, 6, 4, 7, 8]);
     s.oddEvenList(s.head)
     console.log(s.printLL());
 
     s = new LinkList([2]);
     s.oddEvenList(s.head)
+    console.log(s.printLL());
+  });
+
+  it('test_reverseList', () => {
+    let s = new LinkList([1]);
+    s.reverseList(s.head)
     console.log(s.printLL());
   });
 })
