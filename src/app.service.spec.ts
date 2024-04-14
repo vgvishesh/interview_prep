@@ -1,4 +1,4 @@
-import { DSAService, LinkList, RecentCounter } from "./app.service"
+import { BST, DSAService, LinkList, RecentCounter } from "./app.service"
 
 describe('DSA service tests', () => {
   it.skip('test_missing_number', () => {
@@ -223,8 +223,13 @@ describe('DSA service tests', () => {
     console.log(s.printLL());
   });
 
-  it('test_pairSum', () => {
+  it.skip('test_pairSum', () => {
     let s = new LinkList([1, 100000]);
     console.log(s.pairSum(s.head));
+  });
+
+  it('test_inorderTraversal', () => {
+    let s = new BST([4, 2, 7, 1, 3]);
+    console.log(s.inorderTraversal(s.root));
   });
 })

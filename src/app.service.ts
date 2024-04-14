@@ -711,3 +711,55 @@ export class LinkList {
   };
 }
 
+export class TreeNode {
+  val: number
+  left: TreeNode | null
+  right: TreeNode | null
+  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+    this.val = (val === undefined ? 0 : val)
+    this.left = (left === undefined ? null : left)
+    this.right = (right === undefined ? null : right)
+  }
+}
+
+export class BST {
+  root = new TreeNode();
+  constructor(nums: number[]) {
+    this.root.val = nums[0];
+    let ptr = this.root;
+    for (let i = 1; i < nums.length; i++) {
+      while (ptr != null) {
+        if (nums[i] > ptr.val) {
+          if (ptr.right != null) {
+            ptr = ptr.right;
+          } else {
+            ptr.right = new TreeNode(nums[i]);
+            break;
+          }
+        } else {
+          if (ptr.left != null) {
+            ptr = ptr.left;
+          } else {
+            ptr.left = new TreeNode(nums[i]);
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  inorderTraversal(root: TreeNode): number[] {
+    let arr: number[] = [];
+    function traverse(root: TreeNode) {
+      if (root == null) {
+        return;
+      }
+      traverse(root.left)
+      arr.push(root.val);
+      traverse(root.right);
+    }
+
+    traverse(root);
+    return arr;
+  }
+}
