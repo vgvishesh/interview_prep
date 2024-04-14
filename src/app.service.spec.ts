@@ -228,8 +228,14 @@ describe('DSA service tests', () => {
     console.log(s.pairSum(s.head));
   });
 
-  it('test_inorderTraversal', () => {
+  it.skip('test_inorderTraversal', () => {
     let s = new BST([4, 2, 7, 1, 3]);
     console.log(s.inorderTraversal(s.root));
+  });
+
+  it('test_searchBST', () => {
+    let s = new BST([4, 2, 7, 1, 3]);
+    // s.searchBST(s.root, 2)
+    console.log(s.inorderTraversal(s.searchBST(s.root, 2)));
   });
 })

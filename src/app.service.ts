@@ -748,6 +748,25 @@ export class BST {
     }
   }
 
+  searchBST(root: TreeNode | null, val: number): TreeNode | null {
+    function search(root: TreeNode) {
+      if (root == null) {
+        return null;
+      }
+      if (root.val == val) {
+        return root;
+      }
+      if (val > root.val) {
+        return search(root.right);
+      } else {
+        return search(root.left);
+      }
+    }
+
+    const res = search(root);
+    return res;
+  }
+
   inorderTraversal(root: TreeNode): number[] {
     let arr: number[] = [];
     function traverse(root: TreeNode) {
