@@ -611,7 +611,31 @@ export class LinkList {
     return a;
   }
 
+  pairSum(head: ListNode | null): number {
+    let size: number;
+    function calc(head: ListNode, twin: ListNode, num: number): { sum: number, nextTwin: ListNode } {
+      if (head.next == null) {
+        size = num + 1;
+        let sum = head.val + twin.val;
+        return { sum, nextTwin: twin.next };
+      }
+      let res = calc(head.next, twin, num + 1);
+      if (num + 1 > size / 2) {
+        let sum = Math.max(res.sum, head.val + res.nextTwin.val);
+        return { sum, nextTwin: res.nextTwin.next }
+      }
+      return { sum: res.sum, nextTwin: res.nextTwin }
+    }
+
+    let res = calc(head, head, 0);
+    return res.sum;
+  };
+
   reverseList(head: ListNode | null): ListNode | null {
+    if (head == null) {
+      return head;
+    }
+
     let newHead: ListNode;
     let res = this.revIt(head, newHead);
     head.next = null;

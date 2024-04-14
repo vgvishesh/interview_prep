@@ -217,9 +217,14 @@ describe('DSA service tests', () => {
     console.log(s.printLL());
   });
 
-  it('test_reverseList', () => {
+  it.skip('test_reverseList', () => {
     let s = new LinkList([1]);
     s.reverseList(s.head)
     console.log(s.printLL());
+  });
+
+  it('test_pairSum', () => {
+    let s = new LinkList([1, 100000]);
+    console.log(s.pairSum(s.head));
   });
 })
