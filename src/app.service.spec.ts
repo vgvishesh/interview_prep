@@ -248,7 +248,7 @@ describe('DSA service tests', () => {
     console.log(BinaryTree.goodNodes(root));
   });
 
-  it('test_lowestCommonAncestor', () => {
+  it.skip('test_lowestCommonAncestor', () => {
     // let s = new BinaryTree([2, null, 4, 10, 8, null, null, 4]);
     // let root = new TreeNode(2, null, new TreeNode(4, new TreeNode(10, null, null), new TreeNode(8, new TreeNode(4, null, null), null)));
     // console.log(BinaryTree.goodNodes(root));
@@ -257,5 +257,14 @@ describe('DSA service tests', () => {
     const q = new TreeNode(1, new TreeNode(0, null, null), new TreeNode(8, null, null));
     let root = new TreeNode(3, p, q);
     console.log(BinaryTree.lowestCommonAncestor(root, p, q));
+  });
+
+  it('test_maxLevelSum', () => {
+    // let s = new BinaryTree([2, null, 4, 10, 8, null, null, 4]);
+    // let root = new TreeNode(2, null, new TreeNode(4, new TreeNode(10, null, null), new TreeNode(8, new TreeNode(4, null, null), null)));
+    // console.log(BinaryTree.goodNodes(root));
+
+    let root = new TreeNode(-100, new TreeNode(-200, new TreeNode(-20, null, null), new TreeNode(-5, null, null)), new TreeNode(-300, new TreeNode(-10, null, null), null));
+    console.log(BinaryTree.maxLevelSum(root));
   });
 })

@@ -979,4 +979,36 @@ export class BinaryTree {
 
     return rightSideView;
   };
+
+  static maxLevelSum(root: TreeNode | null): number {
+    let traverseNode: TreeNode[] = [];
+    const levelSum: { level: number, sum: number }[] = []
+    let l = 1;
+    traverseNode.push(root);
+    while (traverseNode.length > 0) {
+      let nextLevel: TreeNode[] = [];
+      let sum = 0;
+      for (let i = 0; i < traverseNode.length; i++) {
+        sum += traverseNode[i].val;
+        if (traverseNode[i].right) {
+          nextLevel.push(traverseNode[i].right);
+        }
+        if (traverseNode[i].left) {
+          nextLevel.push(traverseNode[i].left);
+        }
+      }
+      levelSum.push({ level: l++, sum });
+      traverseNode = nextLevel;
+    }
+
+    let max = levelSum[0].sum;
+    let level = levelSum[0].level;
+    for (let i = 1; i < levelSum.length; i++) {
+      if (levelSum[i].sum > max) {
+        max = levelSum[i].sum;
+        level = levelSum[i].level;
+      }
+    }
+    return level;
+  };
 }
