@@ -783,34 +783,99 @@ export class BST {
   }
 }
 
-function leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
-  function findLeafSequence(root: TreeNode): number[] {
-    const sequence: number[] = [];
-    function find(root: TreeNode) {
-      if (root.left == null && root.right == null) {
-        sequence.push(root.val);
+export class BinaryTree {
+  root = new TreeNode();
+  constructor(nums: (number | null)[]) {
+    const nodes: TreeNode[] = [];
+    this.root.val = nums[0];
+    nodes.push(this.root);
+    for (let i = 1; i < nums.length; i++) {
+      nums[i] == null ? nodes.push(null) : nodes.push(new TreeNode(nums[i]));
+    }
+    let k = 0;
+    console.log(nodes);
+    while (2 * k + 1 < nums.length) {
+      if (nodes[k] != null) {
+        const leftNode = nodes[2 * k + 1];
+        const rightNode = nodes[2 * k + 2];
+        nodes[k].left = leftNode;
+        nodes[k].right = rightNode;
+      }
+      k++;
+    }
+  }
+
+  inorderTraversal(root: TreeNode): number[] {
+    let arr: number[] = [];
+    function traverse(root: TreeNode) {
+      if (root == null) {
+        return;
+      }
+      traverse(root.left)
+      arr.push(root.val);
+      traverse(root.right);
+    }
+
+    traverse(root);
+    return arr;
+  }
+
+  leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
+    function findLeafSequence(root: TreeNode): number[] {
+      const sequence: number[] = [];
+      function find(root: TreeNode) {
+        if (root.left == null && root.right == null) {
+          sequence.push(root.val);
+          return;
+        }
+
+        if (root.left) find(root.left);
+        if (root.right) find(root.right);
+        return;
+      }
+      find(root);
+      return sequence;
+    }
+
+    const seq1 = findLeafSequence(root1);
+    const seq2 = findLeafSequence(root2);
+
+    if (seq1.length != seq2.length) {
+      return false;
+    }
+
+    for (let i = 0; i < seq1.length; i++) {
+      if (seq1[i] != seq2[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static goodNodes(root: TreeNode | null): number {
+    const stack: number[] = [];
+    const goodNodes: TreeNode[] = [];
+    function findGoodNodes(root: TreeNode) {
+      if (root == null) {
         return;
       }
 
-      if (root.left) find(root.left);
-      if (root.right) find(root.right);
-      return;
+      let isAdded = false;
+      const top = stack[stack.length - 1] ?? undefined;
+      if (top == undefined || top <= root.val) {
+        stack.push(root.val);
+        goodNodes.push(root);
+        isAdded = true;
+      }
+
+      findGoodNodes(root.left);
+      findGoodNodes(root.right);
+
+      if (isAdded) {
+        stack.pop();
+      }
     }
-    find(root);
-    return sequence;
-  }
-
-  const seq1 = findLeafSequence(root1);
-  const seq2 = findLeafSequence(root2);
-
-  if (seq1.length != seq2.length) {
-    return false;
-  }
-
-  for (let i = 0; i < seq1.length; i++) {
-    if (seq1[i] != seq2[i]) {
-      return false;
-    }
-  }
-  return true;
+    findGoodNodes(root);
+    return goodNodes.length;
+  };
 }
