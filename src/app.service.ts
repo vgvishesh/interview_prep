@@ -878,4 +878,105 @@ export class BinaryTree {
     findGoodNodes(root);
     return goodNodes.length;
   };
+
+  static pathSum(root: TreeNode | null, targetSum: number): number {
+    const trail: TreeNode[] = [];
+    let pCount = 0;
+    let sum = 0;
+    function findPaths(root: TreeNode) {
+      if (root == null) {
+        return;
+      }
+
+      sum += root.val;
+      trail.push(root);
+
+      if (sum == targetSum) {
+        pCount++;
+      }
+
+      let p = sum;
+      let i = 0;
+      while (i < trail.length) {
+        p -= trail[i].val;
+        if (p == targetSum && trail.slice(i + 1).length > 0) {
+          pCount++;
+        }
+        i++;
+      }
+
+      findPaths(root.left);
+      findPaths(root.right);
+      sum -= root.val;
+      trail.pop();
+    }
+    findPaths(root);
+    return pCount;
+  };
+
+  static lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+    function findNodeRoute(root: TreeNode, target: TreeNode, route: TreeNode[]): boolean {
+      if (root == null) {
+        return false;
+      }
+      route.push(root);
+      if (root.val == target.val) {
+        return true;
+      }
+      let isInLeft = findNodeRoute(root.left, target, route);
+      let isInRight: boolean;
+
+      if (!isInLeft) {
+        isInRight = findNodeRoute(root.right, target, route);
+      }
+
+      if (isInLeft || isInRight) {
+        return true;
+      }
+
+      route.pop();
+      return false;
+    }
+
+    const routeP: TreeNode[] = [];
+    const routeQ: TreeNode[] = [];
+    findNodeRoute(root, p, routeP);
+    findNodeRoute(root, q, routeQ);
+    let smaller = routeP.length > routeQ.length ? routeQ : routeP;
+    let ancestor: TreeNode;
+
+    for (let i = 0; i < smaller.length; i++) {
+      if (routeP[i].val == routeQ[i].val) {
+        ancestor = routeP[i];
+      } else {
+        break;
+      }
+    }
+    return ancestor;
+  }
+
+  static rightSideView(root: TreeNode | null): number[] {
+    let traverseNode: TreeNode[] = [];
+    const rightSideView: number[] = [];
+    if (root == null) {
+      return rightSideView;
+    }
+    traverseNode.push(root);
+
+    while (traverseNode.length > 0) {
+      rightSideView.push(traverseNode[0].val);
+      let nextLevel: TreeNode[] = [];
+      for (let i = 0; i < traverseNode.length; i++) {
+        if (traverseNode[i].right) {
+          nextLevel.push(traverseNode[i].right);
+        }
+        if (traverseNode[i].left) {
+          nextLevel.push(traverseNode[i].left);
+        }
+      }
+      traverseNode = nextLevel;
+    }
+
+    return rightSideView;
+  };
 }
