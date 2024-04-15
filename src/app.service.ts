@@ -782,3 +782,35 @@ export class BST {
     return arr;
   }
 }
+
+function leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
+  function findLeafSequence(root: TreeNode): number[] {
+    const sequence: number[] = [];
+    function find(root: TreeNode) {
+      if (root.left == null && root.right == null) {
+        sequence.push(root.val);
+        return;
+      }
+
+      if (root.left) find(root.left);
+      if (root.right) find(root.right);
+      return;
+    }
+    find(root);
+    return sequence;
+  }
+
+  const seq1 = findLeafSequence(root1);
+  const seq2 = findLeafSequence(root2);
+
+  if (seq1.length != seq2.length) {
+    return false;
+  }
+
+  for (let i = 0; i < seq1.length; i++) {
+    if (seq1[i] != seq2[i]) {
+      return false;
+    }
+  }
+  return true;
+}
