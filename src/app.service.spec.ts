@@ -1,4 +1,4 @@
-import { BST, BinaryTree, DSAService, LinkList, RecentCounter, TreeNode } from "./app.service"
+import { BST, BinaryTree, DSAService, Heap, LinkList, RecentCounter, TreeNode } from "./app.service"
 
 describe('DSA service tests', () => {
   it.skip('test_missing_number', () => {
@@ -302,10 +302,19 @@ describe('DSA service tests', () => {
     // console.log(s.maxProfit(inA));
   });
 
-  it('test_hIndex', () => {
+  it.skip('test_hIndex', () => {
     const s = new DSAService();
     console.log(s.hIndex([3, 0, 6, 1, 5]));
 
     console.log(s.hIndex([100]));
+  });
+
+  it('test_popMax', () => {
+    const s = new Heap([3, 2, 3, 1, 2, 4, 5, 5, 6]);
+    let max;
+    for (let i = 0; i < 8; i++) {
+      max = s.popMax();
+    }
+    console.log(max);
   });
 })
