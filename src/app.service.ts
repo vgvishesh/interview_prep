@@ -552,6 +552,84 @@ export class DSAService {
     }
     return max - 1;
   };
+
+  removeDuplicates(nums: number[]): number {
+    let count = 0;
+    let i = 0;
+    let j = 0;
+    let p = nums[0];
+    while (i < nums.length) {
+      if (nums[i] != p) {
+        count = 0;
+        p = nums[i];
+      }
+      if (count < 2) {
+        if (j < i) {
+          nums[j] = nums[i];
+        }
+        j++;
+        i++;
+        count++;
+      } else {
+        i++;
+        count++;
+      }
+    }
+    return j;
+  };
+
+  maxProfit(prices: number[]): number {
+    let p = 0;
+    let bp = prices[0];
+    for (let i = 1; i < prices.length; i++) {
+      if (bp < prices[i]) {
+        p += prices[i] - bp;
+      }
+      bp = prices[i];
+    }
+    return p;
+  };
+
+  canJump(nums: number[]): boolean {
+    let stack: { val: number, pos: number }[] = [];
+    stack.push({ val: nums[0], pos: 0 });
+    let mem: Set<number> = new Set();
+    function top(): { val: number, pos: number } {
+      return stack[stack.length - 1];
+    }
+
+    while (stack.length > 0) {
+      let postition = top().pos + top().val;
+      if (postition >= nums.length - 1) {
+        return true;
+      }
+      if (nums[postition] != 0 && !mem.has(postition)) {
+        stack.push({ val: nums[postition], pos: postition });
+      } else {
+        let seek = stack.pop();
+        while (seek.val - 1 <= 0 && stack.length > 0) {
+          mem.add(seek.pos);
+          seek = stack.pop();
+        }
+        if (seek.val - 1 > 0) {
+          stack.push({ val: seek.val - 1, pos: seek.pos });
+        }
+      }
+    }
+    return false;
+  };
+
+  hIndex(citations: number[]): number {
+    citations.sort();
+    let h = 0;
+    for (let i = 0; i < citations.length; i++) {
+      let count = citations.length - i;
+      if (count > h) {
+        h = count;
+      }
+    }
+    return h;
+  };
 }
 
 export class RecentCounter {

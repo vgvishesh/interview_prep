@@ -259,12 +259,53 @@ describe('DSA service tests', () => {
     console.log(BinaryTree.lowestCommonAncestor(root, p, q));
   });
 
-  it('test_maxLevelSum', () => {
+  it.skip('test_maxLevelSum', () => {
     // let s = new BinaryTree([2, null, 4, 10, 8, null, null, 4]);
     // let root = new TreeNode(2, null, new TreeNode(4, new TreeNode(10, null, null), new TreeNode(8, new TreeNode(4, null, null), null)));
     // console.log(BinaryTree.goodNodes(root));
 
     let root = new TreeNode(-100, new TreeNode(-200, new TreeNode(-20, null, null), new TreeNode(-5, null, null)), new TreeNode(-300, new TreeNode(-10, null, null), null));
     console.log(BinaryTree.maxLevelSum(root));
+  });
+
+  it.skip('test_removeDuplicates', () => {
+    const s = new DSAService();
+    let inA = [0, 0, 1, 1, 1, 1, 2, 3, 3];
+    const r = s.removeDuplicates(inA);
+    console.log(inA.slice(0, r));
+  });
+
+  it.skip('test_maxProfit', () => {
+    const s = new DSAService();
+    let inA = [7, 1, 5, 3, 6, 4];
+    console.log(s.maxProfit(inA));
+
+    inA = [1, 2, 3, 4, 5];
+    console.log(s.maxProfit(inA));
+
+    inA = [7, 6, 4, 3, 1];
+    console.log(s.maxProfit(inA));
+  });
+
+  it.skip('test_canJump', () => {
+    const s = new DSAService();
+    let inA = [3, 2, 1, 0, 4];
+    console.log(s.canJump(inA));
+
+    inA = [2, 3, 1, 1, 4];
+    console.log(s.canJump(inA));
+
+    // inA = [1, 2, 3, 4, 5];
+    // console.log(s.maxProfit(inA));
+
+    // inA = [7, 6, 4, 3, 1];
+    // console.log(s.maxProfit(inA));
+  });
+
+  it('test_hIndex', () => {
+    const s = new DSAService();
+    console.log(s.hIndex([3, 0, 6, 1, 5]));
+
+    console.log(s.hIndex([100]));
   });
 })
