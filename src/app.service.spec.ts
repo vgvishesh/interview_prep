@@ -1,4 +1,5 @@
-import { BST, BinaryTree, DSAService, Heap, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode } from "./app.service"
+import { max } from "rxjs";
+import { BST, BinaryTree, DSAService, Heap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode } from "./app.service"
 
 describe('DSA service tests', () => {
   it.skip('test_missing_number', () => {
@@ -318,7 +319,7 @@ describe('DSA service tests', () => {
     console.log(max);
   });
 
-  it('test_smallestInfiniteSet', () => {
+  it.skip('test_smallestInfiniteSet', () => {
     const s = new SmallestInfiniteSet();
     console.log(s.popSmallest());
     s.addBack(1);
@@ -329,5 +330,81 @@ describe('DSA service tests', () => {
     s.addBack(3);
     console.log(s.popSmallest());
     console.log(s.popSmallest());
+  });
+
+  it('test_findElement', () => {
+    function maxScore(nums1: number[], nums2: number[], k: number): number {
+      const heap2 = new HeapMod(nums2);
+      const popped: {
+        val: number;
+        index: number;
+      }[] = [];
+      for (let i = 0; i < nums2.length; i++) {
+        popped.push(heap2.popMax());
+      }
+
+      popped.forEach(p => console.log(p));
+      let endIndex = k - 1;
+      let max;
+      while (endIndex < nums1.length) {
+        let sum = 0;
+        for (let i = 0; i < k; i++) {
+          sum += nums1[popped[endIndex - i].index];
+        }
+        let product = sum * popped[endIndex].val;
+        if (max === undefined || max < product) {
+          max = product;
+        }
+        endIndex++;
+      }
+
+      return max;
+
+      // let sum = 0;
+      // let indices: number[] = [];
+      // for (let i = 0; i < k; i++) {
+      //   let pop = heap1.popMax();
+      //   sum += pop.val;
+      //   indices.push(pop.index);
+      //   console.log(pop.index);
+      // }
+
+      // let min = nums2[indices[0]];
+      // for (let i = 1; i < indices.length; i++) {
+      //   if (nums2[indices[i]] < min) {
+      //     min = nums2[indices[i]];
+      //   }
+      // }
+
+      // const p1 = min * sum;
+      // console.log(p1);
+      // console.log(min);
+      // console.log(sum);
+
+
+      // indices = [];
+      // for (let i = 0; i < k; i++) {
+      //   let pop = heap2.popMax();
+      //   indices.push(pop.index);
+      // }
+
+      // min = nums2[indices[indices.length - 1]];
+      // sum = 0;
+      // for (let i = 0; i < indices.length; i++) {
+      //   sum += nums1[indices[i]];
+      //   console.log(indices[i]);
+      // }
+
+      // const p2 = min * sum;
+      // console.log(p2);
+      // console.log(min);
+      // console.log(sum);
+
+      // return p1 > p2 ? p1 : p2;
+    }
+    // console.log(maxScore([4, 2, 3, 1, 1], [7, 5, 10, 9, 6], 1));
+    // console.log(maxScore([1, 3, 3, 2], [2, 1, 3, 4], 3));
+    // console.log(maxScore([22, 5, 25, 15, 28, 1], [22, 30, 25, 25, 9, 18], 3));
+    console.log(maxScore([2, 1, 14, 12], [11, 7, 13, 6], 3));
   })
 })

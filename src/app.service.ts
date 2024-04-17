@@ -1149,6 +1149,66 @@ export class Heap {
   }
 }
 
+export class HeapMod {
+  private arr: { val: number, index: number }[] = [];
+  constructor(input: number[]) {
+    for (let i = 0; i < input.length; i++) {
+      this.arr.push({ val: input[i], index: i });
+      this.maxHeap(i);
+    }
+  }
+
+  getParent(i: number): number {
+    if (i == 0) {
+      return 0;
+    }
+    const parent = i % 2 == 0 ? (i - 2) / 2 : (i - 1) / 2;
+    return parent;
+  }
+
+  maxHeap(i: number) {
+    while (this.arr[i].val > this.arr[this.getParent(i)].val) {
+      const parent = this.getParent(i);
+      let temp = this.arr[parent];
+      this.arr[parent] = this.arr[i];
+      this.arr[i] = temp;
+      i = parent;
+    }
+  }
+
+  popMax() {
+    const max = this.arr[0];
+    const last = this.arr.pop();
+    this.arr[0] = last;
+
+    if (this.arr.length > 1) {
+      let i = 0;
+      while (1) {
+        let lc = 2 * i + 1;
+        let rc = 2 * i + 2;
+        let bigchild;
+        if (lc < this.arr.length && rc < this.arr.length) {
+          bigchild = this.arr[lc].val > this.arr[rc].val ? lc : rc;
+        } else if (rc >= this.arr.length && lc < this.arr.length) {
+          bigchild = lc;
+        } else {
+          break;
+        }
+
+        if (this.arr[bigchild].val > this.arr[i].val) {
+          let temp = this.arr[bigchild];
+          this.arr[bigchild] = this.arr[i];
+          this.arr[i] = temp;
+          i = bigchild;
+        } else {
+          break;
+        }
+      }
+    }
+    return max;
+  }
+}
+
 export class SmallestInfiniteSet {
   current: number;
   arr: number[] = [];
