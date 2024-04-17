@@ -1148,3 +1148,35 @@ export class Heap {
     return max;
   }
 }
+
+export class SmallestInfiniteSet {
+  current: number;
+  arr: number[] = [];
+  ds: Set<number> = new Set();
+  constructor() {
+    this.current = 0;
+    for (let i = 0; i < 1000; i++) {
+      this.arr.push(i + 1);
+    }
+  }
+
+  popSmallest(): number {
+    const pop = this.arr[this.current];
+    this.ds.add(pop);
+    while (this.ds.has(this.arr[this.current])) {
+      this.current += 1;
+    }
+    return pop;
+  }
+
+  addBack(num: number): void {
+    if (!this.ds.has(num)) {
+      return;
+    }
+
+    this.ds.delete(num);
+    if (num < this.current + 1) {
+      this.current = num - 1;
+    }
+  }
+}
