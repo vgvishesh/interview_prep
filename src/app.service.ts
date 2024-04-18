@@ -724,6 +724,82 @@ export class DSAService {
     const sum = candy.reduce((acc, curr) => acc + curr, 0);
     return sum;
   };
+
+  trap(height: number[]): number {
+    let count = 0;
+    let left: number[] = [height[0]];
+    let right: number[] = [];
+    let max = height[0];
+    for (let i = 1; i < height.length; i++) {
+      if (height[i] > max) {
+        max = height[i];
+      }
+      left[i] = max;
+    }
+    max = height[height.length - 1];
+    right[height.length - 1] = max;
+    for (let i = height.length - 2; i >= 0; i--) {
+      if (height[i] > max) {
+        max = height[i];
+      }
+      right[i] = max;
+    }
+
+    for (let i = 0; i < height.length; i++) {
+      count += Math.min(left[i], right[i]) - height[i];
+    }
+
+    return count;
+  };
+
+  findSubString(s: string, words: string[]): number[] {
+    const indices: number[] = [];
+    const k = words[0].length;
+    const freqMap: Map<string, number> = new Map();
+    words.forEach(w => {
+      if (freqMap.has(w)) {
+        let count = freqMap.get(w);
+        freqMap.set(w, count + 1);
+      } else {
+        freqMap.set(w, 1);
+      }
+    });
+
+    let i = 0;
+    let copyMap = new Map(freqMap);
+    let wordFound = 0;
+    while (i < s.length) {
+      let nextWord = '';
+      let j: number;
+      for (j = i; j < i + k && j < s.length; j++) {
+        nextWord += s[j];
+      }
+
+      if (copyMap.has(nextWord)) {
+        let count = copyMap.get(nextWord);
+        if (count > 0) {
+          copyMap.set(nextWord, count - 1);
+          i = j;
+          wordFound++;
+          if (wordFound == words.length) {
+            indices.push(i - (k * words.length));
+            wordFound = 0;
+            copyMap = new Map(freqMap);
+            i -= k * (words.length - 1);
+          }
+        } else {
+          copyMap = new Map(freqMap);
+          count = copyMap.get(nextWord);
+          i -= (wordFound - 1) * k + 1;
+        }
+      } else {
+        wordFound = 0;
+        copyMap = new Map(freqMap);
+        i++;
+      }
+    }
+    return indices;
+  }
 }
 
 export class RecentCounter {

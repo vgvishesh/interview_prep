@@ -456,10 +456,25 @@ describe('DSA service tests', () => {
     console.log(s.isInterleave("abababababababababababababababababababababababababababababababababababababababababababababababababbb", "babababababababababababababababababababababababababababababababababababababababababababababababaaaba", "abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababbb"));
   });
 
-  it('test_Candy', () => {
+  it.skip('test_Candy', () => {
     let s = new DSAService();
     console.log(s.candy([1, 0, 2]));
     console.log(s.candy([1, 2, 2]));
     console.log(s.candy([1, 3, 2, 2, 1]));
+  });
+
+  it.skip('test_trap', () => {
+    let s = new DSAService();
+    console.log(s.trap([4, 2, 0, 3, 2, 5]));
+    console.log(s.trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]));
+    console.log(s.trap([4, 2, 3]));
+  })
+
+  it('test_findSubscring', () => {
+    let s = new DSAService();
+    console.log(s.findSubString("barfoothefoobarman", ["foo", "bar"]));
+    console.log(s.findSubString("wordgoodgoodgoodbestword", ["word", "good", "best", "word"]));
+    console.log(s.findSubString("barfoofoobarthefoobarman", ["bar", "foo", "the"]));
+    console.log(s.findSubString("wordgoodgoodgoodbestword", ["word", "good", "best", "good"]));
   })
 })
