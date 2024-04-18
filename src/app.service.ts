@@ -1240,3 +1240,56 @@ export class SmallestInfiniteSet {
     }
   }
 }
+
+export class TrieNode {
+  val: string;
+  next: TrieNode[];
+  isWordEnd: boolean;
+  constructor(val: string) {
+    this.val = val;
+    this.next = new Array(26).fill(null);
+    this.isWordEnd = false;
+  }
+}
+
+export class Trie {
+  root: TrieNode = new TrieNode("");
+  constructor() {
+  }
+
+  insert(word: string): void {
+    let ptr = this.root;
+    for (let w of word) {
+      let ascii = w.charCodeAt(0) - 97;
+      if (ptr.next[ascii] == null) {
+        ptr.next[ascii] = new TrieNode(w);
+      }
+      ptr = ptr.next[ascii];
+    }
+    ptr.isWordEnd = true;
+  }
+
+  search(word: string): boolean {
+    let ptr = this.root;
+    for (let w of word) {
+      let ascii = w.charCodeAt(0) - 97;
+      if (ptr.next[ascii] == null) {
+        return false;
+      }
+      ptr = ptr.next[ascii];
+    }
+    return ptr.isWordEnd;
+  }
+
+  startsWith(prefix: string): boolean {
+    let ptr = this.root;
+    for (let w of prefix) {
+      let ascii = w.charCodeAt(0) - 97;
+      if (ptr.next[ascii] == null) {
+        return false;
+      }
+      ptr = ptr.next[ascii];
+    }
+    return true;
+  }
+}

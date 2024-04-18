@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, Heap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode } from "./app.service"
+import { BST, BinaryTree, DSAService, Heap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode } from "./app.service"
 
 describe('DSA service tests', () => {
   it.skip('test_missing_number', () => {
@@ -332,7 +332,7 @@ describe('DSA service tests', () => {
     console.log(s.popSmallest());
   });
 
-  it('test_findElement', () => {
+  it.skip('test_findElement', () => {
     function maxScore(nums1: number[], nums2: number[], k: number): number {
       const heap2 = new HeapMod(nums2);
       const popped: {
@@ -406,5 +406,17 @@ describe('DSA service tests', () => {
     // console.log(maxScore([1, 3, 3, 2], [2, 1, 3, 4], 3));
     // console.log(maxScore([22, 5, 25, 15, 28, 1], [22, 30, 25, 25, 9, 18], 3));
     console.log(maxScore([2, 1, 14, 12], [11, 7, 13, 6], 3));
+  });
+
+  it('test_Trie', () => {
+    const trie = new Trie();
+    trie.insert("apple");
+    console.log(trie.search("apple"));   // return True
+    console.log(trie.search("app"));     // return False
+    console.log(trie.startsWith("app")); // return True
+    trie.insert("app");
+    console.log(trie.search("app"));     // return True
   })
+
+
 })
