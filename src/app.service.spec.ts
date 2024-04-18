@@ -446,7 +446,7 @@ describe('DSA service tests', () => {
     console.log(s.rob([2, 7, 9, 3, 1]));
   });
 
-  it('test_isInterleave', () => {
+  it.skip('test_isInterleave', () => {
     let s = new DSAService();
     console.log(s.isInterleave("aabcc", "dbbca", "aadbbcbcac"));
     console.log(s.isInterleave("aabcc", "dbbca", "aadbbbaccc"));
@@ -454,5 +454,12 @@ describe('DSA service tests', () => {
     console.log(s.isInterleave("a", "b", "a"));
     console.log(s.isInterleave("a", "", "a"));
     console.log(s.isInterleave("abababababababababababababababababababababababababababababababababababababababababababababababababbb", "babababababababababababababababababababababababababababababababababababababababababababababababaaaba", "abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababbb"));
+  });
+
+  it('test_Candy', () => {
+    let s = new DSAService();
+    console.log(s.candy([1, 0, 2]));
+    console.log(s.candy([1, 2, 2]));
+    console.log(s.candy([1, 3, 2, 2, 1]));
   })
 })

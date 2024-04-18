@@ -702,7 +702,28 @@ export class DSAService {
       return true;
     }
     return false;
-  }
+  };
+
+  candy(ratings: number[]): number {
+    const candy: number[] = [1];
+    for (let i = 1; i < ratings.length; i++) {
+      if (ratings[i] > ratings[i - 1]) {
+        candy[i] = candy[i - 1] + 1;
+      } else if (ratings[i] == ratings[i - 1]) {
+        candy[i] = 1;
+      } else {
+        candy[i] = 1;
+        let k = i;
+        while (k - 1 >= 0 && ratings[k - 1] > ratings[k] && candy[k - 1] <= candy[k]) {
+          candy[k - 1] += 1;
+          k--;
+        }
+      }
+    }
+
+    const sum = candy.reduce((acc, curr) => acc + curr, 0);
+    return sum;
+  };
 }
 
 export class RecentCounter {
