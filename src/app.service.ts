@@ -648,6 +648,61 @@ export class DSAService {
     }
     return findRob(nums.length - 1);
   }
+
+  isInterleave(s1: string, s2: string, s3: string): boolean {
+    type entry = {
+      i: number,
+      j: number,
+      k: number,
+    }
+    let i = 0;
+    let j = 0;
+    let k = 0;
+    let stack: entry[] = [];
+    let pop = false;
+    let checkMap: Map<number, Map<number, number>> = new Map();
+
+    while (i < s3.length) {
+      let target = s3[i];
+      if (j < s1.length && k < s2.length && target == s1[j] && target == s2[k]) {
+        if (!pop && checkMap?.get(j)?.get(k) === undefined) {
+          // stack.push({ i, j, k, selected: 0 });
+          stack.push({ i, j, k });
+          j++;
+          i++;
+        } else {
+          pop = false;
+          i++;
+          k++;
+        }
+      } else if (j < s1.length && target == s1[j]) {
+        j++;
+        i++;
+      } else if (k < s2.length && target == s2[k]) {
+        k++;
+        i++;
+      } else {
+        if (stack.length == 0) {
+          return false;
+        }
+        let top = stack.pop();
+        i = top.i;
+        j = top.j;
+        k = top.k;
+        pop = true;
+        let mv = checkMap.get(j);
+        if (mv) {
+          mv.set(k, i);
+        } else {
+          checkMap.set(j, new Map().set(k, i));
+        }
+      }
+    }
+    if (k == s2.length && j == s1.length) {
+      return true;
+    }
+    return false;
+  }
 }
 
 export class RecentCounter {

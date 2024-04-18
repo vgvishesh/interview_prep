@@ -440,9 +440,19 @@ describe('DSA service tests', () => {
     suggestedProducts(["havana"], "havana");
   });
 
-  it('test_rob', () => {
+  it.skip('test_rob', () => {
     let s = new DSAService();
     console.log(s.rob([1, 2, 3, 1]));
     console.log(s.rob([2, 7, 9, 3, 1]));
   });
+
+  it('test_isInterleave', () => {
+    let s = new DSAService();
+    console.log(s.isInterleave("aabcc", "dbbca", "aadbbcbcac"));
+    console.log(s.isInterleave("aabcc", "dbbca", "aadbbbaccc"));
+    console.log(s.isInterleave("", "", ""));
+    console.log(s.isInterleave("a", "b", "a"));
+    console.log(s.isInterleave("a", "", "a"));
+    console.log(s.isInterleave("abababababababababababababababababababababababababababababababababababababababababababababababababbb", "babababababababababababababababababababababababababababababababababababababababababababababababaaaba", "abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababbb"));
+  })
 })
