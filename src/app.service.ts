@@ -630,6 +630,24 @@ export class DSAService {
     }
     return h;
   };
+
+  rob(nums: number[]): number {
+    const mem: number[] = new Array(nums.length).fill(-1);
+    function findRob(index: number): number {
+      if (index < 0) {
+        return 0;
+      }
+
+      if (mem[index] != -1) {
+        return mem[index];
+      }
+
+      let robAmount = Math.max(nums[index] + findRob(index - 2), findRob(index - 1));
+      mem[index] = robAmount;
+      return robAmount;
+    }
+    return findRob(nums.length - 1);
+  }
 }
 
 export class RecentCounter {
@@ -1291,5 +1309,37 @@ export class Trie {
       ptr = ptr.next[ascii];
     }
     return true;
+  }
+
+  prefixWords(prefix: string): string[] {
+    let suggesstions: string[] = []
+    function findSuggesstions(ptr: TrieNode, prefix: string) {
+      if (ptr == null || suggesstions.length == 3) {
+        return;
+      }
+
+      if (ptr.isWordEnd) {
+        let prod = prefix;
+        suggesstions.push(prod);
+      }
+
+      for (let i = 0; i < 26; i++) {
+        if (ptr.next[i] && suggesstions.length < 3) {
+          findSuggesstions(ptr.next[i], prefix + ptr.next[i].val)
+        }
+      }
+    }
+
+    let ptr = this.root;
+    for (let w of prefix) {
+      let ascii = w.charCodeAt(0) - 97;
+      ptr = ptr.next[ascii];
+      if (ptr == null) {
+        return [];
+      }
+    }
+
+    findSuggesstions(ptr, prefix);
+    return suggesstions;
   }
 }

@@ -408,7 +408,7 @@ describe('DSA service tests', () => {
     console.log(maxScore([2, 1, 14, 12], [11, 7, 13, 6], 3));
   });
 
-  it('test_Trie', () => {
+  it.skip('test_Trie', () => {
     const trie = new Trie();
     trie.insert("apple");
     console.log(trie.search("apple"));   // return True
@@ -416,7 +416,33 @@ describe('DSA service tests', () => {
     console.log(trie.startsWith("app")); // return True
     trie.insert("app");
     console.log(trie.search("app"));     // return True
-  })
+  });
 
+  it.skip('test_Trie', () => {
+    function suggestedProducts(products: string[], searchWord: string): string[][] {
+      const trie = new Trie();
+      for (let product of products) {
+        trie.insert(product);
+      }
 
+      let prefix = '';
+      let allSuggesstions: string[][] = [];
+      for (let w of searchWord) {
+        prefix += w;
+        let products = trie.prefixWords(prefix);
+        allSuggesstions.push(products);
+      }
+
+      console.log(allSuggesstions);
+      return allSuggesstions;
+    };
+    suggestedProducts(["mobile", "mouse", "moneypot", "monitor", "mousepad"], "mouse");
+    suggestedProducts(["havana"], "havana");
+  });
+
+  it('test_rob', () => {
+    let s = new DSAService();
+    console.log(s.rob([1, 2, 3, 1]));
+    console.log(s.rob([2, 7, 9, 3, 1]));
+  });
 })
