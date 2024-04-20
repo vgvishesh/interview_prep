@@ -862,25 +862,6 @@ export class DSAService {
       return true;
     }
 
-    // function updateMovingMap(start: number, end: number) {
-    //   if (end >= arr.length) {
-    //     return;
-    //   }
-    //   const val = movingMap.get(arr[start].key);
-    //   if (val > 1) {
-    //     movingMap.set(arr[start].key, val - 1);
-    //   } else {
-    //     movingMap.delete(arr[start].key);
-    //   }
-
-    //   const newVal = movingMap.get(arr[end].key);
-    //   if (!newVal) {
-    //     movingMap.set(arr[end].key, 1);
-    //   } else {
-    //     movingMap.set(arr[end].key, newVal + 1);
-    //   }
-    // }
-
     let start = 0;
     let end = t.length - 1;
     let minWord = '';
@@ -903,6 +884,93 @@ export class DSAService {
     }
 
     return minWord;
+  }
+
+  calculate(s: string): number {
+    let mS: string[] = [];
+
+    function calc(ro: string, o: string, lo: string) {
+      let res: number;
+      if (o == '') {
+        return ro;
+      }
+      if (ro == '') {
+        if (o == '-') {
+          res = -1 * parseInt(lo);
+        } else {
+          res = parseInt(lo);
+        }
+        return res;
+      }
+
+      if (o == '-') {
+        res = parseInt(ro) - parseInt(lo);
+      } else if (o == '+') {
+        res = parseInt(ro) + parseInt(lo);
+      }
+      return res;
+    }
+
+    function calibrate() {
+      let sS: string[] = [];
+      while (mS.length > 0 && mS[mS.length - 1] != '(') {
+        let pop = mS.pop();
+        sS.push(pop);
+      }
+
+      if (mS.length > 0 && mS[mS.length - 1] == '(') {
+        mS.pop();
+      }
+
+      let isRightBuilt = false;
+      let isOpertorRecorded = false;
+      let ro: string = '';
+      let lo: string = '';
+      let o: string = '';
+      while (sS.length > 0) {
+        let top = sS.length - 1;
+        if (!isRightBuilt && (sS[top] !== '+' && sS[top] !== '-')) {
+          ro += sS.pop();
+        } else if (sS[top] == '+' || sS[top] == '-') {
+          if (isOpertorRecorded) {
+            let res = calc(ro, o, lo);
+            sS.push(res.toString());
+            isOpertorRecorded = false;
+            isRightBuilt = false;
+            ro = '';
+            lo = '';
+            o = '';
+          } else {
+            o = sS.pop();
+            isRightBuilt = true;
+            isOpertorRecorded = true
+          }
+        } else {
+          lo += sS.pop();
+        }
+      }
+
+      let res = calc(ro, o, lo);
+      sS.push(res.toString());
+
+      mS.push(sS.pop());
+    }
+
+    for (let i = 0; i < s.length; i++) {
+      if (s[i] == ' ') {
+        continue;
+      } else if (s[i] != ')') {
+        mS.push(s[i]);
+      } else {
+        calibrate()
+      }
+    }
+
+    if (mS.length > 1) {
+      calibrate();
+    }
+
+    return parseInt(mS.pop());
   }
 }
 

@@ -479,7 +479,7 @@ describe('DSA service tests', () => {
     console.log(s.findSubString("aaaaaaaaaaaaaa", ["aa", "aa"]));
   });
 
-  it('test_minWindow', () => {
+  it.skip('test_minWindow', () => {
     let s = new DSAService();
     console.log(s.minWindow("ADOBECODEBANC", "ABC"));
     console.log(s.minWindow("a", "a"));
@@ -487,5 +487,15 @@ describe('DSA service tests', () => {
     console.log(s.minWindow("a", "b"));
     console.log(s.minWindow("bbaa", "aba"));
     console.log(s.minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"));
+  });
+
+  it('test_calc', () => {
+    let s = new DSAService();
+    // console.log(s.calculate("1 + 1"))
+    // console.log(s.calculate(" 2-1 + 2 "))
+    // console.log(s.calculate("(1+(4+5+2)-3)+(6+8)"))
+    // console.log(s.calculate("2147483647"))
+    console.log(s.calculate("1-(     -2)"))
+
   })
 })
