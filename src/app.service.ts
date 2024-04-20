@@ -754,51 +754,155 @@ export class DSAService {
 
   findSubString(s: string, words: string[]): number[] {
     const indices: number[] = [];
-    const k = words[0].length;
-    const freqMap: Map<string, number> = new Map();
-    words.forEach(w => {
-      if (freqMap.has(w)) {
-        let count = freqMap.get(w);
-        freqMap.set(w, count + 1);
-      } else {
-        freqMap.set(w, 1);
-      }
-    });
-
     let i = 0;
-    let copyMap = new Map(freqMap);
-    let wordFound = 0;
-    while (i < s.length) {
-      let nextWord = '';
-      let j: number;
-      for (j = i; j < i + k && j < s.length; j++) {
-        nextWord += s[j];
+    let wordLength = words[0].length;
+    let k = wordLength * words.length;
+    let hash = new Map<string, number>()
+
+    words.forEach(w => {
+      if (hash.has(w)) {
+        const val = hash.get(w);
+        hash.set(w, val + 1);
+      } else {
+        hash.set(w, 1);
+      }
+    })
+
+    function getWords(startIndex: number, size: number): string[] {
+      let count = 0;
+      let current = '';
+      let windowWords: string[] = [];
+      for (let j = startIndex; j < startIndex + size; j++) {
+        if (count < wordLength) {
+          current += s[j];
+          count++;
+        } else {
+          windowWords.push(current);
+          current = s[j];
+          count = 1;
+        }
+      }
+      windowWords.push(current);
+      return windowWords
+    }
+
+    function isSubString(arrWords: string[], stateMap: Map<string, number>): boolean {
+      for (let i = 0; i < arrWords.length; i++) {
+        const w = arrWords[i];
+        if (stateMap.has(w)) {
+          const val = stateMap.get(w);
+          if (val == 0) {
+            return false;
+          }
+          stateMap.set(w, val - 1);
+        } else {
+          return false;
+        }
       }
 
-      if (copyMap.has(nextWord)) {
-        let count = copyMap.get(nextWord);
-        if (count > 0) {
-          copyMap.set(nextWord, count - 1);
-          i = j;
-          wordFound++;
-          if (wordFound == words.length) {
-            indices.push(i - (k * words.length));
-            wordFound = 0;
-            copyMap = new Map(freqMap);
-            i -= k * (words.length - 1);
-          }
-        } else {
-          copyMap = new Map(freqMap);
-          count = copyMap.get(nextWord);
-          i -= (wordFound - 1) * k + 1;
-        }
-      } else {
-        wordFound = 0;
-        copyMap = new Map(freqMap);
-        i++;
+      return true;
+    }
+
+    while (i + k <= s.length) {
+      const arrWords = getWords(i, k);
+      if (isSubString(arrWords, new Map(hash))) {
+        indices.push(i);
+        // i += wordLength;
+        // } else {
+      }
+      i++;
+    }
+
+    return indices;
+  }
+
+  minWindow(s: string, t: string): string {
+    if (t.length > s.length) {
+      return '';
+    }
+    let thash: Map<string, number> = new Map();
+    let movingMap: Map<string, number> = new Map();
+    let arr = new Array<{ key: string, index: number }>();
+
+    for (let i = 0; i < s.length; i++) {
+      if (t.includes(s[i])) {
+        arr.push({ key: s[i], index: i });
       }
     }
-    return indices;
+
+    if (arr.length < t.length) {
+      return '';
+    }
+
+    for (let i = 0; i < t.length; i++) {
+      if (thash.has(t[i])) {
+        let val = thash.get(t[i]);;
+        thash.set(t[i], val + 1);
+      } else {
+        thash.set(t[i], 1);
+      }
+    }
+
+    for (let i = 0; i < t.length; i++) {
+      const val = movingMap.get(arr[i].key);
+      if (val) {
+        movingMap.set(arr[i].key, val + 1);
+      } else {
+        movingMap.set(arr[i].key, 1);
+      }
+    }
+
+    function isMatch(): boolean {
+      for (let [k, v] of thash) {
+        const mVal = movingMap.get(k);
+        if (!mVal || mVal < v) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // function updateMovingMap(start: number, end: number) {
+    //   if (end >= arr.length) {
+    //     return;
+    //   }
+    //   const val = movingMap.get(arr[start].key);
+    //   if (val > 1) {
+    //     movingMap.set(arr[start].key, val - 1);
+    //   } else {
+    //     movingMap.delete(arr[start].key);
+    //   }
+
+    //   const newVal = movingMap.get(arr[end].key);
+    //   if (!newVal) {
+    //     movingMap.set(arr[end].key, 1);
+    //   } else {
+    //     movingMap.set(arr[end].key, newVal + 1);
+    //   }
+    // }
+
+    let start = 0;
+    let end = t.length - 1;
+    let minWord = '';
+    while (start <= arr.length - t.length && end < arr.length) {
+      if (isMatch()) {
+        let currentword = s.substring(arr[start].index, arr[end].index + 1);
+        if (minWord == '' || minWord.length > currentword.length) {
+          minWord = currentword;
+        }
+        const val = movingMap.get(arr[start].key);
+        movingMap.set(arr[start].key, val - 1);
+        start++;
+      } else {
+        end++;
+        if (end < arr.length) {
+          const newVal = movingMap.get(arr[end].key);
+          newVal ? movingMap.set(arr[end].key, newVal + 1) : movingMap.set(arr[end].key, 1);
+        }
+      }
+    }
+
+    return minWord;
   }
 }
 

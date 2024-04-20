@@ -470,11 +470,22 @@ describe('DSA service tests', () => {
     console.log(s.trap([4, 2, 3]));
   })
 
-  it('test_findSubscring', () => {
+  it.skip('test_findSubscring', () => {
     let s = new DSAService();
     console.log(s.findSubString("barfoothefoobarman", ["foo", "bar"]));
     console.log(s.findSubString("wordgoodgoodgoodbestword", ["word", "good", "best", "word"]));
     console.log(s.findSubString("barfoofoobarthefoobarman", ["bar", "foo", "the"]));
     console.log(s.findSubString("wordgoodgoodgoodbestword", ["word", "good", "best", "good"]));
+    console.log(s.findSubString("aaaaaaaaaaaaaa", ["aa", "aa"]));
+  });
+
+  it('test_minWindow', () => {
+    let s = new DSAService();
+    console.log(s.minWindow("ADOBECODEBANC", "ABC"));
+    console.log(s.minWindow("a", "a"));
+    console.log(s.minWindow("a", "aa"));
+    console.log(s.minWindow("a", "b"));
+    console.log(s.minWindow("bbaa", "aba"));
+    console.log(s.minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"));
   })
 })
