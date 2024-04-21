@@ -489,13 +489,29 @@ describe('DSA service tests', () => {
     console.log(s.minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"));
   });
 
-  it('test_calc', () => {
+  it.skip('test_calc', () => {
     let s = new DSAService();
     // console.log(s.calculate("1 + 1"))
     // console.log(s.calculate(" 2-1 + 2 "))
     // console.log(s.calculate("(1+(4+5+2)-3)+(6+8)"))
     // console.log(s.calculate("2147483647"))
-    console.log(s.calculate("1-(     -2)"))
+    console.log(s.calculate("1-(     -2)"));
+  });
 
+  it('test_reverseKGroup', () => {
+    // let ll = new LinkList([1, 2, 3, 4, 5]);
+    // let res = ll.reverseKGroup(ll.head, 2);
+    // ll.head = res;
+    // console.log(ll.printLL());
+
+    // ll = new LinkList([1, 2, 3, 4, 5]);
+    // res = ll.reverseKGroup(ll.head, 3);
+    // ll.head = res;
+    // console.log(ll.printLL());
+
+    let ll = new LinkList([1, 2]);
+    let res = ll.reverseKGroup(ll.head, 2);
+    ll.head = res;
+    console.log(ll.printLL());
   })
 })

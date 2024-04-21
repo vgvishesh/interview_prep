@@ -1129,6 +1129,59 @@ export class LinkList {
     }
     return head;
   };
+
+  reverseKGroup(head: ListNode | null, k: number): ListNode | null {
+    let stack: ListNode[] = [];
+    function readjustLL() {
+      let tailnext = stack[stack.length - 1].next;
+      let ptr = stack.pop();
+      let head = ptr;
+      let prev: ListNode;
+      while (stack.length > 0) {
+        prev = stack.pop();
+        ptr.next = prev;
+        ptr = prev;
+      }
+      if (prev) {
+        prev.next = tailnext;
+      }
+      return { head, prev };
+    }
+
+    let ptr = head;
+    let count = 0;
+    let newHead: ListNode = null;
+    let prev: ListNode = null;
+    while (ptr != null) {
+      if (count < k) {
+        count++;
+        stack.push(ptr);
+        ptr = ptr.next;
+      } else {
+        const res = readjustLL();
+        if (!newHead) {
+          newHead = res.head;
+        }
+        if (prev != null) {
+          prev.next = res.head;
+        }
+        prev = res.prev;
+        count = 0;
+      }
+    }
+
+    if (count == k) {
+      const res = readjustLL();
+      if (!newHead) {
+        newHead = res.head;
+      }
+      if (prev != null) {
+        prev.next = res.head;
+      }
+    }
+
+    return newHead ?? head;
+  };
 }
 
 export class TreeNode {
