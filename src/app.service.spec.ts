@@ -498,7 +498,7 @@ describe('DSA service tests', () => {
     console.log(s.calculate("1-(     -2)"));
   });
 
-  it('test_reverseKGroup', () => {
+  it.skip('test_reverseKGroup', () => {
     // let ll = new LinkList([1, 2, 3, 4, 5]);
     // let res = ll.reverseKGroup(ll.head, 2);
     // ll.head = res;
@@ -513,5 +513,11 @@ describe('DSA service tests', () => {
     let res = ll.reverseKGroup(ll.head, 2);
     ll.head = res;
     console.log(ll.printLL());
+  });
+
+  it('test_maxPathSum', () => {
+    // let root = new TreeNode(1, new TreeNode(-2, new TreeNode(1, new TreeNode(-1, null, null), null), new TreeNode(3, null, null)), new TreeNode(-3, new TreeNode(-2, null, null), null));
+    let root = new TreeNode(-3, null, null);
+    console.log(BinaryTree.maxPathSum(root));
   })
 })

@@ -1484,6 +1484,34 @@ export class BinaryTree {
     }
     return level;
   };
+
+  static maxPathSum(root: TreeNode | null): number {
+    let max = Number.NEGATIVE_INFINITY;
+    function findMaxPath(root: TreeNode): number {
+      if (root == null) {
+        return Number.NEGATIVE_INFINITY;
+      }
+
+      let lp = findMaxPath(root.left);
+      let rp = findMaxPath(root.right);
+
+      let a = root.val + lp;
+      let b = root.val + rp;
+      let c = root.val + lp + rp;
+      let d = lp;
+      let e = rp;
+      let f = root.val;
+
+      let thisMax = Math.max(a, b, c, d, e, f);
+      let ret = Math.max(a, b, f);
+      if (thisMax > max) {
+        max = thisMax;
+      }
+      return ret;
+    }
+    findMaxPath(root);
+    return max;
+  };
 }
 
 export class Heap {
