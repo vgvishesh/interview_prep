@@ -972,6 +972,45 @@ export class DSAService {
 
     return parseInt(mS.pop());
   }
+
+  ladderLength(beginWord: string, endWord: string, wordList: string[]): number {
+    let originalSet: Set<string> = new Set(wordList);
+    let queue: string[] = [];
+    queue.push(beginWord);
+    let count = 0;
+    originalSet.delete(beginWord);
+    function score(source: string, destination: string): number {
+      let score = 0;
+      for (let i = 0; i < source.length; i++) {
+        if (source[i] != destination[i]) {
+          score++;
+        }
+      }
+      return score;
+    }
+
+    while (queue.length > 0) {
+      for (let word of queue) {
+        if (word == endWord) {
+          return count + 1;
+        }
+      }
+
+      let adjacents: string[] = [];
+      queue.forEach(q => {
+        originalSet.forEach(x => {
+          if (score(x, q) == 1) {
+            adjacents.push(x);
+          }
+        });
+        adjacents.forEach(a => originalSet.delete(a));
+      })
+      queue = adjacents;
+      count++;
+    }
+
+    return 0;
+  };
 }
 
 export class RecentCounter {
