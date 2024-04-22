@@ -1011,6 +1011,149 @@ export class DSAService {
 
     return 0;
   };
+
+  findWords(board: string[][], words: string[]): string[] {
+    type Index = {
+      row: number,
+      col: number
+    }
+    let letterMap: Map<string, Index[]> = new Map();
+    let stateMap: Map<number, Set<number>> = new Map();
+    let mem: Map<number, Map<number, Set<string>>> = new Map();
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[0].length; j++) {
+        if (letterMap.has(board[i][j])) {
+          let data = letterMap.get(board[i][j]);
+          data.push({ row: i, col: j });
+          letterMap.set(board[i][j], data);
+        } else {
+          letterMap.set(board[i][j], [{ row: i, col: j }]);
+        }
+      }
+    }
+
+    function getValidNeighbors(next: string, index: Index, stateMap: Map<number, Set<number>>): Index[] {
+      function isInBounds(index: Index): boolean {
+        if (0 <= index.row && index.row < board.length && 0 <= index.col && index.col < board[0].length) {
+          return true;
+        }
+        return false;
+      }
+
+      function isNotInStateMap(index: Index) {
+        let cols = stateMap.get(index.row);
+        if (!cols) {
+          return true;
+        }
+
+        if (!cols.has(index.col)) {
+          return true;
+        }
+
+        return false;
+      }
+
+      let ids: Index[] = [{ row: index.row + 1, col: index.col },
+      { row: index.row, col: index.col + 1 },
+      { row: index.row - 1, col: index.col },
+      { row: index.row, col: index.col - 1 }]
+
+      let valid: Index[] = [];
+      ids.forEach(id => {
+        if (isInBounds(id) && board[id.row][id.col] == next && isNotInStateMap(id)) {
+          valid.push(id);
+        }
+      });
+      return valid;
+    }
+
+    function findWord(word: string, start: number, index: Index, stateMap: Map<number, Set<number>>): { result: boolean, length: number } {
+      if (start >= word.length) {
+        return { result: true, length: start };
+      }
+
+      let memData = mem.get(index.row)?.get(index.col) ?? new Set();
+      let currWord = word.slice(start, word.length);
+      for (let w of memData) {
+        if (w.includes(currWord)) {
+          let found = true;
+          for (let i = 0; i < currWord.length; i++) {
+            if (w[i] != currWord[i]) {
+              found = false;
+              break;
+            }
+          }
+          if (found) {
+            return { result: true, length: start + currWord.length }
+          }
+        }
+      }
+
+      let next = word[start];
+      let neighbors = getValidNeighbors(next, index, stateMap);
+      if (neighbors.length == 0) {
+        return { result: false, length: start };
+      }
+
+      for (let i = 0; i < neighbors.length; i++) {
+        let data = stateMap.get(neighbors[i].row);
+        if (!data) {
+          stateMap.set(neighbors[i].row, new Set([neighbors[i].col]));
+        } else {
+          data.add(neighbors[i].col)
+          stateMap.set(neighbors[i].row, data);
+        }
+        let res = findWord(word, start + 1, neighbors[i], stateMap);
+        if (!res.result) {
+          // return true;
+          // } {
+          data = stateMap.get(neighbors[i].row);
+          data.delete(neighbors[i].col);
+          if (data.size == 0) {
+            stateMap.delete(neighbors[i].row);
+          }
+        }
+        let d1 = mem.get(index.row);
+        if (!d1) {
+          mem.set(index.row, new Map([[index.col, new Set([word.slice(start, res.length)])]]));
+        } else {
+          let d2 = d1.get(index.col) ?? new Set();
+          mem.set(index.row, d1.set(index.col, d2.add(word.slice(start, res.length))));
+        }
+
+        if (res.result) {
+          return { result: res.result, length: res.length }
+        }
+      }
+
+      return { result: false, length: start };
+    }
+
+    let foundWords: string[] = [];
+    words.forEach(x => {
+      let indices = letterMap.get(x[0]);
+      let i = 0;
+      while (indices && i < indices.length) {
+        stateMap = new Map();
+        stateMap.set(indices[i].row, new Set([indices[i].col]));
+        let res = findWord(x, 1, indices[i], stateMap);
+        let d1 = mem.get(indices[i].row);
+        if (!d1) {
+          mem.set(indices[i].row, new Map([[indices[i].col, new Set([x.slice(0, res.length)])]]));
+        } else {
+          let d2 = d1.get(indices[i].col) ?? new Set();
+          mem.set(indices[i].row, d1.set(indices[i].col, d2.add(x.slice(0, res.length))));
+        }
+
+        if (res.result) {
+          foundWords.push(x);
+          break;
+        }
+        i++;
+      }
+    });
+    return foundWords;
+  };
 }
 
 export class RecentCounter {
