@@ -1154,6 +1154,74 @@ export class DSAService {
     });
     return foundWords;
   };
+
+  merge(a: number[], m: number, b: number[], n: number): void {
+    let j = m + n - 1;
+    let i = m - 1;
+    let k = n - 1;
+    while (i >= 0 && k >= 0) {
+      if (a[i] >= b[k]) {
+        a[j] = a[i];
+        i--;
+      } else {
+        a[j] = b[k];
+        k--;
+      }
+      j--;
+    }
+
+    while (k >= 0) {
+      a[j] = b[k];
+      k--;
+      j--;
+    }
+  };
+
+  rotate(nums: number[], k: number): void {
+    let n = nums.length;
+    let copy: number[] = new Array(n);
+    for (let i = 0; i < n; i++) {
+      let des = (i + k) % n;
+      copy[des] = nums[i];
+    }
+    for (let i = 0; i < nums.length; i++) {
+      nums[i] = copy[i];
+    }
+  };
+
+  searchMatrix(matrix: number[][], target: number): boolean {
+    let rows = matrix.length;
+    let cols = matrix[0].length;
+
+    function getElement(index: number): number {
+      let i = 0;
+      let pIndex = index
+      while (pIndex - cols >= 0) {
+        pIndex -= cols;
+        i++;
+      }
+
+      return matrix[i][pIndex];
+    }
+
+    function binsearch(low: number, high: number, target: number) {
+      while (low <= high) {
+        let mid = Math.floor((low + high) / 2);
+        let element = getElement(mid);
+        if (target == element) {
+          return true;
+        }
+        if (target > element) {
+          low = mid + 1;
+        } else {
+          high = mid - 1;
+        }
+      }
+      return false;
+    }
+
+    return binsearch(0, (rows * cols) - 1, target);
+  };
 }
 
 export class RecentCounter {
