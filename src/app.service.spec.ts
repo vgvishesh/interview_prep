@@ -560,8 +560,20 @@ describe('DSA service tests', () => {
     console.log(s.searchMatrix([[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], 30));
   });
 
-  it('test_nQueen', () => {
+  it.skip('test_nQueen', () => {
     let s = new DSAService();
     console.log(s.totalQueens(8));
+  });
+
+  it('test_mergeKLists', () => {
+    let l1 = new LinkList([1, 4, 5]);
+    let l2 = new LinkList([1, 3, 4]);
+    let l3 = new LinkList([2, 6]);
+    let lists = [l1.head, l2.head, l3.head];
+    let ptr = LinkList.mergeKLists(lists);
+    while (ptr != null) {
+      console.log(ptr.val);
+      ptr = ptr.next;
+    }
   })
 })

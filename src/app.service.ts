@@ -1279,7 +1279,7 @@ export class DSAService {
 
     nQueens(0);
     return count;
-  }
+  };
 }
 
 export class RecentCounter {
@@ -1489,6 +1489,45 @@ export class LinkList {
     }
 
     return newHead ?? head;
+  };
+
+  static mergeKLists(lists: Array<ListNode | null>): ListNode | null {
+    let targetListHead = null;
+    let tptr = null;
+    let runLoop = true;
+
+    while (runLoop) {
+      let index: number;
+      let min = Number.MAX_VALUE;
+      let sp: ListNode = null;
+      runLoop = false;
+
+      for (let i = 0; i < lists.length; i++) {
+        if (lists[i] != null) {
+          runLoop = true;
+
+          if (lists[i] != null && lists[i].val < min) {
+            min = lists[i].val;
+            index = i;
+            sp = lists[i];
+          }
+        }
+      }
+
+      if (sp) {
+        if (tptr == null) {
+          tptr = new ListNode(min);
+          targetListHead = tptr;
+        } else {
+          tptr.next = new ListNode(min);
+          tptr = tptr.next;
+        }
+        sp = sp.next;
+        lists[index] = sp;
+      }
+    }
+
+    return targetListHead;
   };
 }
 
