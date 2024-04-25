@@ -1222,6 +1222,64 @@ export class DSAService {
 
     return binsearch(0, (rows * cols) - 1, target);
   };
+
+  totalQueens(n: number): number {
+    let board: boolean[][] = [];
+    for (let i = 0; i < n; i++) {
+      board[i] = [];
+      for (let j = 0; j < n; j++) {
+        board[i].push(false);
+      }
+    }
+
+    function isValidBox(row: number, col: number): boolean {
+      let queens: { i: number, j: number }[] = []
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+          if (board[i][j]) {
+            queens.push({ i, j });
+          }
+        }
+      }
+
+      for (let k = 0; k < queens.length; k++) {
+        let cq = queens[k];
+        if (cq.j == col) {
+          return false;
+        }
+        if (cq.i + cq.j == row + col) {
+          return false;
+        }
+        if (cq.i - cq.j == row - col) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function setQueen(row: number, col: number, val: boolean) {
+      board[row][col] = val;
+    }
+
+    let count = 0;
+    function nQueens(row: number) {
+      if (row >= n) {
+        count++;
+        return;
+      }
+
+      for (let i = 0; i < n; i++) {
+        if (isValidBox(row, i)) {
+          setQueen(row, i, true);
+          nQueens(row + 1);
+          setQueen(row, i, false);
+        }
+      }
+    }
+
+    nQueens(0);
+    return count;
+  }
 }
 
 export class RecentCounter {

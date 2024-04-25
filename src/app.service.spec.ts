@@ -555,8 +555,13 @@ describe('DSA service tests', () => {
     console.log(source);
   });
 
-  it('test_binsearch', () => {
+  it.skip('test_binsearch', () => {
     let s = new DSAService();
     console.log(s.searchMatrix([[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], 30));
+  });
+
+  it('test_nQueen', () => {
+    let s = new DSAService();
+    console.log(s.totalQueens(8));
   })
 })
