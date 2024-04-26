@@ -585,11 +585,24 @@ describe('DSA service tests', () => {
     console.log(s.findSecretWord(source, m));
   });
 
-  it('test_findItenary', () => {
+  it.skip('test_findItenary', () => {
     let s = new DSAService();
     // console.log(s.findItinerary([["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]));
     // console.log(s.findItinerary([["JFK", "SFO"], ["JFK", "ATL"], ["SFO", "ATL"], ["ATL", "JFK"], ["ATL", "SFO"]]));
     // console.log(s.findItinerary([["JFK", "KUL"], ["JFK", "NRT"], ["NRT", "JFK"]]));
     console.log(s.findItinerary([["EZE", "TIA"], ["EZE", "HBA"], ["AXA", "TIA"], ["JFK", "AXA"], ["ANU", "JFK"], ["ADL", "ANU"], ["TIA", "AUA"], ["ANU", "AUA"], ["ADL", "EZE"], ["ADL", "EZE"], ["EZE", "ADL"], ["AXA", "EZE"], ["AUA", "AXA"], ["JFK", "AXA"], ["AXA", "AUA"], ["AUA", "ADL"], ["ANU", "EZE"], ["TIA", "ADL"], ["EZE", "ANU"], ["AUA", "ANU"]]));
+  });
+
+  it.skip('test_isMatch', () => {
+    let s = new DSAService();
+    // console.log(s.isMatch('abcdfghefacbceeghef', 'abc*ef*ef'));
+    // console.log(s.isMatch('aa', "a"));
+    // console.log(s.isMatch('aa', "*"));
+    // console.log(s.isMatch('cb', "?a"));
+    // console.log(s.isMatch('mississippi', "m??*ss*?i*pi"));
+    // console.log(s.isMatch('', "*****"));
+    // console.log(s.isMatch('abcabczzzde', "*abc???de*"));
+    s.isMatch('abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb', "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb"
+    );
   })
 })

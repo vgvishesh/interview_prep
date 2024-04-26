@@ -1370,6 +1370,7 @@ export class DSAService {
         let val = trail.pop();
         indexval = indexMap.get(source);
         if (indexval >= dest.length) {
+
           return '';
         }
         indexMap.set(source, indexval + 1);
@@ -1398,6 +1399,56 @@ export class DSAService {
 
     findPath(trail);
     return trail;
+  };
+
+  isMatch(s: string, p: string): boolean {
+    function isAllStar(j: number) {
+      for (let k = j; k < p.length; k++) {
+        if (p[k] != '*') {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function isMatchInner(i: number, j: number): boolean {
+      while (i < s.length && j < p.length) {
+        if (p[j] == s[i] || p[j] == '?') {
+          i++;
+          j++;
+        } else if (p[j] == '*') {
+          while ((p[j] == '*') && j + 1 < p.length) {
+            j++;
+          }
+          if (p[j] == '*') {
+            return true;
+          }
+
+          let char = p[j];
+          while (i < s.length) {
+            if (s[i] == char || char == '?') {
+              if (isMatchInner(i, j)) {
+                return true;
+              }
+            }
+            i++;
+          }
+        } else {
+          return false;
+        }
+      }
+
+      if (j == p.length && i == s.length) {
+        return true;
+      }
+      if (i == s.length && isAllStar(j)) {
+        return true;
+      }
+
+      return false;
+    }
+    return isMatchInner(0, 0);
   };
 }
 
