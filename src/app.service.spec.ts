@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, Heap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode } from "./app.service"
+import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master } from "./app.service"
 
 describe('DSA service tests', () => {
   it.skip('test_missing_number', () => {
@@ -311,7 +311,7 @@ describe('DSA service tests', () => {
   });
 
   it.skip('test_popMax', () => {
-    const s = new Heap([3, 2, 3, 1, 2, 4, 5, 5, 6]);
+    const s = new MaxHeap([3, 2, 3, 1, 2, 4, 5, 5, 6]);
     let max;
     for (let i = 0; i < 8; i++) {
       max = s.popMax();
@@ -565,7 +565,7 @@ describe('DSA service tests', () => {
     console.log(s.totalQueens(8));
   });
 
-  it('test_mergeKLists', () => {
+  it.skip('test_mergeKLists', () => {
     let l1 = new LinkList([1, 4, 5]);
     let l2 = new LinkList([1, 3, 4]);
     let l3 = new LinkList([2, 6]);
@@ -575,5 +575,21 @@ describe('DSA service tests', () => {
       console.log(ptr.val);
       ptr = ptr.next;
     }
+  });
+
+  it.skip('test_findsecretword', () => {
+    let s = new DSAService();
+    let m = new Master();
+    let source = ["acckzz", "ccbazz", "eiowzz", "abcczz"];
+    m.putSecret('acckzz');
+    console.log(s.findSecretWord(source, m));
+  });
+
+  it('test_findItenary', () => {
+    let s = new DSAService();
+    // console.log(s.findItinerary([["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]));
+    // console.log(s.findItinerary([["JFK", "SFO"], ["JFK", "ATL"], ["SFO", "ATL"], ["ATL", "JFK"], ["ATL", "SFO"]]));
+    // console.log(s.findItinerary([["JFK", "KUL"], ["JFK", "NRT"], ["NRT", "JFK"]]));
+    console.log(s.findItinerary([["EZE", "TIA"], ["EZE", "HBA"], ["AXA", "TIA"], ["JFK", "AXA"], ["ANU", "JFK"], ["ADL", "ANU"], ["TIA", "AUA"], ["ANU", "AUA"], ["ADL", "EZE"], ["ADL", "EZE"], ["EZE", "ADL"], ["AXA", "EZE"], ["AUA", "AXA"], ["JFK", "AXA"], ["AXA", "AUA"], ["AUA", "ADL"], ["ANU", "EZE"], ["TIA", "ADL"], ["EZE", "ANU"], ["AUA", "ANU"]]));
   })
 })

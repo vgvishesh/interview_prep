@@ -1,6 +1,23 @@
 
 import { Injectable } from '@nestjs/common';
 @Injectable()
+
+export class Master {
+  private secret: string;
+  putSecret(w: string) {
+    this.secret = w;
+  }
+  guess(word: string): number {
+    let count = 0;
+    for (let i = 0; i < word.length; i++) {
+      if (word[i] == this.secret[i]) {
+        count++;
+      }
+    }
+    return count;
+  }
+}
+
 export class DSAService {
   private mem = new Map<number, number>();
   getHello(): string {
@@ -1280,6 +1297,108 @@ export class DSAService {
     nQueens(0);
     return count;
   };
+
+  findSecretWord(words: string[], master: Master): number {
+    function getMatchCount(target: string, source: string): number {
+      let count = 0;
+      for (let i = 0; i < target.length; i++) {
+        if (target[i] == source[i]) {
+          count++;
+        }
+      }
+      return count;
+    }
+
+    let iterationCount = 0
+    while (1) {
+      let index = Math.floor(Math.random() * (words.length));
+      let score = master.guess(words[index])
+      if (score == 6) {
+        break;
+      }
+
+      let nw = words.filter(x => {
+        if (getMatchCount(x, words[index]) == score) {
+          return true;
+        }
+        return false;
+      });
+
+      words = nw;
+      iterationCount++;
+    }
+    return iterationCount;
+  };
+
+  findItinerary(tickets: string[][]): string[] {
+    let tm: Map<string, string[]> = new Map();
+    for (let i = 0; i < tickets.length; i++) {
+      if (tm.has(tickets[i][0])) {
+        let val = tm.get(tickets[i][0]);
+        val.push(tickets[i][1]);
+        tm.set(tickets[i][0], val);
+      } else {
+        tm.set(tickets[i][0], [tickets[i][1]]);
+      }
+    }
+
+    let flightCount = 0;
+    let indexMap: Map<string, number> = new Map();
+    for (let [k, v] of tm) {
+      v.sort();
+      tm.set(k, v);
+      indexMap.set(k, 0);
+      flightCount += v.length;
+    }
+
+    let trail: string[] = [];
+    trail.push('JFK');
+
+    function findPath(trail: string[]) {
+      let source = trail[trail.length - 1];
+      if (!tm.has(source)) {
+        return "";
+      }
+
+      let dest = tm.get(source);
+      let indexval = indexMap.get(source);
+      let next = dest[indexval];
+      trail.push(next);
+      indexval++;
+      indexMap.set(source, indexval);
+      while (findPath(trail) == "") {
+        let val = trail.pop();
+        indexval = indexMap.get(source);
+        if (indexval >= dest.length) {
+          return '';
+        }
+        indexMap.set(source, indexval + 1);
+        next = dest[indexval];
+        dest.push(val);
+        trail.push(next);
+      }
+      return next;
+    }
+
+    // while (flightCount > 0) {
+    //   let source = trail[trail.length - 1];
+    //   let dest = tm.get(source);
+    //   let next = dest[dest.length - 1];
+    //   if (!tm.has(next) && flightCount > 1) {
+    //     let val = dest.pop();
+    //     let copy = [val, ...dest];
+    //     tm.set(source, copy);
+    //     continue;
+    //   }
+    //   dest.pop();
+    //   tm.set(source, dest);
+    //   trail.push(next);
+    //   flightCount--;
+    // }
+
+    findPath(trail);
+    return trail;
+  };
 }
 
 export class RecentCounter {
@@ -1861,7 +1980,7 @@ export class BinaryTree {
   };
 }
 
-export class Heap {
+export class MaxHeap {
   private arr: number[] = [];
   constructor(input: number[]) {
     for (let i = 0; i < input.length; i++) {
