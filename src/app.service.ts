@@ -1549,6 +1549,45 @@ export class DSAService {
     return ni;
   };
 
+  zigzagLevelOrder(root: TreeNode | null): number[][] {
+    let result: number[][] = [];
+    let isEven = true;
+    let queue: TreeNode[] = [];
+    if (!root) {
+      return result;
+    }
+
+    queue.push(root);
+    result.push([root.val]);
+    isEven = true;
+
+    while (queue.length > 0) {
+      let newQueue: TreeNode[] = [];
+      for (let i = 0; i < queue.length; i++) {
+        if (queue[i].left) {
+          newQueue.push(queue[i].left);
+        }
+        if (queue[i].right) {
+          newQueue.push(queue[i].right);
+        }
+      }
+      queue = newQueue;
+
+      let arr: number[] = [];
+      if (isEven) {
+        for (let i = queue.length - 1; i >= 0; i--) {
+          arr.push(queue[i].val)
+        }
+      } else {
+        queue.forEach(x => arr.push(x.val));
+      }
+      if (arr.length > 0) {
+        result.push(arr)
+      }
+      isEven = !isEven;
+    }
+    return result;
+  };
 }
 
 export class RecentCounter {

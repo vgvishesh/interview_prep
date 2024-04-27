@@ -627,9 +627,14 @@ describe('DSA service tests', () => {
     console.log(s.minCostClimbingStairs([1, 100, 1, 1, 1, 100, 1, 1, 100, 1]));
   });
 
-  it('test_tribonacci', () => {
+  it.skip('test_tribonacci', () => {
     let s = new DSAService();
     console.log(s.tribonacci(4));
     console.log(s.tribonacci(33));
+  });
+
+  it('test_zigzag', () => {
+    let s = new DSAService();
+    console.log(s.zigzagLevelOrder(new TreeNode(1, new TreeNode(2, new TreeNode(4, null, null), null), new TreeNode(3, null, new TreeNode(5, null, null)))));
   })
 })
