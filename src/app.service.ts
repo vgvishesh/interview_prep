@@ -1450,6 +1450,105 @@ export class DSAService {
     }
     return isMatchInner(0, 0);
   };
+
+  reverseVowels(s: string): string {
+    function isVowel(s: string): boolean {
+      if (s == 'a' || s == 'A') {
+        return true;
+      }
+      if (s == 'e' || s == 'E') {
+        return true;
+      }
+      if (s == 'i' || s == 'I') {
+        return true;
+      }
+      if (s == 'o' || s == 'O') {
+        return true;
+      }
+      if (s == 'u' || s == 'U') {
+        return true;
+      }
+      return false;
+    }
+
+    let i = 0;
+    let j = s.length - 1;
+    while (j > i) {
+      if (!isVowel(s[i])) {
+        i++;
+      } else if (!isVowel(s[j])) {
+        j--;
+      } else if (isVowel(s[i]) && isVowel(s[j])) {
+        let str = s.slice(0, i) + s[j] + s.slice(i + 1, j) + s[i] + s.slice(j + 1);
+        s = str;
+        i++;
+        j--;
+      }
+    }
+    return s;
+  };
+
+  pivotIndex(nums: number[]): number {
+    let prev = 0
+    let ls = nums.map(x => {
+      prev += x;
+      return prev;
+    });
+    prev = 0
+    let rs = nums.reverse().map(x => {
+      prev += x;
+      return prev;
+    }).reverse();
+
+    for (let i = 0; i < ls.length; i++) {
+      if (ls[i] == rs[i]) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  minCostClimbingStairs(cost: number[]): number {
+    let top = cost.length;
+    let mem: number[] = new Array(cost.length).fill(-1);
+    function findCost(top: number): number {
+      if (top == 0 || top == 1) {
+        return 0;
+      }
+
+      if (top < cost.length && mem[top] != -1) {
+        return mem[top];
+      }
+
+      let c = Math.min(findCost(top - 1) + cost[top - 1], findCost(top - 2) + cost[top - 2]);
+      mem[top] = c;
+      return c;
+    }
+    return findCost(top);
+  };
+
+  tribonacci(n: number): number {
+    if (n == 0) {
+      return 0;
+    }
+    if (n == 1 || n == 2) {
+      return 1;
+    }
+
+    let ni: number;
+    let t0 = 0;
+    let t1 = 1;
+    let t2 = 1;
+    for (let i = 3; i <= n; i++) {
+      ni = t0 + t1 + t2;
+      t0 = t1;
+      t1 = t2;
+      t2 = ni;
+    }
+
+    return ni;
+  };
+
 }
 
 export class RecentCounter {

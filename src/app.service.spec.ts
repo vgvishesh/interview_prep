@@ -604,5 +604,32 @@ describe('DSA service tests', () => {
     // console.log(s.isMatch('abcabczzzde', "*abc???de*"));
     s.isMatch('abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb', "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb"
     );
+  });
+
+  it.skip('test_reverseVowels', () => {
+    let s = new DSAService();
+    // console.log(s.reverseVowels('hello'));
+    // console.log(s.reverseVowels('leetcode'));
+    console.log(s.reverseVowels('.a'));
+  });
+
+  it.skip('test_pivotIndex', () => {
+    let s = new DSAService();
+    console.log(s.pivotIndex([1, 7, 3, 6, 5, 6]));
+    console.log(s.pivotIndex([1, 2, 3]));
+    console.log(s.pivotIndex([2, 1, -1]));
+    console.log(s.pivotIndex([-1, -1, -1, -1, -1, 0]));
+  });
+
+  it.skip('test_minCost', () => {
+    let s = new DSAService();
+    console.log(s.minCostClimbingStairs([10, 15, 20]));
+    console.log(s.minCostClimbingStairs([1, 100, 1, 1, 1, 100, 1, 1, 100, 1]));
+  });
+
+  it('test_tribonacci', () => {
+    let s = new DSAService();
+    console.log(s.tribonacci(4));
+    console.log(s.tribonacci(33));
   })
 })
