@@ -633,8 +633,28 @@ describe('DSA service tests', () => {
     console.log(s.tribonacci(33));
   });
 
-  it('test_zigzag', () => {
+  it.skip('test_zigzag', () => {
     let s = new DSAService();
     console.log(s.zigzagLevelOrder(new TreeNode(1, new TreeNode(2, new TreeNode(4, null, null), null), new TreeNode(3, null, new TreeNode(5, null, null)))));
+  });
+
+  it.skip('tst_maxSubArray', () => {
+    let s = new DSAService();
+    console.log(s.maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+    console.log(s.maxSubArray([1]));
+    console.log(s.maxSubArray([5, 4, -1, 7, 8]));
+  });
+
+  it.skip('tst_long', () => {
+    let s = new DSAService();
+    console.log(s.longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
+  });
+
+  it('test_insert', () => {
+    let s = new DSAService();
+    // console.log(s.insert([[1, 2], [3, 5], [6, 7], [8, 10], [12, 16]], [4, 8]));
+    // console.log(s.insert([[1, 3], [6, 9]], [2, 5]));
+    console.log(s.insert([[1, 3]], [6, 9]));
+    console.log(s.insert([], [6, 9]));
   })
 })

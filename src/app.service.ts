@@ -1588,6 +1588,186 @@ export class DSAService {
     }
     return result;
   };
+
+  // minDistance(word1: string, word2: string): number {
+  //   function getDiff(target: string, source: string): number {
+  //     let bigger = target.length > source.length ? target : source;
+  //     let smaller = bigger == target ? source : target;
+  //     let diff = Math.abs(target.length - source.length);
+  //     for (let i = 0; i < smaller.length; i++) {
+  //       if (smaller[i] != bigger[i]) {
+  //         diff += 1;
+  //       }
+  //     }
+  //     return diff;
+  //   }
+
+  //   function insert(source: string, index: number, char: string) {
+  //     if (index == 0) {
+  //       return char + source;
+  //     }
+
+  //     if (index == source.length) {
+  //       return source + char;
+  //     }
+
+  //     return source.slice(0, index) + char + source.slice(index);
+  //   }
+
+  //   function deleted(source: string, index: number) {
+  //     if (index >= source.length) {
+  //       return source;
+  //     }
+
+  //     if (index == 0) {
+  //       return source.slice(1);
+  //     }
+
+  //     return source.slice(0, index) + (index + 1 < source.length) ? source.slice(index + 1) : "";
+  //   }
+
+  //   function replace(source: string, index: number, char: string) {
+  //     let str = '';
+  //     for (let i = 0; i < source.length; i++) {
+  //       if (i != index) {
+  //         str += source[i];
+  //       } else {
+  //         str += char;
+  //       }
+  //     }
+  //     return str;
+  //   }
+
+  //   function findMinDistance(source: string, index: number) {
+  //     if (getDiff(source, word2) == 0) {
+  //       return 0;
+  //     }
+
+  //     if (index >= source.length) {
+  //       return -1;
+  //     }
+
+  //     while (source[index] == word2[index]) {
+  //       index++;
+  //     }
+
+  //     let inserted = insert(source, index, word2[index]);
+  //     let del = deleted(source, index);
+  //     let replaced = replace(source, index, word2[index]);
+
+
+
+
+
+
+  //   }
+  //   return;
+
+  // };
+  maxSubArray(nums: number[]): number {
+    let sum = nums[0];
+    let max = sum;
+    for (let i = 1; i < nums.length; i++) {
+      let thissum = sum + nums[i];
+      sum = Math.max(thissum, nums[i]);
+      if (sum > max) {
+        max = sum;
+      }
+    }
+    return max;
+  };
+
+  longestConsecutive(nums: number[]): number {
+    let dataset = new Set<number>();
+    nums.forEach(x => dataset.add(x));
+    let max = 0;
+    for (let i = 0; i < nums.length; i++) {
+      if (!dataset.has(nums[i])) {
+        continue;
+      }
+
+      let count = 1;
+      let s = nums[i];
+      while (1) {
+        if (dataset.has(++s)) {
+          count++;
+          dataset.delete(s);
+        } else {
+          break;
+        }
+      }
+
+      s = nums[i];
+      while (1) {
+        if (dataset.has(--s)) {
+          count++;
+          dataset.delete(s);
+        } else {
+          break;
+        }
+      }
+      if (count > max) {
+        max = count;
+      }
+    }
+    return max;
+  };
+
+  insert(intervals: number[][], newInterval: number[]): number[][] {
+    let s = newInterval[0];
+    let e = newInterval[1];
+
+    let i = 0;
+    for (i = 0; i < intervals.length; i++) {
+      if (s <= intervals[i][0]) break;
+      if (s <= intervals[i][1]) break;
+    }
+
+    let j = 0
+    for (j = i; j < intervals.length; j++) {
+      if (e <= intervals[j][0]) break;
+      if (e <= intervals[j][1]) break;
+    }
+
+    let nI = [];
+    if (i < intervals.length) {
+      if (s < intervals[i][0]) { // i start
+        nI.push(s);
+      } else {
+        nI.push(intervals[i][0]); // i start
+      }
+    } else {
+      nI.push(s);
+    }
+
+    if (j < intervals.length) {
+      if (e < intervals[j][0]) {  //j start
+        nI.push(e);
+      } else {
+        nI.push(intervals[j][1]); //j end
+      }
+    } else {
+      nI.push(e);
+    }
+
+    let againIntervals: number[][] = [];
+    intervals.forEach((x, k) => {
+      if (k < i) {
+        againIntervals.push(x);
+      }
+    });
+    againIntervals.push(nI);
+    if (j < intervals.length && nI[1] < intervals[j][0]) {
+      againIntervals.push(intervals[j]);
+    }
+    intervals.forEach((x, k) => {
+      if (k > j) {
+        againIntervals.push(x);
+      }
+    })
+    return againIntervals;
+  };
+
 }
 
 export class RecentCounter {
