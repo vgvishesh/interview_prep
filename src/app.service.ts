@@ -1768,6 +1768,33 @@ export class DSAService {
     return againIntervals;
   };
 
+  coinChange(coins: number[], amount: number): number {
+    let mem: Map<number, number> = new Map();
+    function findMinChange(amount: number) {
+      if (amount < 0) {
+        return Number.MAX_VALUE;
+      }
+      if (amount == 0) {
+        return 1;
+      }
+
+      if (mem.has(amount)) {
+        return mem.get(amount);
+      }
+
+      let min = Number.MAX_VALUE;
+      for (let i = 0; i < coins.length; i++) {
+        let val = findMinChange(amount - coins[i]) + 1;
+        mem[amount] = val;
+        if (val < min) {
+          min = val;
+        }
+      }
+      return min;
+    }
+    let change = findMinChange(amount)
+    return change == Number.MAX_VALUE ? -1 : change - 1;
+  };
 }
 
 export class RecentCounter {
@@ -2016,6 +2043,27 @@ export class LinkList {
     }
 
     return targetListHead;
+  };
+
+  static hasCycle(head: ListNode | null): boolean {
+    if (!head) {
+      return false;
+    }
+    let i = head;
+    let j = head.next;
+    let loop = false;
+    while (j != null && j.next != null) {
+      if (i == j) {
+        loop = true;
+        break;
+      }
+      i = i.next;
+      j = j.next.next;
+    }
+    if (loop) {
+      return true;
+    }
+    return false;
   };
 }
 
@@ -2346,6 +2394,33 @@ export class BinaryTree {
     }
     findMaxPath(root);
     return max;
+  };
+
+  static isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
+    function traverse(root: TreeNode) {
+      if (root == null) {
+        return '0';
+      }
+      let l = traverse(root.left)
+      let c = l + String(root.val);
+      let r = traverse(root.right);
+      return l + c + r;
+    }
+
+    let ps = traverse(p);
+    let qs = traverse(q);
+
+    if (ps.length != qs.length) {
+      return false;
+    }
+
+    for (let i = 0; i < ps.length; i++) {
+      if (qs[i] != ps[i]) {
+        return false;
+      }
+    }
+
+    return true;
   };
 }
 

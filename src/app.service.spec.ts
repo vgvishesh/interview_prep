@@ -650,11 +650,28 @@ describe('DSA service tests', () => {
     console.log(s.longestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1]));
   });
 
-  it('test_insert', () => {
+  it.skip('test_insert', () => {
     let s = new DSAService();
     // console.log(s.insert([[1, 2], [3, 5], [6, 7], [8, 10], [12, 16]], [4, 8]));
     // console.log(s.insert([[1, 3], [6, 9]], [2, 5]));
     console.log(s.insert([[1, 3]], [6, 9]));
     console.log(s.insert([], [6, 9]));
-  })
+  });
+
+  it.skip('tst_issametree', () => {
+    let p = new TreeNode(1, new TreeNode(1, null, null), null);
+    let q = new TreeNode(1, null, new TreeNode(1, null, null));
+    console.log(BinaryTree.isSameTree(p, q));
+
+    p = new TreeNode(1, new TreeNode(2, null, null), new TreeNode(3, null, null));
+    q = new TreeNode(1, new TreeNode(2, null, null), new TreeNode(3, null, null));
+    console.log(BinaryTree.isSameTree(p, q));
+  });
+
+  it('test_coinChange', () => {
+    let s = new DSAService();
+    console.log(s.coinChange([1, 2, 5], 100));
+    // console.log(s.coinChange([2], 3));
+    // console.log(s.coinChange([1], 0));
+  });
 })
