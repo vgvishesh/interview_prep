@@ -682,9 +682,32 @@ describe('DSA service tests', () => {
     console.log(s.minimumTotal([[]]));
   });
 
-  it('test_minpathsum', () => {
+  it.skip('test_minpathsum', () => {
     let s = new DSAService();
     console.log(s.minPathSum([[1, 3, 1], [1, 5, 1], [4, 2, 1]]));
     console.log(s.minPathSum([[1, 2, 3], [4, 5, 6]]));
+  });
+
+  it.skip('tst_uniquePath', () => {
+    let s = new DSAService();
+    // console.log(s.uniquePathsWithObstacles([[0, 0, 0], [0, 1, 0], [0, 0, 0]]));
+    console.log(s.uniquePathsWithObstacles([[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]]));
+  });
+
+  it.skip('test_longestPaliandrome', () => {
+    let s = new DSAService();
+    console.log(s.longestPalindrome('aaccaaa'));
+    console.log(s.longestPalindrome('babad'));
+    console.log(s.longestPalindrome('acbeebcaabbeebd'));
+    console.log(s.longestPalindrome('cbbd'));
+    console.log(s.longestPalindrome('ac'));
+    console.log(s.longestPalindrome('aacabdkacaa'));
+  });
+
+  it('test_groupAnagram', () => {
+    let s = new DSAService();
+    console.log(s.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
+    console.log(s.groupAnagrams(["e"]));
+    console.log(s.groupAnagrams([""]));
   })
 })

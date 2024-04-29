@@ -1858,6 +1858,125 @@ export class DSAService {
     return findMinPathSum(0, 0);
   };
 
+  uniquePathsWithObstacles(obstacleGrid: number[][]): number {
+    let m = obstacleGrid.length;
+    let n = obstacleGrid[0].length;
+    let dp: number[][] = new Array(obstacleGrid.length);
+    for (let i = 0; i < obstacleGrid.length; i++) {
+      dp[i] = new Array(obstacleGrid[0].length).fill(-1);
+    }
+
+    function findPathCount(i: number, j: number) {
+      if (i >= m) {
+        return 0;
+      }
+      if (j >= n) {
+        return 0;
+      }
+
+      if (obstacleGrid[i][j] == 1) {
+        return 0;
+      }
+
+      if (i == m - 1 && j == n - 1) {
+        return 1;
+      }
+
+      if (dp[i][j] != -1) {
+        return dp[i][j];
+      }
+
+      let numPaths = findPathCount(i + 1, j) + findPathCount(i, j + 1);
+      dp[i][j] = numPaths;
+      return numPaths;
+    }
+
+    return findPathCount(0, 0);
+  };
+
+  longestPalindrome(s: string): string {
+    if (s.length == 1) {
+      return s;
+    }
+
+    let dp: number[][] = new Array(s.length);
+    for (let i = 0; i < s.length; i++) {
+      dp[i] = new Array(s.length).fill(-1);
+    }
+
+    let longest = '';
+    let lcount = 0;
+
+    function findPaliandrome(i: number, j: number) {
+      if (i == j) {
+        checAndAssign(1, i, j);
+        dp[i][j] = 1;
+        return 1;
+      } else if (i > j) {
+        dp[i][j] = 0;
+        return 0;
+      }
+
+
+      if (dp[i][j] != -1) {
+        return dp[i][j]
+      }
+
+      if (j - i == 1) {
+        if (s[i] == s[j]) {
+          checAndAssign(2, i, j)
+          dp[i][j] = 2;
+          return 2;
+        }
+      }
+
+      let p1 = findPaliandrome(i + 1, j - 1);
+      if (s[i] == s[j] && p1 > 0) {
+        p1 = 2 + p1;
+        checAndAssign(p1, i, j);
+      } else {
+        p1 = 0;
+      }
+
+      dp[i][j] = p1;
+
+      findPaliandrome(i, j - 1);
+      findPaliandrome(i + 1, j);
+      return p1;
+    }
+
+    findPaliandrome(0, s.length - 1);
+    return longest;
+
+    function checAndAssign(p1: any, i: number, j: number) {
+      if (p1 > lcount) {
+        lcount = p1;
+        longest = s.slice(i, j + 1);
+      }
+    }
+  };
+
+  groupAnagrams(strs: string[]): string[][] {
+    let hmap: Map<string, string[]> = new Map();
+    for (let i = 0; i < strs.length; i++) {
+      let s = strs[i].split('').sort().join();
+      if (hmap.has(s)) {
+        let d = hmap.get(s);
+        d.push(strs[i]);
+        hmap.set(s, d);
+      } else {
+        hmap.set(s, [strs[i]]);
+      }
+    }
+
+    let rs: string[][] = [];
+    for (let [k, v] of hmap) {
+      rs.push(v);
+    }
+
+    return rs;
+  };
+
 }
 
 export class RecentCounter {
@@ -2484,6 +2603,11 @@ export class BinaryTree {
     }
 
     return true;
+  };
+
+  flatten(root: TreeNode | null): void {
+
+
   };
 }
 
