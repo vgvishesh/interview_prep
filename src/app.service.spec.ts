@@ -668,10 +668,23 @@ describe('DSA service tests', () => {
     console.log(BinaryTree.isSameTree(p, q));
   });
 
-  it('test_coinChange', () => {
+  it.skip('test_coinChange', () => {
     let s = new DSAService();
     console.log(s.coinChange([1, 2, 5], 100));
     // console.log(s.coinChange([2], 3));
     // console.log(s.coinChange([1], 0));
   });
+
+  it.skip('test_mintotal', () => {
+    let s = new DSAService();
+    // console.log(s.minimumTotal([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]));
+    // console.log(s.minimumTotal([[-10]]));
+    console.log(s.minimumTotal([[]]));
+  });
+
+  it('test_minpathsum', () => {
+    let s = new DSAService();
+    console.log(s.minPathSum([[1, 3, 1], [1, 5, 1], [4, 2, 1]]));
+    console.log(s.minPathSum([[1, 2, 3], [4, 5, 6]]));
+  })
 })

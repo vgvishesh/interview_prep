@@ -1795,6 +1795,69 @@ export class DSAService {
     let change = findMinChange(amount)
     return change == Number.MAX_VALUE ? -1 : change - 1;
   };
+
+  minimumTotal(triangle: number[][]): number {
+    let height = triangle.length;
+
+    let dp: number[][] = new Array(triangle.length);
+    for (let i = 0; i < height; i++) {
+      dp[i] = new Array(triangle[i].length).fill(-1);
+    }
+
+    function findMinSum(level: number, index: number) {
+      if (level >= height) {
+        return 0;
+      }
+      if (index > triangle[level].length) {
+        return 0;
+      }
+
+      if (dp[level][index] != -1) {
+        return dp[level][index];
+      }
+
+      let sum = triangle[level][index];
+      let min = Math.min(findMinSum(level + 1, index), findMinSum(level + 1, index + 1));
+      sum += min;
+      dp[level][index] = sum;
+
+      return sum;
+    }
+    return findMinSum(0, 0);
+  };
+
+  minPathSum(grid: number[][]): number {
+    let m = grid.length;
+    let n = grid[0].length;
+    let dp: number[][] = new Array(grid.length);
+    for (let i = 0; i < grid.length; i++) {
+      dp[i] = new Array(grid[0].length).fill(-1);
+    }
+
+    function findMinPathSum(i: number, j: number) {
+      if (i >= m) {
+        return Number.MAX_VALUE;
+      }
+      if (j >= n) {
+        return Number.MAX_VALUE;
+      }
+
+      if (dp[i][j] != -1) {
+        return dp[i][j];
+      }
+
+      let sum = grid[i][j];
+      let min = Math.min(findMinPathSum(i, j + 1), findMinPathSum(i + 1, j));
+      min = min == Number.MAX_VALUE ? 0 : min;
+      sum += min;
+      dp[i][j] = sum;
+
+      return sum;
+    }
+
+    return findMinPathSum(0, 0);
+  };
+
 }
 
 export class RecentCounter {
