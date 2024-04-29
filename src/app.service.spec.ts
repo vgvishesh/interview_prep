@@ -704,10 +704,14 @@ describe('DSA service tests', () => {
     console.log(s.longestPalindrome('aacabdkacaa'));
   });
 
-  it('test_groupAnagram', () => {
+  it.skip('test_groupAnagram', () => {
     let s = new DSAService();
     console.log(s.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
     console.log(s.groupAnagrams(["e"]));
     console.log(s.groupAnagrams([""]));
+  });
+
+  it('test_flatten', () => {
+    let s
   })
 })

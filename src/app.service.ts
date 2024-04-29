@@ -2358,6 +2358,21 @@ export class BinaryTree {
     return arr;
   }
 
+  static preOrderTraversal(root: TreeNode): number[] {
+    let arr: number[] = [];
+    function traverse(root: TreeNode) {
+      if (root == null) {
+        return;
+      }
+      arr.push(root.val);
+      traverse(root.left)
+      traverse(root.right);
+    }
+
+    traverse(root);
+    return arr;
+  }
+
   leafSimilar(root1: TreeNode | null, root2: TreeNode | null): boolean {
     function findLeafSequence(root: TreeNode): number[] {
       const sequence: number[] = [];
@@ -2605,9 +2620,18 @@ export class BinaryTree {
     return true;
   };
 
-  flatten(root: TreeNode | null): void {
+  static flatten(root: TreeNode | null): void {
+    if (root == null) {
+      return;
+    }
 
-
+    let pre = this.preOrderTraversal(root);
+    let ptr = root;
+    root.left = null
+    for (let i = 1; i < pre.length; i++) {
+      ptr.right = new TreeNode(pre[i], null, null);
+      ptr = ptr.right;
+    }
   };
 }
 
