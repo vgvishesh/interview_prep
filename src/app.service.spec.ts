@@ -711,7 +711,17 @@ describe('DSA service tests', () => {
     console.log(s.groupAnagrams([""]));
   });
 
-  it('test_flatten', () => {
+  it.skip('test_flatten', () => {
     let s
+  });
+
+  it('test_minDistance', () => {
+    let s = new DSAService();
+    // console.log(s.minDistance('horse', 'ros'));
+    // console.log(s.minDistance('intention', 'execution'));
+    console.log(s.minDistance('roe', 'horee'));
+    // console.log(s.minDistance('', ''));
+    // console.log(s.minDistance('', 'abc'));
+    console.log(s.minDistance('zoologicoarchaeologist', 'zoogeologist'));
   })
 })

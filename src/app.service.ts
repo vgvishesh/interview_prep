@@ -1589,81 +1589,6 @@ export class DSAService {
     return result;
   };
 
-  // minDistance(word1: string, word2: string): number {
-  //   function getDiff(target: string, source: string): number {
-  //     let bigger = target.length > source.length ? target : source;
-  //     let smaller = bigger == target ? source : target;
-  //     let diff = Math.abs(target.length - source.length);
-  //     for (let i = 0; i < smaller.length; i++) {
-  //       if (smaller[i] != bigger[i]) {
-  //         diff += 1;
-  //       }
-  //     }
-  //     return diff;
-  //   }
-
-  //   function insert(source: string, index: number, char: string) {
-  //     if (index == 0) {
-  //       return char + source;
-  //     }
-
-  //     if (index == source.length) {
-  //       return source + char;
-  //     }
-
-  //     return source.slice(0, index) + char + source.slice(index);
-  //   }
-
-  //   function deleted(source: string, index: number) {
-  //     if (index >= source.length) {
-  //       return source;
-  //     }
-
-  //     if (index == 0) {
-  //       return source.slice(1);
-  //     }
-
-  //     return source.slice(0, index) + (index + 1 < source.length) ? source.slice(index + 1) : "";
-  //   }
-
-  //   function replace(source: string, index: number, char: string) {
-  //     let str = '';
-  //     for (let i = 0; i < source.length; i++) {
-  //       if (i != index) {
-  //         str += source[i];
-  //       } else {
-  //         str += char;
-  //       }
-  //     }
-  //     return str;
-  //   }
-
-  //   function findMinDistance(source: string, index: number) {
-  //     if (getDiff(source, word2) == 0) {
-  //       return 0;
-  //     }
-
-  //     if (index >= source.length) {
-  //       return -1;
-  //     }
-
-  //     while (source[index] == word2[index]) {
-  //       index++;
-  //     }
-
-  //     let inserted = insert(source, index, word2[index]);
-  //     let del = deleted(source, index);
-  //     let replaced = replace(source, index, word2[index]);
-
-
-
-
-
-
-  //   }
-  //   return;
-
-  // };
   maxSubArray(nums: number[]): number {
     let sum = nums[0];
     let max = sum;
@@ -1977,6 +1902,43 @@ export class DSAService {
     return rs;
   };
 
+  minDistance(word1: string, word2: string): number {
+    let m = word1.length;
+    let n = word2.length;
+
+    if (m == 0 || n == 0) {
+      return m > n ? m : n;
+    }
+
+    let dp: number[][] = new Array(m);
+    for (let i = 0; i < m; i++) {
+      dp[i] = new Array(n).fill(-1);
+    }
+
+    function findDistance(i: number, j: number) {
+      if (i >= m || j >= n) {
+        return Number.MAX_VALUE;
+      }
+
+      if (dp[i][j] != -1) {
+        return dp[i][j];
+      }
+
+      let dist = Math.min(findDistance(i + 1, j + 1), findDistance(i + 1, j), findDistance(i, j + 1));
+
+      dist = dist == Number.MAX_VALUE ? 0 : dist;
+      if (word1[i] != word2[j]) {
+        dist++;
+      }
+
+
+      dp[i][j] = dist;
+      return dist;
+    }
+
+    let dist = findDistance(0, 0);
+    return dist == Number.MAX_VALUE ? 0 : dist;
+  };
 }
 
 export class RecentCounter {
