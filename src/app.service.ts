@@ -1694,8 +1694,9 @@ export class DSAService {
   };
 
   coinChange(coins: number[], amount: number): number {
-    let mem: Map<number, number> = new Map();
-    function findMinChange(amount: number) {
+    let mem: Map<number, Map<number, number>> = new Map();
+    coins = coins.sort();
+    function findMinChange(amount: number, index: number): number {
       if (amount < 0) {
         return Number.MAX_VALUE;
       }
@@ -1703,21 +1704,28 @@ export class DSAService {
         return 1;
       }
 
-      if (mem.has(amount)) {
-        return mem.get(amount);
+      if (mem.has(index) && mem.get(index).has(amount)) {
+        return mem.get(index).get(amount);
       }
 
       let min = Number.MAX_VALUE;
-      for (let i = 0; i < coins.length; i++) {
-        let val = findMinChange(amount - coins[i]) + 1;
-        mem[amount] = val;
+      for (let i = index; i >= 0; i--) {
+        let val = findMinChange(amount - coins[i], i);
         if (val < min) {
           min = val;
         }
       }
-      return min;
+
+      if (mem.has(index)) {
+        mem.set(index, mem.get(index).set(amount, min + 1));
+      } else {
+        mem.set(index, new Map().set(amount, min + 1));
+      }
+
+      return min + 1;
     }
-    let change = findMinChange(amount)
+
+    let change = findMinChange(amount, coins.length - 1)
     return change == Number.MAX_VALUE ? -1 : change - 1;
   };
 
@@ -1939,6 +1947,36 @@ export class DSAService {
     let dist = findDistance(0, 0);
     return dist == Number.MAX_VALUE ? 0 : dist;
   };
+
+  knapsack(a, b, c) {
+    let dp = new Map();
+
+    function sack(i, w) {
+      if (i < 0 || w <= 0) {
+        return 0;
+      }
+
+      if (dp.has(i) && dp.get(i).has(w)) {
+        return dp.get(i).get(w);
+      }
+
+      var p1;
+      if (b[i] <= w) {
+        p1 = Math.max(a[i] + sack(i - 1, w - b[i]), sack(i - 1, w));
+      } else {
+        p1 = sack(i - 1, w);
+      }
+
+      if (dp.has(i)) {
+        dp.set(i, dp.get(i).set(w, p1));
+      } else {
+        dp.set(i, new Map().set(w, p1));
+      }
+      return p1;
+    }
+
+    return sack(a.length - 1, c);
+  }
 }
 
 export class RecentCounter {

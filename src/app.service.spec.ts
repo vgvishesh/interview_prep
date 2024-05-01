@@ -668,9 +668,13 @@ describe('DSA service tests', () => {
     console.log(BinaryTree.isSameTree(p, q));
   });
 
-  it.skip('test_coinChange', () => {
+  it('test_coinChange', () => {
     let s = new DSAService();
     console.log(s.coinChange([1, 2, 5], 100));
+    // console.log(s.coinChange([4, 5], 18));
+    // console.log(s.coinChange([4, 5], 8));
+    // console.log(s.coinChange([2], 1));
+    // console.log(s.coinChange([1, 2, 5, 10], 18));
     // console.log(s.coinChange([2], 3));
     // console.log(s.coinChange([1], 0));
   });
@@ -715,7 +719,7 @@ describe('DSA service tests', () => {
     let s
   });
 
-  it('test_minDistance', () => {
+  it.skip('test_minDistance', () => {
     let s = new DSAService();
     // console.log(s.minDistance('horse', 'ros'));
     // console.log(s.minDistance('intention', 'execution'));
@@ -723,5 +727,10 @@ describe('DSA service tests', () => {
     // console.log(s.minDistance('', ''));
     // console.log(s.minDistance('', 'abc'));
     console.log(s.minDistance('zoologicoarchaeologist', 'zoogeologist'));
+  });
+
+  it.skip('tst_knapsack', () => {
+    let s = new DSAService();
+    console.log(s.knapsack([468, 335, 501, 170, 725, 479, 359, 963, 465, 706, 146, 282, 828, 962, 492, 996, 943, 828, 437, 392, 605, 903, 154, 293, 383, 422, 717, 719, 896, 448, 727, 772, 539, 870, 913, 668, 300, 36, 895, 704, 812, 323], [4, 4, 5, 2, 2, 4, 9, 8, 5, 3, 8, 8, 10, 4, 2, 10, 9, 7, 6, 1, 3, 9, 7, 1, 3, 5, 9, 7, 6, 1, 10, 1, 1, 7, 2, 4, 9, 10, 4, 5, 5, 7], 841));
   })
 })
