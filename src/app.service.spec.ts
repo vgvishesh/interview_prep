@@ -593,17 +593,18 @@ describe('DSA service tests', () => {
     console.log(s.findItinerary([["EZE", "TIA"], ["EZE", "HBA"], ["AXA", "TIA"], ["JFK", "AXA"], ["ANU", "JFK"], ["ADL", "ANU"], ["TIA", "AUA"], ["ANU", "AUA"], ["ADL", "EZE"], ["ADL", "EZE"], ["EZE", "ADL"], ["AXA", "EZE"], ["AUA", "AXA"], ["JFK", "AXA"], ["AXA", "AUA"], ["AUA", "ADL"], ["ANU", "EZE"], ["TIA", "ADL"], ["EZE", "ANU"], ["AUA", "ANU"]]));
   });
 
-  it.skip('test_isMatch', () => {
+  it('test_isMatch', () => {
     let s = new DSAService();
     // console.log(s.isMatch('abcdfghefacbceeghef', 'abc*ef*ef'));
     // console.log(s.isMatch('aa', "a"));
     // console.log(s.isMatch('aa', "*"));
     // console.log(s.isMatch('cb', "?a"));
+    // console.log(s.isMatch('aabcdef', "??b*e*"));
     // console.log(s.isMatch('mississippi', "m??*ss*?i*pi"));
     // console.log(s.isMatch('', "*****"));
     // console.log(s.isMatch('abcabczzzde', "*abc???de*"));
-    s.isMatch('abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb', "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb"
-    );
+    console.log(s.isMatch('abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb', "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb"
+    ));
   });
 
   it.skip('test_reverseVowels', () => {
@@ -668,7 +669,7 @@ describe('DSA service tests', () => {
     console.log(BinaryTree.isSameTree(p, q));
   });
 
-  it('test_coinChange', () => {
+  it.skip('test_coinChange', () => {
     let s = new DSAService();
     console.log(s.coinChange([1, 2, 5], 100));
     // console.log(s.coinChange([4, 5], 18));

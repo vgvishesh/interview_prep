@@ -1402,53 +1402,97 @@ export class DSAService {
   };
 
   isMatch(s: string, p: string): boolean {
-    function isAllStar(j: number) {
-      for (let k = j; k < p.length; k++) {
-        if (p[k] != '*') {
-          return false;
-        }
+    // function isAllStar(j: number) {
+    //   for (let k = j; k < p.length; k++) {
+    //     if (p[k] != '*') {
+    //       return false;
+    //     }
+    //   }
+
+    //   return true;
+    // }
+
+    // function isMatchInner(i: number, j: number): boolean {
+    //   while (i < s.length && j < p.length) {
+    //     if (p[j] == s[i] || p[j] == '?') {
+    //       i++;
+    //       j++;
+    //     } else if (p[j] == '*') {
+    //       while ((p[j] == '*') && j + 1 < p.length) {
+    //         j++;
+    //       }
+    //       if (p[j] == '*') {
+    //         return true;
+    //       }
+
+    //       let char = p[j];
+    //       while (i < s.length) {
+    //         if (s[i] == char || char == '?') {
+    //           if (isMatchInner(i, j)) {
+    //             return true;
+    //           }
+    //         }
+    //         i++;
+    //       }
+    //     } else {
+    //       return false;
+    //     }
+    //   }
+
+    //   if (j == p.length && i == s.length) {
+    //     return true;
+    //   }
+    //   if (i == s.length && isAllStar(j)) {
+    //     return true;
+    //   }
+
+    //   return false;
+    // }
+    // return isMatchInner(0, 0);
+    let mem: Map<number, Map<number, number>> = new Map();
+    function isMatch(i: number, j: number) {
+      if (i > s.length && j == p.length && p[j] == '*') {
+        return true;
+      }
+      if (i < s.length && j == p.length) {
+        return false;
+      }
+      if (i == s.length && j == p.length) {
+        return true;
+      }
+      if (i > s.length && j < p.length) {
+        return false;
       }
 
-      return true;
-    }
+      if (mem.has(i) && mem.get(i).has(j)) {
+        return mem.get(i).get(j);
+      }
 
-    function isMatchInner(i: number, j: number): boolean {
-      while (i < s.length && j < p.length) {
-        if (p[j] == s[i] || p[j] == '?') {
-          i++;
-          j++;
-        } else if (p[j] == '*') {
-          while ((p[j] == '*') && j + 1 < p.length) {
-            j++;
-          }
-          if (p[j] == '*') {
-            return true;
-          }
-
-          let char = p[j];
-          while (i < s.length) {
-            if (s[i] == char || char == '?') {
-              if (isMatchInner(i, j)) {
-                return true;
-              }
-            }
-            i++;
-          }
+      let val: boolean = false;
+      if (p[j] == '?') {
+        if (i >= s.length) {
+          val = false;
         } else {
-          return false;
+          val = isMatch(i + 1, j + 1);
         }
+      } else if (p[j] == s[i]) {
+        val = isMatch(i + 1, j + 1);
+      } else if (p[j] == '*') {
+        val = isMatch(i + 1, j) || isMatch(i, j + 1);
+      } else if (i < s.length && j < p.length && s[i] != p[j]) {
+        val = false;
       }
 
-      if (j == p.length && i == s.length) {
-        return true;
-      }
-      if (i == s.length && isAllStar(j)) {
-        return true;
+      let vSet = val ? 1 : 0;
+      if (mem.has(i)) {
+        mem.set(i, mem.get(i).set(j, vSet));
+      } else {
+        mem.set(i, new Map().set(j, vSet));
       }
 
-      return false;
+      return val;
     }
-    return isMatchInner(0, 0);
+    return isMatch(0, 0);
   };
 
   reverseVowels(s: string): string {
