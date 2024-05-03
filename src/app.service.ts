@@ -2020,7 +2020,76 @@ export class DSAService {
     }
 
     return sack(a.length - 1, c);
-  }
+  };
+
+  wordBreak(s: string, wordDict: string[]): boolean {
+    let dp: number[][] = new Array(s.length);
+    for (let i = 0; i < s.length; i++) {
+      dp[i] = new Array(s.length).fill(-1);
+    }
+    let dict: Set<string> = new Set();
+    wordDict.forEach(x => dict.add(x));
+
+    function find(i: number, j: number, wl: string[]) {
+      if (j >= s.length) {
+        let sn = wl.join('');
+        if (sn.length != s.length) {
+          return false;
+        }
+        for (let k = 0; k < s.length; k++) {
+          if (sn[k] != s[k]) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      if (dp[i][j] != -1) {
+        return dp[i][j] == 1 ? true : false;
+      }
+
+      let w = s.slice(i, j + 1);
+      let thisVal: boolean = false;
+      if (dict.has(w)) {
+        thisVal = find(j + 1, j + 1, wl.concat(w)) || find(i, j + 1, wl);
+      } else {
+        thisVal = find(i, j + 1, wl);
+      }
+
+      dp[i][j] = thisVal ? 1 : 0;
+      return thisVal;
+    }
+
+    return find(0, 0, []);
+  };
+
+  lengthOfLIS(nums: number[]): number {
+    let dp: number[][] = new Array(nums.length);
+    function longestSS(i: number, seq: number[]): number[] {
+      if (i >= nums.length) {
+        return seq;
+      }
+      if (dp[i] && dp[i].length != 0) {
+        return dp[i];
+      }
+
+      let last: number = i - 1 >= 0 ? nums[i - 1] : Number.MAX_VALUE;
+      let inc: number[] = [];
+      if (last < nums[i]) {
+        inc = longestSS(i + 1, seq.concat(nums[i]));
+      }
+      let noInc = longestSS(i + 1, seq);
+      let newInc = longestSS(i + 1, [].concat(nums[i]));
+
+      let greater = noInc.length > newInc.length ? noInc : newInc;
+      greater = greater.length > inc.length ? greater : inc;
+
+      dp[i] = greater;
+      return greater;
+    }
+
+    return longestSS(0, [])?.length;
+  };
 }
 
 export class RecentCounter {

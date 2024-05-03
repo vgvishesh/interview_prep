@@ -593,7 +593,7 @@ describe('DSA service tests', () => {
     console.log(s.findItinerary([["EZE", "TIA"], ["EZE", "HBA"], ["AXA", "TIA"], ["JFK", "AXA"], ["ANU", "JFK"], ["ADL", "ANU"], ["TIA", "AUA"], ["ANU", "AUA"], ["ADL", "EZE"], ["ADL", "EZE"], ["EZE", "ADL"], ["AXA", "EZE"], ["AUA", "AXA"], ["JFK", "AXA"], ["AXA", "AUA"], ["AUA", "ADL"], ["ANU", "EZE"], ["TIA", "ADL"], ["EZE", "ANU"], ["AUA", "ANU"]]));
   });
 
-  it('test_isMatch', () => {
+  it.skip('test_isMatch', () => {
     let s = new DSAService();
     // console.log(s.isMatch('abcdfghefacbceeghef', 'abc*ef*ef'));
     // console.log(s.isMatch('aa', "a"));
@@ -733,5 +733,17 @@ describe('DSA service tests', () => {
   it.skip('tst_knapsack', () => {
     let s = new DSAService();
     console.log(s.knapsack([468, 335, 501, 170, 725, 479, 359, 963, 465, 706, 146, 282, 828, 962, 492, 996, 943, 828, 437, 392, 605, 903, 154, 293, 383, 422, 717, 719, 896, 448, 727, 772, 539, 870, 913, 668, 300, 36, 895, 704, 812, 323], [4, 4, 5, 2, 2, 4, 9, 8, 5, 3, 8, 8, 10, 4, 2, 10, 9, 7, 6, 1, 3, 9, 7, 1, 3, 5, 9, 7, 6, 1, 10, 1, 1, 7, 2, 4, 9, 10, 4, 5, 5, 7], 841));
+  });
+
+  it.skip('test_wordBreak', () => {
+    let s = new DSAService();
+    // console.log(s.wordBreak('applepenapple', ["apple", "pen"]));
+    console.log(s.wordBreak('catsandogcat', ["cats", "dog", "sand", "and", "cat", "an"]));
+    // console.log(s.wordBreak('abcd', ["a", "abc", "b", "cd"]));
+  });
+
+  it('test_longestSS', () => {
+    let s = new DSAService();
+    console.log(s.lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));
   })
 })
