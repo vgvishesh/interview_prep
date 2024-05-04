@@ -2163,7 +2163,41 @@ export class DSAService {
     }
 
     return sort(0, nums.length - 1);
-  }
+  };
+
+  numIslands(grid: string[][]): number {
+    let colorGrid: number[][] = new Array(grid.length);
+    let color = 0;
+
+    function fillGrid(i: number, j: number) {
+      if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length) {
+        return;
+      }
+
+      if (colorGrid[i][j] == -1 && grid[i][j] == '1') {
+        colorGrid[i][j] = color;
+        fillGrid(i - 1, j);
+        fillGrid(i + 1, j);
+        fillGrid(i, j - 1);
+        fillGrid(i, j + 1);
+      }
+    }
+
+    for (let i = 0; i < grid.length; i++) {
+      colorGrid[i] = new Array(grid[0].length).fill(-1);
+    }
+
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[0].length; j++) {
+        if (grid[i][j] == '1' && colorGrid[i][j] == -1) {
+          fillGrid(i, j);
+          color++;
+        }
+      }
+    }
+
+    return color;
+  };
 }
 
 export class RecentCounter {

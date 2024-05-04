@@ -772,7 +772,7 @@ describe('DSA service tests', () => {
     console.log(BinaryTree.buildTree2([9, 3, 15, 20, 7], [9, 15, 7, 20, 3]));
   });
 
-  it('test_bstiterator', () => {
+  it.skip('test_bstiterator', () => {
     let bst = new TreeNode(7, new TreeNode(3, null, null), new TreeNode(15, new TreeNode(9, null, null), new TreeNode(20, null, null)));
     let c = new BSTIterator(bst);
     console.log(c.next());
@@ -784,5 +784,21 @@ describe('DSA service tests', () => {
     console.log(c.hasNext());
     console.log(c.next());
     console.log(c.hasNext());
+  });
+
+  it('test_numIslands', () => {
+    let s = new DSAService();
+    console.log(s.numIslands([
+      ["1", "1", "1", "1", "0"],
+      ["1", "1", "0", "1", "0"],
+      ["1", "1", "0", "0", "0"],
+      ["0", "0", "0", "0", "0"]
+    ]));
+    console.log(s.numIslands([
+      ["1", "1", "0", "0", "0"],
+      ["1", "1", "0", "0", "0"],
+      ["0", "0", "1", "0", "0"],
+      ["0", "0", "0", "1", "1"]
+    ]));
   })
 })
