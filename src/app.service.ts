@@ -2090,6 +2090,37 @@ export class DSAService {
 
     return longestSS(0, [])?.length;
   };
+
+  maxProfit2(prices: number[]): number {
+    let dp: number[][] = new Array(prices.length);
+    for (let i = 0; i < prices.length; i++) {
+      dp[i] = new Array(prices.length).fill(-1);
+    }
+
+    function findMaxProfit(i: number, j: number, isBought: boolean, txnCount: number) {
+      if (txnCount >= 2) {
+        return 0;
+      }
+      if (i >= prices.length || j >= prices.length) {
+        return 0;
+      }
+      if (dp[i][j] != -1) {
+        return dp[i][j];
+      }
+
+      let profit: number;
+      if (isBought) {
+        profit = Math.max(prices[j] - prices[i] + findMaxProfit(j + 1, j + 1, false, txnCount + 1), findMaxProfit(i, j + 1, true, txnCount));
+      } else {
+        profit = Math.max(findMaxProfit(i, j + 1, true, txnCount), findMaxProfit(i + 1, j + 1, false, txnCount));
+      }
+
+      dp[i][j] = profit;
+      return profit;
+    }
+    return findMaxProfit(0, 0, false, 0);
+  };
+
 }
 
 export class RecentCounter {
@@ -2432,6 +2463,17 @@ export class BST {
     traverse(root);
     return arr;
   }
+
+  isValidBST(root: TreeNode | null): boolean {
+    let trav = this.inorderTraversal(root);
+    for (let i = 1; i < trav.length; i++) {
+      if (trav[i] <= trav[i - 1]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
 }
 
 export class BinaryTree {

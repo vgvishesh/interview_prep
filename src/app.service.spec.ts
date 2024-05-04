@@ -742,8 +742,20 @@ describe('DSA service tests', () => {
     // console.log(s.wordBreak('abcd', ["a", "abc", "b", "cd"]));
   });
 
-  it('test_longestSS', () => {
+  it.skip('test_longestSS', () => {
     let s = new DSAService();
     console.log(s.lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));
+  });
+
+  it.skip('test_maxProfit2', () => {
+    let s = new DSAService();
+    // console.log(s.maxProfit2([3, 3, 5, 0, 0, 3, 1, 4]))
+    // console.log(s.maxProfit2(([7, 6, 4, 3, 1])));
+    // console.log(s.maxProfit2(([14, 9, 10, 12, 4, 8, 1, 16])));
+  });
+
+  it('test_validBST', () => {
+    let t = new TreeNode(1, new TreeNode(1, null, null), null);
+    console.log(BST.isValidBST(t));
   })
 })
