@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master } from "./app.service"
+import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator } from "./app.service"
 
 describe('DSA service tests', () => {
   it.skip('test_missing_number', () => {
@@ -754,8 +754,35 @@ describe('DSA service tests', () => {
     // console.log(s.maxProfit2(([14, 9, 10, 12, 4, 8, 1, 16])));
   });
 
-  it('tst_mergesort', () => {
+  it.skip('tst_mergesort', () => {
     let s = new DSAService();
     console.log(s.mergeSort([-1, 10, 9, 1, 2, 4, 3, 6]));
+  });
+
+  it.skip('test_levelorder', () => {
+    let t = new TreeNode(3, new TreeNode(9, null, null), new TreeNode(20, new TreeNode(15, null, null), new TreeNode(7, null, null)));
+    console.log(BinaryTree.levelOrder(t));
+  });
+
+  it.skip('test_inpre', () => {
+    console.log(BinaryTree.buildTree([3, 9, 20, 15, 7], [9, 3, 15, 20, 7]));
+  });
+
+  it.skip('test_inpost', () => {
+    console.log(BinaryTree.buildTree2([9, 3, 15, 20, 7], [9, 15, 7, 20, 3]));
+  });
+
+  it('test_bstiterator', () => {
+    let bst = new TreeNode(7, new TreeNode(3, null, null), new TreeNode(15, new TreeNode(9, null, null), new TreeNode(20, null, null)));
+    let c = new BSTIterator(bst);
+    console.log(c.next());
+    console.log(c.next());
+    console.log(c.hasNext());
+    console.log(c.next());
+    console.log(c.hasNext());
+    console.log(c.next());
+    console.log(c.hasNext());
+    console.log(c.next());
+    console.log(c.hasNext());
   })
 })

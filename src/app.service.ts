@@ -2830,6 +2830,73 @@ export class BinaryTree {
       ptr = ptr.right;
     }
   };
+
+  static levelOrder(root: TreeNode | null): number[][] {
+    if (root == null) {
+      return [];
+    }
+
+    let queue: TreeNode[] = [];
+    queue.push(root);
+
+    let result: number[][] = [];
+    while (queue.length > 0) {
+      let arr: number[] = [];
+      for (let i = 0; i < queue.length; i++) {
+        arr.push(queue[i].val);
+      }
+      result.push(arr);
+
+      let newQueue: TreeNode[] = [];
+      for (let i = 0; i < queue.length; i++) {
+        if (queue[i].left) {
+          newQueue.push(queue[i].left);
+        }
+        if (queue[i].right) {
+          newQueue.push(queue[i].right);
+        }
+      }
+      queue = newQueue;
+    }
+
+    return result;
+  };
+
+  static buildTree(preorder: number[], inorder: number[]): TreeNode | null {
+    let cIndex = 0;
+
+    function build(inorder: number[]) {
+      if (inorder.length == 0 || !inorder.includes(preorder[cIndex])) {
+        return null;
+      }
+
+      let split = inorder.findIndex(x => x == preorder[cIndex]);
+      let root = new TreeNode(preorder[cIndex], null, null);
+      cIndex++;
+      root.left = build(inorder.slice(0, split));
+      root.right = build(inorder.slice(split + 1));
+      return root;
+    }
+    return build(inorder);
+  };
+
+  static buildTree2(inorder: number[], postorder: number[]): TreeNode | null {
+    let cIndex = postorder.length - 1;
+
+    function build(inorder: number[]) {
+      if (inorder.length == 0 || !inorder.includes(postorder[cIndex])) {
+        return null;
+      }
+
+      let split = inorder.findIndex(x => x == postorder[cIndex]);
+      let root = new TreeNode(postorder[cIndex], null, null);
+      cIndex--;
+      root.right = build(inorder.slice(split + 1));
+      root.left = build(inorder.slice(0, split));
+      return root;
+    }
+    return build(inorder);
+  };
 }
 
 export class MaxHeap {
@@ -3064,5 +3131,34 @@ export class Trie {
 
     findSuggesstions(ptr, prefix);
     return suggesstions;
+  }
+}
+
+export class BSTIterator {
+  private inorder: number[] = [];
+  private index = 0;
+  constructor(root: TreeNode | null) {
+    let arr: number[] = [];
+    function traverse(root: TreeNode) {
+      if (root == null) {
+        return;
+      }
+      traverse(root.left)
+      arr.push(root.val);
+      traverse(root.right);
+    }
+    traverse(root);
+    this.inorder = arr;
+  }
+
+  next(): number {
+    return this.inorder[this.index++];
+  }
+
+  hasNext(): boolean {
+    if (this.index < this.inorder.length) {
+      return true;
+    }
+    return false;
   }
 }
