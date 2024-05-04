@@ -2121,6 +2121,49 @@ export class DSAService {
     return findMaxProfit(0, 0, false, 0);
   };
 
+  mergeSort(nums: number[]) {
+    function sort(low: number, high: number) {
+      if (high == low) {
+        return [nums[low]];
+      }
+
+      let mid = Math.floor((low + high) / 2);
+      let rs: number[] = [];
+      let ls: number[] = [];
+      if (mid - low >= 0) {
+        ls = sort(low, mid)
+      }
+      if (high - mid > 0) {
+        rs = sort(mid + 1, high);
+      }
+
+      let i = 0;
+      let j = 0;
+      let result: number[] = [];
+      while (i < ls.length && j < rs.length) {
+        if (ls[i] <= rs[j]) {
+          result.push(ls[i]);
+          i++;
+        } else {
+          result.push(rs[j]);
+          j++;
+        }
+      }
+
+      while (i < ls.length) {
+        result.push(ls[i]);
+        i++;
+      }
+      while (j < rs.length) {
+        result.push(rs[j]);
+        j++;
+      }
+
+      return result;
+    }
+
+    return sort(0, nums.length - 1);
+  }
 }
 
 export class RecentCounter {
@@ -2473,7 +2516,6 @@ export class BST {
     }
     return true;
   };
-
 }
 
 export class BinaryTree {

@@ -754,8 +754,8 @@ describe('DSA service tests', () => {
     // console.log(s.maxProfit2(([14, 9, 10, 12, 4, 8, 1, 16])));
   });
 
-  it('test_validBST', () => {
-    let t = new TreeNode(1, new TreeNode(1, null, null), null);
-    console.log(BST.isValidBST(t));
+  it('tst_mergesort', () => {
+    let s = new DSAService();
+    console.log(s.mergeSort([-1, 10, 9, 1, 2, 4, 3, 6]));
   })
 })
