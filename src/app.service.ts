@@ -637,15 +637,46 @@ export class DSAService {
   };
 
   hIndex(citations: number[]): number {
-    citations.sort();
-    let h = 0;
-    for (let i = 0; i < citations.length; i++) {
-      let count = citations.length - i;
-      if (count > h) {
-        h = count;
+    citations.sort((a, b) => a - b);
+    function findClosest(target: number, low: number, high: number) {
+      let mid: number;
+      while (low <= high) {
+        mid = Math.floor((low + high) / 2);
+        if (citations[mid] == target) {
+          return mid;
+        } else if (citations[mid] > target) {
+          high = mid - 1;
+        } else if (citations[mid] < target) {
+          low = mid + 1;
+        }
+      }
+      return mid;
+    }
+    let j: number;
+    let hi: number;
+    if (citations.length <= citations[citations.length - 1]) {
+      hi = citations.length;
+    } else {
+      hi = citations[citations.length - 1];
+    }
+    j = findClosest(hi, 0, citations.length - 1);
+
+    for (let i = hi; i >= 0; i--) {
+      let dec: number;
+      if (citations[j] >= i) {
+        dec = j;
+      } else {
+        dec = j + 1;
+      }
+      let num = citations.length - dec;
+      if (num >= i) {
+        return i;
+      } else {
+        if (i - 1 < citations[j]) {
+          j--;
+        }
       }
     }
-    return h;
   };
 
   rob(nums: number[]): number {

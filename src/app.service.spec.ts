@@ -303,11 +303,12 @@ describe('DSA service tests', () => {
     // console.log(s.maxProfit(inA));
   });
 
-  it.skip('test_hIndex', () => {
+  it('test_hIndex', () => {
     const s = new DSAService();
-    console.log(s.hIndex([3, 0, 6, 1, 5]));
-
-    console.log(s.hIndex([100]));
+    // console.log(s.hIndex([3, 0, 6, 1, 5]));
+    // console.log(s.hIndex([1, 2, 3, 5, 6, 10, 11]));
+    // console.log(s.hIndex([1, 3, 1]));
+    console.log(s.hIndex([11, 15]));
   });
 
   it.skip('test_popMax', () => {
@@ -747,7 +748,7 @@ describe('DSA service tests', () => {
     console.log(s.lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));
   });
 
-  it('test_maxProfit2', () => {
+  it.skip('test_maxProfit2', () => {
     let s = new DSAService();
     console.log(s.maxProfit2([3, 3, 5, 0, 0, 3, 1, 4]))
     console.log(s.maxProfit2(([7, 6, 4, 3, 1])));
