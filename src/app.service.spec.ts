@@ -747,11 +747,11 @@ describe('DSA service tests', () => {
     console.log(s.lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));
   });
 
-  it.skip('test_maxProfit2', () => {
+  it('test_maxProfit2', () => {
     let s = new DSAService();
-    // console.log(s.maxProfit2([3, 3, 5, 0, 0, 3, 1, 4]))
-    // console.log(s.maxProfit2(([7, 6, 4, 3, 1])));
-    // console.log(s.maxProfit2(([14, 9, 10, 12, 4, 8, 1, 16])));
+    console.log(s.maxProfit2([3, 3, 5, 0, 0, 3, 1, 4]))
+    console.log(s.maxProfit2(([7, 6, 4, 3, 1])));
+    console.log(s.maxProfit2(([14, 9, 10, 12, 4, 8, 1, 16])));
   });
 
   it.skip('tst_mergesort', () => {
@@ -786,7 +786,7 @@ describe('DSA service tests', () => {
     console.log(c.hasNext());
   });
 
-  it('test_numIslands', () => {
+  it.skip('test_numIslands', () => {
     let s = new DSAService();
     console.log(s.numIslands([
       ["1", "1", "1", "1", "0"],

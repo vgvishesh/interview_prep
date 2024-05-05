@@ -2093,32 +2093,35 @@ export class DSAService {
 
   maxProfit2(prices: number[]): number {
     let dp: number[][] = new Array(prices.length);
+    let k = 4;
     for (let i = 0; i < prices.length; i++) {
-      dp[i] = new Array(prices.length).fill(-1);
+      dp[i] = new Array(k).fill(-1);
     }
 
-    function findMaxProfit(i: number, j: number, isBought: boolean, txnCount: number) {
-      if (txnCount >= 2) {
+    function findProfit(i: number, state: number) {
+      if (state % 2 == 0 && i >= prices.length) {
         return 0;
       }
-      if (i >= prices.length || j >= prices.length) {
+      if (i >= prices.length) {
+        return Number.MIN_VALUE;
+      }
+      if (state == k) {
         return 0;
       }
-      if (dp[i][j] != -1) {
-        return dp[i][j];
+
+      if (dp[i][state] != -1) {
+        return dp[i][state];
       }
 
-      let profit: number;
-      if (isBought) {
-        profit = Math.max(prices[j] - prices[i] + findMaxProfit(j + 1, j + 1, false, txnCount + 1), findMaxProfit(i, j + 1, true, txnCount));
-      } else {
-        profit = Math.max(findMaxProfit(i, j + 1, true, txnCount), findMaxProfit(i + 1, j + 1, false, txnCount));
-      }
-
-      dp[i][j] = profit;
+      let curr = state % 2 == 0 ? -prices[i] : prices[i];
+      let p1 = findProfit(i + 1, state + 1);
+      let p2 = findProfit(i + 1, state);
+      let profit = Math.max(curr + p1, p2);
+      dp[i][state] = profit;
       return profit;
     }
-    return findMaxProfit(0, 0, false, 0);
+
+    return findProfit(0, 0);
   };
 
   mergeSort(nums: number[]) {
