@@ -2012,7 +2012,7 @@ export class DSAService {
           return 1 + findDistance(i + 1, j);
         }
       } else {
-        if (i >= word1.length || j >= word2.length) {
+        if (i >= word1.length && j >= word2.length) {
           return 0;
         }
       }
