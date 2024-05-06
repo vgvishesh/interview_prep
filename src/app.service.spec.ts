@@ -303,7 +303,7 @@ describe('DSA service tests', () => {
     // console.log(s.maxProfit(inA));
   });
 
-  it('test_hIndex', () => {
+  it.skip('test_hIndex', () => {
     const s = new DSAService();
     // console.log(s.hIndex([3, 0, 6, 1, 5]));
     // console.log(s.hIndex([1, 2, 3, 5, 6, 10, 11]));
@@ -743,9 +743,11 @@ describe('DSA service tests', () => {
     // console.log(s.wordBreak('abcd', ["a", "abc", "b", "cd"]));
   });
 
-  it.skip('test_longestSS', () => {
+  it('test_longestSS', () => {
     let s = new DSAService();
     console.log(s.lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));
+    console.log(s.lengthOfLIS([0, 1, 0, 3, 2, 3]));
+    console.log(s.lengthOfLIS([7, 7, 7, 7, 7, 7, 7]));
   });
 
   it.skip('test_maxProfit2', () => {

@@ -2096,30 +2096,30 @@ export class DSAService {
 
   lengthOfLIS(nums: number[]): number {
     let dp: number[][] = new Array(nums.length);
-    function longestSS(i: number, seq: number[]): number[] {
-      if (i >= nums.length) {
-        return seq;
-      }
-      if (dp[i] && dp[i].length != 0) {
-        return dp[i];
-      }
-
-      let last: number = i - 1 >= 0 ? nums[i - 1] : Number.MAX_VALUE;
-      let inc: number[] = [];
-      if (last < nums[i]) {
-        inc = longestSS(i + 1, seq.concat(nums[i]));
-      }
-      let noInc = longestSS(i + 1, seq);
-      let newInc = longestSS(i + 1, [].concat(nums[i]));
-
-      let greater = noInc.length > newInc.length ? noInc : newInc;
-      greater = greater.length > inc.length ? greater : inc;
-
-      dp[i] = greater;
-      return greater;
+    for (let i = 0; i < nums.length; i++) {
+      dp[i] = new Array(nums.length).fill(-1);
     }
 
-    return longestSS(0, [])?.length;
+    function findLength(i: number, lastIndex: number) {
+      if (i >= nums.length) {
+        return 0;
+      }
+      if (lastIndex != -1 && dp[i][lastIndex] != -1) {
+        return dp[i][lastIndex];
+      }
+
+      let seqLength: number;
+      if (lastIndex == -1 || nums[i] > nums[lastIndex]) {
+        seqLength = Math.max(1 + findLength(i + 1, i), findLength(i + 1, lastIndex));
+      } else {
+        seqLength = findLength(i + 1, lastIndex);
+      }
+
+      dp[i][lastIndex] = seqLength;
+      return seqLength;
+    }
+
+    return findLength(0, -1);
   };
 
   maxProfit2(prices: number[]): number {
