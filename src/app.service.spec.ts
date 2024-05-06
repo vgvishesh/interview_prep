@@ -721,14 +721,14 @@ describe('DSA service tests', () => {
     let s
   });
 
-  it.skip('test_minDistance', () => {
+  it('test_minDistance', () => {
     let s = new DSAService();
     // console.log(s.minDistance('horse', 'ros'));
     // console.log(s.minDistance('intention', 'execution'));
-    console.log(s.minDistance('roe', 'horee'));
+    // console.log(s.minDistance('ros', 'horse'));
     // console.log(s.minDistance('', ''));
-    // console.log(s.minDistance('', 'abc'));
-    console.log(s.minDistance('zoologicoarchaeologist', 'zoogeologist'));
+    console.log(s.minDistance('ab', 'bc'));
+    // console.log(s.minDistance('zoologicoarchaeologist', 'zoogeologist'));
   });
 
   it.skip('tst_knapsack', () => {
@@ -743,7 +743,7 @@ describe('DSA service tests', () => {
     // console.log(s.wordBreak('abcd', ["a", "abc", "b", "cd"]));
   });
 
-  it('test_longestSS', () => {
+  it.skip('test_longestSS', () => {
     let s = new DSAService();
     console.log(s.lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));
     console.log(s.lengthOfLIS([0, 1, 0, 3, 2, 3]));

@@ -1999,21 +1999,34 @@ export class DSAService {
     }
 
     function findDistance(i: number, j: number) {
-      if (i >= m || j >= n) {
-        return Number.MAX_VALUE;
+      if (n > m) {
+        if (j >= word2.length) {
+          return 0;
+        } else if (i >= word1.length) {
+          return 1 + findDistance(i, j + 1);
+        }
+      } else if (m > n) {
+        if (i >= word1.length) {
+          return 0;
+        } else if (j >= word2.length) {
+          return 1 + findDistance(i + 1, j);
+        }
+      } else {
+        if (i >= word1.length || j >= word2.length) {
+          return 0;
+        }
       }
 
       if (dp[i][j] != -1) {
         return dp[i][j];
       }
 
-      let dist = Math.min(findDistance(i + 1, j + 1), findDistance(i + 1, j), findDistance(i, j + 1));
-
-      dist = dist == Number.MAX_VALUE ? 0 : dist;
-      if (word1[i] != word2[j]) {
-        dist++;
+      let dist: number;
+      if (word1[i] == word2[j]) {
+        dist = Math.min(findDistance(i + 1, j + 1), 1 + findDistance(i + 1, j), 1 + findDistance(i, j + 1));
+      } else {
+        dist = 1 + Math.min(findDistance(i + 1, j + 1), findDistance(i + 1, j), findDistance(i, j + 1));
       }
-
 
       dp[i][j] = dist;
       return dist;
