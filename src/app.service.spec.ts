@@ -723,12 +723,12 @@ describe('DSA service tests', () => {
 
   it('test_minDistance', () => {
     let s = new DSAService();
-    // console.log(s.minDistance('horse', 'ros'));
-    // console.log(s.minDistance('intention', 'execution'));
+    console.log(s.minDistance('horse', 'ros'));
+    console.log(s.minDistance('intention', 'execution'));
     // console.log(s.minDistance('ros', 'horse'));
     // console.log(s.minDistance('', ''));
     console.log(s.minDistance('ab', 'bc'));
-    // console.log(s.minDistance('zoologicoarchaeologist', 'zoogeologist'));
+    console.log(s.minDistance('zoologicoarchaeologist', 'zoogeologist'));
   });
 
   it.skip('tst_knapsack', () => {

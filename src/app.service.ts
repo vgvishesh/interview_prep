@@ -1993,28 +1993,14 @@ export class DSAService {
       return m > n ? m : n;
     }
 
-    let dp: number[][] = new Array(m);
-    for (let i = 0; i < m; i++) {
-      dp[i] = new Array(n).fill(-1);
+    let dp: number[][] = new Array(m + 1);
+    for (let i = 0; i < m + 1; i++) {
+      dp[i] = new Array(n + 1).fill(-1);
     }
 
     function findDistance(i: number, j: number) {
-      if (n > m) {
-        if (j >= word2.length) {
-          return 0;
-        } else if (i >= word1.length) {
-          return 1 + findDistance(i, j + 1);
-        }
-      } else if (m > n) {
-        if (i >= word1.length) {
-          return 0;
-        } else if (j >= word2.length) {
-          return 1 + findDistance(i + 1, j);
-        }
-      } else {
-        if (i >= word1.length && j >= word2.length) {
-          return 0;
-        }
+      if (i >= word1.length && j >= word2.length) {
+        return 0;
       }
 
       if (dp[i][j] != -1) {
@@ -2022,18 +2008,24 @@ export class DSAService {
       }
 
       let dist: number;
-      if (word1[i] == word2[j]) {
+
+      if (i < word1.length && j < word2.length && word1[i] == word2[j]) {
         dist = Math.min(findDistance(i + 1, j + 1), 1 + findDistance(i + 1, j), 1 + findDistance(i, j + 1));
       } else {
-        dist = 1 + Math.min(findDistance(i + 1, j + 1), findDistance(i + 1, j), findDistance(i, j + 1));
+        if (i >= word1.length && j < word2.length) {
+          dist = 1 + findDistance(i, j + 1);
+        } else if (j >= word2.length && i < word1.length) {
+          dist = 1 + findDistance(i + 1, j);
+        } else {
+          dist = 1 + Math.min(findDistance(i + 1, j + 1), findDistance(i + 1, j), findDistance(i, j + 1));
+        }
       }
 
       dp[i][j] = dist;
       return dist;
     }
 
-    let dist = findDistance(0, 0);
-    return dist == Number.MAX_VALUE ? 0 : dist;
+    return findDistance(0, 0);
   };
 
   knapsack(a, b, c) {
