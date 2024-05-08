@@ -2346,6 +2346,55 @@ export class DSAService {
     }
     return retArr;
   };
+
+  longestValidParentheses(s: string): number {
+    if (s == '') return 0;
+
+    let stack: string[] = [];
+    function isNumeric(value: string): boolean {
+      return !isNaN(Number(value));
+    }
+
+    function merge() {
+      let top = stack.length - 1;
+      while (top - 1 >= 0 && isNumeric(stack[top]) && isNumeric(stack[top - 1])) {
+        let t1 = Number(stack.pop());
+        let t2 = Number(stack.pop());
+        stack.push((t1 + t2).toString());
+      }
+    }
+
+    for (let i = 0; i < s.length; i++) {
+      if (s[i] == '(') {
+        stack.push(s[i]);
+      } else {   // ')'
+        let top = stack.length - 1;
+        if (stack.length == 0) continue;
+        else if (stack[top] == '(') {
+          stack.pop();
+          stack.push('2');
+        } else if (isNumeric(stack[top]) && stack[top - 1] == '(') {
+          let val = Number(stack.pop());
+          stack.pop();
+          stack.push((val + 2).toString());
+        } else {
+          stack.push(s[i]);
+        }
+        merge();
+      }
+    }
+
+    let max = Number.MIN_VALUE;
+    for (let i = 0; i < stack.length; i++) {
+      if (isNumeric(stack[i])) {
+        let num = Number(stack[i]);
+        if (num > max) {
+          max = num;
+        }
+      }
+    }
+    return max;
+  };
 }
 
 

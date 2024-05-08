@@ -819,7 +819,7 @@ describe('DSA service tests', () => {
     console.log(s.findRelativeRanks([10, 3, 8, 9, 4]));
   });
 
-  it('test_match2', () => {
+  it.skip('test_match2', () => {
     let s = new DSAService();
     // console.log(s.isMatch2("abbceddee", "a..*d*e"));
     // console.log(s.isMatch2("aa", "a"));
@@ -829,5 +829,14 @@ describe('DSA service tests', () => {
     // console.log(s.isMatch2("aaa", "ab*ac*a"));
     // console.log(s.isMatch2("a", "ab*"));
     console.log(s.isMatch2("bbbba", ".*a*a"));
+  });
+
+  it('test_longestValidParentheses', () => {
+    let s = new DSAService();
+    console.log(s.longestValidParentheses(")()())"));
+    console.log(s.longestValidParentheses("((())())"));
+    console.log(s.longestValidParentheses("(()()(())"));
+    console.log(s.longestValidParentheses("()(()"));
+
   })
 })
