@@ -1432,6 +1432,64 @@ export class DSAService {
     return trail;
   };
 
+  isMatch2(s: string, p: string): boolean {
+    let dp: number[][] = new Array(s.length);
+    for (let i = 0; i < s.length; i++) {
+      dp[i] = new Array(p.length).fill(-1);
+    }
+
+    function findMatch(i: number, j: number): boolean {
+      if (i == s.length) {
+        if (j == p.length) {
+          return true;
+        } else if (j == p.length - 1 && p[j] == '*') {
+          return true;
+        } else if (j < p.length) {
+          while (j < p.length) {
+            if (p[j + 1] != '*') {
+              return false
+            }
+            j += 2;
+          }
+          return true;
+        }
+      }
+      if (j >= p.length) {
+        if (i < s.length) {
+          return false;
+        }
+      }
+
+      if (dp[i][j] != -1) {
+        return dp[i][j] == 1 ? true : false;
+      }
+
+      let isMatch: boolean = false;
+      if (s[i] == p[j]) {
+        isMatch = findMatch(i + 1, j + 1);
+      } else if (p[j] == '.') {
+        isMatch = findMatch(i + 1, j + 1);
+      } else if (p[j] == '*') {
+        if (p[j - 1] == '.' || p[j - 1] == s[i]) {
+          isMatch = findMatch(i + 1, j) || findMatch(i, j + 1);
+        } else {
+          isMatch = findMatch(i, j + 1);
+        }
+      } else if (i < s.length && j < p.length && s[i] != p[j]) {
+        if (j + 1 >= p.length || p[j + 1] != '*') {
+          isMatch = false;
+        } else {
+          isMatch = findMatch(i, j + 1);
+        }
+      }
+
+      dp[i][j] = isMatch ? 1 : 0;
+      return isMatch;
+    }
+
+    return findMatch(0, 0);
+  };
+
   isMatch(s: string, p: string): boolean {
     // function isAllStar(j: number) {
     //   for (let k = j; k < p.length; k++) {
@@ -2258,8 +2316,38 @@ export class DSAService {
       }
     }
     return mid * mid > x ? mid - 1 : mid;
-  }
+  };
+
+  findRelativeRanks(score: number[]): string[] {
+    function convertRankToString(rank: number): string {
+      switch (rank) {
+        case 0: return "Gold Medal";
+        case 1: return "Silver Medal";
+        case 2: return "Bronze Medal";
+        default: return (rank + 1).toString();
+      }
+    }
+
+    let sortedScore: number[][] = [];
+    score.forEach((v, i) => {
+      let s = [v, i];
+      sortedScore.push(s);
+    });
+
+    let rankMap: Map<number, number> = new Map();
+    sortedScore.sort((b, a) => a[0] - b[0]).forEach((val, index) => {
+      rankMap.set(val[1], index);
+    });
+
+    let retArr: string[] = [];
+    for (let i = 0; i < score.length; i++) {
+      let rank = rankMap.get(i);
+      retArr.push(convertRankToString(rank))
+    }
+    return retArr;
+  };
 }
+
 
 export class RecentCounter {
   private record: number[] = [];

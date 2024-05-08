@@ -805,11 +805,29 @@ describe('DSA service tests', () => {
     ]));
   });
 
-  it('test_mqSqrt', () => {
+  it.skip('test_mqSqrt', () => {
     let s = new DSAService();
     // console.log(s.mySqrt(25));
     // console.log(s.mySqrt(4));
     console.log(s.mySqrt(8));
     // console.log(s.mySqrt(26));
+  });
+
+  it.skip('tst_findRelativeRanks', () => {
+    let s = new DSAService();
+    console.log(s.findRelativeRanks([5, 4, 3, 2, 1]));
+    console.log(s.findRelativeRanks([10, 3, 8, 9, 4]));
+  });
+
+  it('test_match2', () => {
+    let s = new DSAService();
+    // console.log(s.isMatch2("abbceddee", "a..*d*e"));
+    // console.log(s.isMatch2("aa", "a"));
+    // console.log(s.isMatch2("aa", "a*"));
+    // console.log(s.isMatch2("ab", ".*"));
+    // console.log(s.isMatch2("aab", "c*a*b"));
+    // console.log(s.isMatch2("aaa", "ab*ac*a"));
+    // console.log(s.isMatch2("a", "ab*"));
+    console.log(s.isMatch2("bbbba", ".*a*a"));
   })
 })
