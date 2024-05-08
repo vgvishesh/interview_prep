@@ -2237,6 +2237,28 @@ export class DSAService {
 
     return color;
   };
+
+  mySqrt(x: number): number {
+    if (x == 0 || x == 1) {
+      return x;
+    }
+
+    let h = Math.floor(x / 2);
+    let l = 0;
+    let mid: number;
+    while (h >= l) {
+      mid = Math.floor((h + l) / 2);
+      let square = mid * mid;
+      if (square == x) {
+        break;
+      } else if (square > x) {
+        h = mid - 1;
+      } else if (square < x) {
+        l = mid + 1;
+      }
+    }
+    return mid * mid > x ? mid - 1 : mid;
+  }
 }
 
 export class RecentCounter {

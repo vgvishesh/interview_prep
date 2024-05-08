@@ -721,7 +721,7 @@ describe('DSA service tests', () => {
     let s
   });
 
-  it('test_minDistance', () => {
+  it.skip('test_minDistance', () => {
     let s = new DSAService();
     console.log(s.minDistance('horse', 'ros'));
     console.log(s.minDistance('intention', 'execution'));
@@ -803,5 +803,13 @@ describe('DSA service tests', () => {
       ["0", "0", "1", "0", "0"],
       ["0", "0", "0", "1", "1"]
     ]));
+  });
+
+  it('test_mqSqrt', () => {
+    let s = new DSAService();
+    // console.log(s.mySqrt(25));
+    // console.log(s.mySqrt(4));
+    console.log(s.mySqrt(8));
+    // console.log(s.mySqrt(26));
   })
 })
