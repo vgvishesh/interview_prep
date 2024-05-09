@@ -2434,6 +2434,47 @@ export class DSAService {
     return i;
   };
 
+  findDuplicate(nums: number[]): number {
+    // this.cyclicSort(nums);
+    // let start = 1;
+    // for (let i = 0; i < nums.length; i++) {
+    //   if (nums[i] != start) {
+    //     return nums[i];
+    //   }
+    //   start++;
+    // }
+    let fast = nums[0]
+    let slow = nums[0]
+    do {
+      fast = nums[nums[fast]]
+      slow = nums[slow]
+
+    } while (fast != slow)
+
+    //  console.log(slow,fast)
+    fast = nums[0]
+
+    while (fast != slow) {
+      fast = nums[fast]
+      slow = nums[slow]
+    }
+
+    return fast
+  };
+
+  findDisappearedNumbers(nums: number[]): number[] {
+    this.cyclicSort(nums);
+    let start = 1;
+    let ret: number[] = [];
+    for (let i = 0; i < nums.length; i++) {
+      if (nums[i] != start) {
+        ret.push(start);
+      }
+      start++;
+    }
+    return ret;
+  };
+
   cyclicSort(nums: number[]) {
     let i = 0;
     while (i < nums.length) {

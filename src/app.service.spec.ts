@@ -855,9 +855,22 @@ describe('DSA service tests', () => {
     console.log(arr);
   });
 
-  it('test_missingNumber2', () => {
+  it.skip('test_missingNumber2', () => {
     let s = new DSAService();
     let arr = [9, 6, 4, 2, 3, 5, 7, 0, 1];
     console.log(s.missingNumber2(arr));
+  });
+
+  it.skip('test_findduplicate', () => {
+    let s = new DSAService();
+    // console.log(s.findDuplicate([3, 3, 3, 3, 3]))
+    // console.log(s.findDuplicate([1, 3, 4, 2, 2]))
+    console.log(s.findDuplicate([3, 1, 3, 4, 2]))
+  });
+
+  it('test_findDisapperaringNumbers', () => {
+    let s = new DSAService();
+    console.log(s.findDisappearedNumbers([4, 3, 2, 7, 8, 2, 3, 1]))
+    console.log(s.findDisappearedNumbers([1, 1]))
   })
 })
