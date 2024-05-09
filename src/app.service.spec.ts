@@ -831,12 +831,33 @@ describe('DSA service tests', () => {
     console.log(s.isMatch2("bbbba", ".*a*a"));
   });
 
-  it('test_longestValidParentheses', () => {
+  it.skip('test_longestValidParentheses', () => {
     let s = new DSAService();
     console.log(s.longestValidParentheses(")()())"));
     console.log(s.longestValidParentheses("((())())"));
     console.log(s.longestValidParentheses("(()()(())"));
     console.log(s.longestValidParentheses("()(()"));
 
+  });
+
+  it.skip('test_firstMissingPositive', () => {
+    let s = new DSAService();
+    console.log(s.firstMissingPositive([1, 2, 0]));
+    console.log(s.firstMissingPositive([3, 4, -1, 1]));
+    console.log(s.firstMissingPositive([7, 8, 9, 11, 12]));
+    console.log(s.firstMissingPositive([-4, -3, -2, -1, 1]));
+  });
+
+  it.skip('test_cyclicSort', () => {
+    let s = new DSAService();
+    let arr = [-1, 1, 1, 2, 4, 3, 4, 5, 4]
+    s.cyclicSort(arr);
+    console.log(arr);
+  });
+
+  it('test_missingNumber2', () => {
+    let s = new DSAService();
+    let arr = [9, 6, 4, 2, 3, 5, 7, 0, 1];
+    console.log(s.missingNumber2(arr));
   })
 })

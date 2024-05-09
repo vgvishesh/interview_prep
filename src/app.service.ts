@@ -2395,6 +2395,58 @@ export class DSAService {
     }
     return max;
   };
+
+  firstMissingPositive(nums: number[]): number {
+    this.cyclicSort(nums);
+    console.log(nums);
+    let start = 1;
+    for (let i = 0; i < nums.length; i++) {
+      if (nums[i] != start) {
+        return start;
+      }
+      start++;
+    }
+
+    return start;
+  };
+
+  missingNumber2(nums: number[]): number {
+    function cyclicSort(nums: number[]) {
+      let i = 0;
+      while (i < nums.length) {
+        let correctPos = nums[i];
+        if (correctPos >= 0 && correctPos < nums.length && i != correctPos && nums[i] != nums[correctPos]) {
+          let temp = nums[i];
+          nums[i] = nums[correctPos];
+          nums[correctPos] = temp;
+        } else {
+          i++;
+        }
+      }
+    }
+    cyclicSort(nums);
+    let i: number;
+    for (i = 0; i < nums.length; i++) {
+      if (i != nums[i]) {
+        return i;
+      }
+    }
+    return i;
+  };
+
+  cyclicSort(nums: number[]) {
+    let i = 0;
+    while (i < nums.length) {
+      let correctPos = nums[i] - 1;
+      if (correctPos >= 0 && correctPos < nums.length && i != correctPos && nums[i] != nums[correctPos]) {
+        let temp = nums[i];
+        nums[i] = nums[correctPos];
+        nums[correctPos] = temp;
+      } else {
+        i++;
+      }
+    }
+  }
 }
 
 
