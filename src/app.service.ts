@@ -2585,6 +2585,45 @@ export class DSAService {
     }
     return i;
   };
+
+  search(nums: number[], target: number): number {
+    function findRoationIndex(nums: number[]): number {
+      let l = 0;
+      let h = nums.length - 1;
+      let mid: number;
+
+      while (h > l) {
+        mid = Math.floor((l + h) / 2);
+        if (nums[mid] > nums[h]) {
+          l = mid + 1;
+        } else {
+          h = mid
+        }
+      }
+      return nums.length - 1 - mid;
+
+    }
+
+    function findNum(k: number): number {
+      let l = 0 - k;
+      let h = nums.length - 1 - k;
+      let mid: number;
+      while (h >= l) {
+        mid = Math.floor((h + l) / 2);
+        let rightMid = mid < 0 ? nums.length + mid : mid;
+        if (nums[rightMid] == target) return rightMid;
+        else if (nums[rightMid] > target) {
+          h = mid - 1;
+        } else if (nums[rightMid] < target) {
+          l = mid + 1;
+        }
+      }
+      return -1;
+    }
+
+    let k = findRoationIndex(nums);
+    return findNum(k);
+  };
 }
 
 
