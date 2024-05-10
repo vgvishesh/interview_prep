@@ -896,9 +896,6 @@ describe('DSA service tests', () => {
 
   it('test_search', () => {
     let s = new DSAService();
-    console.log(s.search([4, 5, 6, 7, 0, 1, 2], 0));
-    console.log(s.search([0, 1, 2, 4, 5, 6, 7], 7));
-    console.log(s.search([4, 5, 6, 7, 0, 1, 2], 3));
-    console.log(s.search([3, 1], 1));
-  })
+    console.log(s.countOccurence([0, 1, 1, 1, 1, 1, 1, 2, 4, 5, 6, 7], 5));
+  });
 })

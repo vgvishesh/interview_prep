@@ -2624,6 +2624,38 @@ export class DSAService {
     let k = findRoationIndex(nums);
     return findNum(k);
   };
+
+  countOccurence(nums: number[], target: number) {
+    let l = 0;
+    let h = nums.length;
+    while (!(l > h)) {
+      let mid = Math.floor((h + l) / 2);
+      if (nums[mid] > target) {
+        h = mid - 1;
+      } else {
+        l = mid + 1;
+      }
+    }
+
+    let h1 = l;
+
+    l = 0;
+    h = nums.length;
+    while (!(l > h)) {
+      let mid = Math.floor((h + l) / 2);
+      if (nums[mid] < target) {
+        l = mid + 1;
+      } else {
+        h = mid - 1;
+      }
+    }
+
+    let l1 = h;
+
+    console.log(h1);
+    console.log(l1);
+    return h1 - l1 - 1;
+  }
 }
 
 
