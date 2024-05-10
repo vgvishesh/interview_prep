@@ -2488,6 +2488,103 @@ export class DSAService {
       }
     }
   }
+
+  minSwapsCouples(row: number[]): number {
+    let buckets = row.length / 2;
+    let indexMap: Map<number, number> = new Map();
+    row.forEach((val, index) => {
+      indexMap.set(val, index);
+    })
+    let count = 0;
+    for (let i = 0; i < buckets; i++) {
+      let p1 = row[i * 2];
+      let p2 = row[i * 2 + 1];
+      if ((p1 % 2 == 0 && p2 == p1 + 1) || (p2 % 2 == 0 && p1 == p2 + 1)) {
+        continue;
+      } else {
+        let vp = p1 % 2 == 0 ? p1 + 1 : p1 - 1;
+        let swapIndex = indexMap.get(vp);
+        let temp = row[i * 2 + 1];
+        row[i * 2 + 1] = row[swapIndex];
+        row[swapIndex] = temp;
+        indexMap.set(temp, swapIndex);
+        indexMap.set(row[i * 2 + 1], i * 2 + 1);
+        count++;
+      }
+    }
+    return count;
+  };
+
+  maxCount(banned: number[], n: number, maxSum: number): number {
+    let banSet: Set<number> = new Set();
+    banned.forEach(x => banSet.add(x));
+    let sum = 0;
+    let count = 0;
+    for (let i = 1; i <= n; i++) {
+      if (!banSet.has(i)) {
+        if (sum + i <= maxSum) {
+          sum += i;
+          count++;
+        }
+      }
+    }
+    return count;
+  };
+
+  findSmallestInteger(nums: number[], value: number): number {
+    let indexMap: Map<number, number> = new Map();
+
+    function placeInCorrectPosition(i: number) {
+      let desPos = i;
+      let currPos = indexMap.get(i);
+      if (nums[desPos] != i) {
+        let temp = nums[desPos];
+        nums[desPos] = i;
+        nums[currPos] = temp;
+        indexMap.set(i, desPos);
+        indexMap.set(temp, currPos);
+      }
+    }
+
+    nums.forEach((val, index) => {
+      indexMap.set(val, index);
+    });
+
+    let i: number;
+    for (i = 0; i < nums.length; i++) {
+      if (!indexMap.has(i)) {
+        let desPos: number;
+        let k: number;
+        for (k = i; k < nums.length; k++) {
+          let res: number;
+          if (nums[k] > 0) {
+            if (nums[k] - i >= 0) {
+              res = (nums[k] - i) / value;
+            } else {
+              res = (i - nums[k]) / value;
+            }
+          } else {
+            res = (i + Math.abs(nums[k])) / value;
+          }
+
+          if (res == Math.floor(res)) {
+            desPos = k;
+            break;
+          }
+        }
+        if (k == nums.length) {
+          return i;
+        }
+        // let index = indexMap.get(nums[desPos]);
+        indexMap.delete(nums[desPos]);
+        indexMap.set(i, desPos);
+        nums[desPos] = i;
+      } else {
+        placeInCorrectPosition(i);
+      }
+    }
+    return i;
+  };
 }
 
 
