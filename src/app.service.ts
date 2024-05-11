@@ -2658,7 +2658,6 @@ export class DSAService {
   }
 }
 
-
 export class RecentCounter {
   private record: number[] = [];
   private head = 0;
@@ -3654,4 +3653,52 @@ export class BSTIterator {
     }
     return false;
   }
+}
+
+export class Node {
+  val: number
+  neighbors: Node[]
+  constructor(val?: number, neighbors?: Node[]) {
+    this.val = (val === undefined ? 0 : val)
+    this.neighbors = (neighbors === undefined ? [] : neighbors)
+  }
+}
+
+export class G1ListNode {
+  val: Node
+  next: G1ListNode | null
+  constructor(val?: Node, next?: G1ListNode | null) {
+    this.val = (val === undefined ? null : val)
+    this.next = (next === undefined ? null : next)
+  }
+}
+
+export class GenericQueue {
+  private queueHead: G1ListNode;
+  private queuTail: G1ListNode;
+  private count = 0;
+
+  constructor(n: Node) {
+    this.queueHead = new G1ListNode(n);
+    this.queuTail = this.queueHead;
+    this.count = 1;
+  }
+  enqueue(node: Node) {
+    this.queuTail.next = new G1ListNode(node);
+    if (this.queueHead == null) {
+      this.queueHead = this.queuTail.next;
+    }
+    this.queuTail = this.queuTail.next;
+    this.count++;
+  }
+  dequeue(): Node {
+    if (this.queueHead == null) {
+      return null;
+    }
+    let val = this.queueHead.val;
+    this.queueHead = this.queueHead.next;
+    this.count--;
+    return val;
+  }
+
 }
