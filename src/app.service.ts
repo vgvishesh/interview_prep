@@ -3701,4 +3701,36 @@ export class GenericQueue {
     return val;
   }
 
+  size(): number {
+    return this.count;
+  }
+
 }
+
+export class Graph {
+  static cloneGraph(node: Node | null): number[] {
+    if (node == null) {
+      return [];
+    }
+    let nodeState: number[] = new Array(100).fill(-1);
+    let values: number[] = [];
+    function BFS(node: Node) {
+      let oQ = new GenericQueue(node);
+      nodeState[node.val] = 0;
+      while (oQ.size() != 0) {
+        let o = oQ.dequeue();
+        for (let i = 0; i < o.neighbors.length; i++) {
+          if (nodeState[o.neighbors[i].val] >= 0) {
+            continue;
+          }
+          oQ.enqueue(o.neighbors[i]);
+          nodeState[o.neighbors[i].val] = 0;
+        }
+        values.push(o.val);
+        nodeState[o.val] = 1;
+      }
+    }
+    BFS(node);
+    return values;
+  }
+};
