@@ -3708,7 +3708,7 @@ export class GenericQueue {
 }
 
 export class Graph {
-  static cloneGraph(node: Node | null): number[] {
+  static getValues(node: Node | null): number[] {
     if (node == null) {
       return [];
     }
