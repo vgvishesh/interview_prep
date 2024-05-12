@@ -2713,7 +2713,58 @@ export class DSAService {
     findDfs(0);
     return minMissing;
   };
-}
+
+  solve(board: string[][]): void {
+    let m = board.length;
+    let n = board[0].length;
+    let boardstate: boolean[][] = new Array(m);
+    for (let i = 0; i < m; i++) {
+      boardstate[i] = new Array(n).fill(true);
+    }
+
+    function findNeighbours(i: number, j: number) {
+      if (i < 0 || j < 0 || i == m || j == n) {
+        return;
+      }
+
+      if (boardstate[i][j] == false) {
+        return;
+      }
+
+      if (board[i][j] == 'O') {
+        boardstate[i][j] = false;
+        findNeighbours(i - 1, j);
+        findNeighbours(i + 1, j);
+        findNeighbours(i, j + 1);
+        findNeighbours(i, j - 1);
+      }
+    }
+
+    for (let i of [0, m - 1]) {
+      for (let j = 0; j < n; j++) {
+        if (board[i][j] == 'O') {
+          findNeighbours(i, j);
+        }
+      }
+    }
+
+    for (let j of [0, n - 1]) {
+      for (let i = 0; i < m; i++) {
+        if (board[i][j] == 'O') {
+          findNeighbours(i, j);
+        }
+      }
+    }
+
+    for (let i = 0; i < m; i++) {
+      for (let j = 0; j < n; j++) {
+        if (boardstate[i][j] == true) {
+          board[i][j] = 'X';
+        }
+      }
+    }
+  }
+};
 
 export class RecentCounter {
   private record: number[] = [];
