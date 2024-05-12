@@ -2656,6 +2656,63 @@ export class DSAService {
     console.log(l1);
     return h1 - l1 - 1;
   }
+
+  smallestMissingValueSubtree(parents: number[], nums: number[]): number[] {
+    type graphNode = {
+      val: number;
+      index: number;
+      isVisited: boolean;
+      children: graphNode[];
+    }
+
+    let nodes: graphNode[] = [];
+    for (let i = 0; i < nums.length; i++) {
+      let node: graphNode = {
+        val: nums[i],
+        index: i,
+        isVisited: false,
+        children: [],
+      }
+      nodes.push(node);
+    }
+
+    for (let i = 1; i < parents.length; i++) {
+      let p = parents[i];
+      nodes[p].children.push(nodes[i]);
+    }
+
+    let minMissing: number[] = new Array(nodes.length);
+    function findDfs(parentIndex: number): { set: Set<number>, maxmissing: number } {
+      nodes[parentIndex].isVisited = true;
+      let allGenesSet: Set<number> = new Set<number>().add(nodes[parentIndex].val);
+      let maxmissing = 1;
+      for (let i = 0; i < nodes[parentIndex].children.length; i++) {
+        let child = nodes[parentIndex].children[i];
+        if (!child.isVisited) {
+          let { set: childSet, maxmissing: missing } = findDfs(child.index);
+          if (maxmissing < missing) {
+            maxmissing = missing;
+          }
+          if (allGenesSet.size > childSet.size) {
+            childSet.forEach(x => allGenesSet.add(x));
+          } else {
+            allGenesSet.forEach(x => childSet.add(x));
+            allGenesSet = childSet;
+          }
+        }
+      }
+      for (let i = maxmissing; i <= nums.length + 1; i++) {
+        if (!allGenesSet.has(i)) {
+          minMissing[parentIndex] = i;
+          break;
+        }
+      }
+      return { set: allGenesSet, maxmissing: minMissing[parentIndex] };
+    }
+
+    findDfs(0);
+    return minMissing;
+  };
 }
 
 export class RecentCounter {

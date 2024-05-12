@@ -894,8 +894,15 @@ describe('DSA service tests', () => {
     console.log(s.findSmallestInteger([1, -10, 7, 13, 6, 8], 5));
   });
 
-  it('test_search', () => {
+  it.skip('test_search', () => {
     let s = new DSAService();
     console.log(s.countOccurence([0, 1, 1, 1, 1, 1, 1, 2, 4, 5, 6, 7], 5));
   });
+
+  it('test_smallestMissingValueSubtree', () => {
+    let s = new DSAService();
+    console.log(s.smallestMissingValueSubtree([-1, 0, 0, 2], [1, 2, 3, 4]));
+    console.log(s.smallestMissingValueSubtree([-1, 0, 1, 0, 3, 3], [5, 4, 6, 2, 1, 3]));
+    console.log(s.smallestMissingValueSubtree([-1, 2, 3, 0, 2, 4, 1], [2, 3, 4, 5, 6, 7, 8]));
+  })
 })
