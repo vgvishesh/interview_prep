@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator } from "./app.service"
+import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner } from "./app.service"
 
 describe('DSA service tests', () => {
   it.skip('test_missing_number', () => {
@@ -906,7 +906,7 @@ describe('DSA service tests', () => {
     console.log(s.smallestMissingValueSubtree([-1, 2, 3, 0, 2, 4, 1], [2, 3, 4, 5, 6, 7, 8]));
   });
 
-  it('test_sove', () => {
+  it.skip('test_solve', () => {
     let s = new DSAService();
     let board = [["X", "O", "X", "X"], ["X", "O", "X", "X"], ["X", "O", "O", "X"], ["X", "X", "O", "O"]];
     s.solve(board);
@@ -915,5 +915,31 @@ describe('DSA service tests', () => {
     board = [["X"]]
     s.solve(board);
     console.log(board);
+  });
+
+  it.skip('test_getPermutation', () => {
+    let s = new DSAService();
+    console.log(s.getPermutation(4, 9));
+  });
+
+  it.skip('test_nQueens', () => {
+    let s = new DSAService();
+    console.log(s.solveNQueens(4));
+  });
+
+  it.skip('test_dailyTemperatures', () => {
+    let s = new DSAService();
+    console.log(s.dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73]));
+  });
+
+  it('test_stockSpanner', () => {
+    let s = new StockSpanner();
+    console.log(s.next(100)); // return 1
+    console.log(s.next(80));  // return 1
+    console.log(s.next(60));  // return 1
+    console.log(s.next(70));  // return 2
+    console.log(s.next(60));  // return 1
+    console.log(s.next(75));
+    console.log(s.next(85));
   })
 })

@@ -2763,7 +2763,132 @@ export class DSAService {
         }
       }
     }
-  }
+  };
+
+  getPermutation(n: number, k: number): string {
+
+    let prod = 1;
+    let factorial = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((v) => {
+      prod *= v;
+      return prod;
+    }, 1)
+
+    function findPermutation(n: number, k: number) {
+      if (n == 1) {
+        return '1';
+      }
+
+      let regularRanks = (n - 1) * factorial[n - 2];
+      let groupRank: number;
+      let shift: number;
+      if (k >= regularRanks) {
+        groupRank = k % regularRanks;
+        shift = n - 1;
+      } else {
+        groupRank = Math.ceil(k / (n - 1));
+        shift = k % (n - 1);
+      }
+      let val = findPermutation(n - 1, groupRank);
+      let j = val.length - shift;
+      let finalVal = val.slice(0, j) + `${n}` + val.slice(j);
+      return finalVal;
+    }
+    return findPermutation(n, k - 1);
+  };
+
+  solveNQueens(n: number): string[][] {
+    let configs: string[][] = [];
+    let board: number[][] = new Array(n);
+    for (let i = 0; i < n; i++) {
+      board[i] = new Array(n).fill(0);
+    }
+
+    function isMoveValid(i: number, j: number) {
+      if (board[i][j] == 1) {
+        return false;
+      }
+
+      for (let row = 0; row < i; row++) {
+        for (let col = 0; col < n; col++) {
+          if (board[row][col] == 1) {
+            if (col == j) {
+              return false;
+            }
+            break;
+          }
+        }
+      }
+
+      for (let row = 0; row < i; row++) {
+        for (let col = 0; col < n; col++) {
+          if (board[row][col] == 1) {
+            let num = j - col;
+            let dem = i - row;
+            if (num / dem == 1 || num / dem == -1) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    }
+
+    function recordBoard() {
+      let recording: string[] = [];
+      for (let i = 0; i < n; i++) {
+        let s = '';
+        for (let j = 0; j < n; j++) {
+          if (board[i][j] == 0) {
+            s += '.';
+          } else {
+            s += 'Q';
+          }
+        }
+        recording.push(s);
+      }
+      configs.push(recording);
+    }
+
+    function findNqueens(i: number) {
+      if (i == n) {
+        recordBoard();
+        return;
+      }
+
+      for (let j = 0; j < n; j++) {
+        let isValid = isMoveValid(i, j);
+        if (isValid) {
+          board[i][j] = 1;
+          findNqueens(i + 1);
+          board[i][j] = 0;
+        }
+      }
+    }
+
+    findNqueens(0);
+    return configs;
+  };
+
+  dailyTemperatures(temperatures: number[]): number[] {
+    let stack: number[] = [];
+    let res: number[] = [];
+    stack.push(0);
+    for (let i = 1; i < temperatures.length; i++) {
+      let top = stack[stack.length - 1];
+      while (stack.length > 0 && temperatures[top] < temperatures[i]) {
+        let pop = stack.pop();
+        res[pop] = i - pop;
+        top = stack[stack.length - 1];
+      }
+      stack.push(i);
+    }
+
+    stack.forEach(x => {
+      res[x] = 0;
+    });
+
+    return res;
+  };
 };
 
 export class RecentCounter {
@@ -3842,3 +3967,23 @@ export class Graph {
     return values;
   }
 };
+
+export class StockSpanner {
+  private stockPrices: number[] = [];
+  private stack: { index: number, span: number }[] = [];
+  constructor() {
+  }
+
+  next(price: number): number {
+    this.stockPrices.push(price);
+    let top = this.stack[this.stack.length - 1];
+    let count = 1;
+    while (this.stack.length > 0 && this.stockPrices[top.index] <= price) {
+      let pop = this.stack.pop();
+      count += pop.span;
+      top = this.stack[this.stack.length - 1];
+    }
+    this.stack.push({ index: this.stockPrices.length - 1, span: count });
+    return count;
+  }
+}
