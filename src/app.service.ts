@@ -3112,6 +3112,40 @@ export class DSAService {
 
     return findPaths(0, 0);
   };
+
+  longestCommonSubsequence(text1: string, text2: string): number {
+    let bigger = text1.length > text2.length ? text1 : text2;
+    if (bigger == text2) {
+      text2 = text1;
+      text1 = bigger;
+    }
+
+    let dp: number[][] = new Array(text1.length);
+    for (let i = 0; i < text1.length; i++) {
+      dp[i] = new Array(text2.length).fill(-1);
+    }
+
+    function find(i: number, j: number) {
+      if (i >= text1.length || j >= text2.length) {
+        return 0;
+      }
+      if (dp[i][j] != -1) {
+        return dp[i][j];
+      }
+
+      let count = 0;
+      if (text1[i] == text2[j]) {
+        count = Math.max(1 + find(i + 1, j + 1));
+      } else {
+        count = Math.max(find(i + 1, j), find(i, j + 1));
+      }
+
+      dp[i][j] = count;
+      return count;
+    }
+
+    return find(0, 0);
+  };
 };
 
 export class RecentCounter {

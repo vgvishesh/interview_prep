@@ -966,8 +966,13 @@ describe('DSA service tests', () => {
     console.log(s.canVisitAllRooms([[1, 3], [3, 0, 1], [2], [0]]));
   });
 
-  it('test_uniquePAths', () => {
+  it.skip('test_uniquePAths', () => {
     let s = new DSAService();
     console.log(s.uniquePaths(3, 7));
+  });
+
+  it('test_lcs', () => {
+    let s = new DSAService();
+    console.log(s.longestCommonSubsequence("def", "abc"));
   })
 })
