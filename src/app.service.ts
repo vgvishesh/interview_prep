@@ -3051,6 +3051,20 @@ export class DSAService {
     }
     return ans;
   };
+
+  findMinArrowShots(points: number[][]): number {
+    points.sort((a, b) => a[1] - b[1]);
+    let end = points[0][1];
+    let count = 1;
+    for (let i = 0; i < points.length; i++) {
+      let curr = points[i];
+      if (curr[0] > end) {
+        end = curr[1];
+        count++;
+      }
+    }
+    return count;
+  };
 };
 
 export class RecentCounter {

@@ -949,8 +949,14 @@ describe('DSA service tests', () => {
     console.log(s.maxNumber([2, 5, 6, 4, 4, 0], [7, 3, 8, 0, 6, 5, 7, 6, 2], 15));
   });
 
-  it('test_eraseIntervals', () => {
+  it.skip('test_eraseIntervals', () => {
     let s = new DSAService();
     console.log(s.eraseOverlapIntervals([[-52, 31], [-73, -26], [82, 97], [-65, -11], [-62, -49], [95, 99], [58, 95], [-31, 49], [66, 98], [-63, 2], [30, 47], [-40, -26]]));
+  });
+
+  it('test_findMinArrows', () => {
+    let s = new DSAService();
+    console.log(s.findMinArrowShots([[1, 2], [2, 3], [3, 4], [4, 5]]));
+    console.log(s.findMinArrowShots([[1, 2], [3, 4], [5, 6], [7, 8]]));
   })
 })
