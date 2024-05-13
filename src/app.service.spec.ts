@@ -932,7 +932,7 @@ describe('DSA service tests', () => {
     console.log(s.dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73]));
   });
 
-  it('test_stockSpanner', () => {
+  it.skip('test_stockSpanner', () => {
     let s = new StockSpanner();
     console.log(s.next(100)); // return 1
     console.log(s.next(80));  // return 1
@@ -941,5 +941,11 @@ describe('DSA service tests', () => {
     console.log(s.next(60));  // return 1
     console.log(s.next(75));
     console.log(s.next(85));
+  });
+
+  it('test_greatestNumber', () => {
+    let s = new DSAService();
+    console.log(s.maxNumber([6, 7], [6, 0, 4], 5));
+    console.log(s.maxNumber([2, 5, 6, 4, 4, 0], [7, 3, 8, 0, 6, 5, 7, 6, 2], 15));
   })
 })

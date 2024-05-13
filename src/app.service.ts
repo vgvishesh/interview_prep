@@ -2889,6 +2889,151 @@ export class DSAService {
 
     return res;
   };
+
+  maxNumber(nums1: number[], nums2: number[], k: number): number[] {
+    function getMax(s1: number[], s2: number[]): number[] {
+      if (s1.length != s2.length) {
+        return s1.length > s2.length ? s1 : s2;
+      }
+      for (let i = 0; i < s1.length; i++) {
+        if (s1[i] != s2[i]) {
+          return s1[i] > s2[i] ? s1 : s2;
+        }
+      }
+
+      return s1;
+    }
+
+    function greatestNumbers(nums: number[], k: number): number[][] {
+      let dp: number[][][] = new Array(nums.length);
+      for (let i = 0; i < nums.length; i++) {
+        dp[i] = new Array(k + 1).fill([]);
+      }
+
+      function findGreatest(i: number, count: number) {
+        if (count == 0 || i >= nums.length || nums.length - i < count) {
+          return [];
+        }
+
+        if (dp[i][count].length != 0) {
+          return dp[i][count];
+        }
+
+        let thisSeq: number[] = [nums[i]];
+        thisSeq.push(...findGreatest(i + 1, count - 1));
+        let seq1 = thisSeq;
+        let seq2 = findGreatest(i + 1, count);
+        let greater = getMax(seq1, seq2);
+        dp[i][count] = greater;
+        return greater;
+      }
+
+      let result: number[][] = [];
+      for (let i = 1; i <= k; i++) {
+        result.push(findGreatest(0, i));
+      }
+      return result;
+    }
+
+    function breakTie(i: number, j: number, n1: number[], n2: number[]): number {
+      if (i + 1 == n1.length) {
+        return 2;
+      } else if (j + 1 == n2.length) {
+        return 1;
+      }
+
+      while (i < n1.length && j < n2.length && n1[i] == n2[j]) {
+        i++;
+        j++;
+      }
+
+      if (i == n1.length) {
+        if (j == n2.length) {
+          return 1;
+        } else {
+          return 2;
+        }
+      } else if (j == n2.length) {
+        if (i == n1.length) {
+          return 2;
+        } else {
+          return 1;
+        }
+      }
+
+      if (n1[i] < n2[j]) {
+        return 2;
+      } else if (n1[i] > n2[j]) {
+        return 1;
+      }
+    }
+
+    function greatestMerge(n1: number[], n2: number[]): number[] {
+      let i = 0;
+      let j = 0;
+      let result: number[] = [];
+      while (i < n1.length && j < n2.length) {
+        if (n1[i] > n2[j]) {
+          result.push(n1[i]);
+          i++;
+        } else if (n1[i] < n2[j]) {
+          result.push(n2[j]);
+          j++;
+        } else {
+          if (breakTie(i, j, n1, n2) == 1) {
+            result.push(n1[i]);
+            i++;
+          } else {
+            result.push(n2[j]);
+            j++;
+          }
+        }
+      }
+      while (i < n1.length) {
+        result.push(n1[i]);
+        i++;
+      }
+      while (j < n2.length) {
+        result.push(n2[j]);
+        j++;
+      }
+      return result;
+    }
+
+    let bigger = nums1.length > nums2.length ? nums1 : nums2;
+    if (bigger == nums2) {
+      nums2 = nums1;
+      nums1 = bigger;
+    }
+
+    let num1high = greatestNumbers(nums1, Math.min(nums1.length, k));
+    let num2high = greatestNumbers(nums2, Math.min(nums2.length, k));
+
+    // x + y = k
+    let x1 = Math.min(k, nums1.length);
+    let max = [];
+
+    for (let i = x1; i >= 0; i--) {
+      if (k - 1 - i >= nums2.length) {
+        continue;
+      }
+
+      let greatest = [];
+      if (k - 1 - i < 0) {
+        greatest = greatestMerge(num1high[i - 1], []);
+      } else if (i - 1 < 0) {
+        greatest = greatestMerge([], num2high[k - 1 - i]);
+      } else {
+        greatest = greatestMerge(num1high[i - 1], num2high[k - 1 - i]);
+      }
+
+      if (getMax(max, greatest) != max) {
+        max = greatest;
+      }
+    }
+
+    return max;
+  };
 };
 
 export class RecentCounter {
