@@ -3065,6 +3065,53 @@ export class DSAService {
     }
     return count;
   };
+
+  canVisitAllRooms(rooms: number[][]): boolean {
+    let visited: boolean[] = new Array(rooms.length).fill(false);
+    let totalVisits = 0;
+    function visit(currRoom: number) {
+      visited[currRoom] = true;
+      totalVisits++;
+      for (let i = 0; i < rooms[currRoom].length; i++) {
+        let nxtRoom = rooms[currRoom][i];
+        if (!visited[nxtRoom]) {
+          visit(nxtRoom);
+        }
+      }
+    }
+    visit(0);
+    if (totalVisits == rooms.length) {
+      return true;
+    }
+    return false;
+  };
+
+  uniquePaths(m: number, n: number): number {
+    let dp: number[][] = new Array(m);
+    for (let i = 0; i < m; i++) {
+      dp[i] = new Array(n).fill(-1);
+    }
+
+    function findPaths(i: number, j: number) {
+      if (i >= m || j >= n) {
+        return 0;
+      }
+
+      if (i == m - 1 && j == n - 1) {
+        return 1;
+      }
+
+      if (dp[i][j] != -1) {
+        return dp[i][j];
+      }
+
+      let sum = findPaths(i + 1, j) + findPaths(i, j + 1);
+      dp[i][j] = sum;
+      return sum;
+    }
+
+    return findPaths(0, 0);
+  };
 };
 
 export class RecentCounter {

@@ -954,9 +954,20 @@ describe('DSA service tests', () => {
     console.log(s.eraseOverlapIntervals([[-52, 31], [-73, -26], [82, 97], [-65, -11], [-62, -49], [95, 99], [58, 95], [-31, 49], [66, 98], [-63, 2], [30, 47], [-40, -26]]));
   });
 
-  it('test_findMinArrows', () => {
+  it.skip('test_findMinArrows', () => {
     let s = new DSAService();
     console.log(s.findMinArrowShots([[1, 2], [2, 3], [3, 4], [4, 5]]));
     console.log(s.findMinArrowShots([[1, 2], [3, 4], [5, 6], [7, 8]]));
+  });
+
+  it.skip('test_roomVisit', () => {
+    let s = new DSAService();
+    console.log(s.canVisitAllRooms([[1], [2], [3], []]));
+    console.log(s.canVisitAllRooms([[1, 3], [3, 0, 1], [2], [0]]));
+  });
+
+  it('test_uniquePAths', () => {
+    let s = new DSAService();
+    console.log(s.uniquePaths(3, 7));
   })
 })
