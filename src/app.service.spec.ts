@@ -976,11 +976,17 @@ describe('DSA service tests', () => {
     console.log(s.longestCommonSubsequence("def", "abc"));
   });
 
-  it('test_findMaximizedCapital', () => {
+  it.skip('test_findMaximizedCapital', () => {
     let s = new DSAService();
     // console.log(s.findMaximizedCapital(3, 0, [1, 2, 3], [0, 1, 2]));
     console.log(s.findMaximizedCapital(1, 0, [1, 2, 3], [1, 1, 2]));
+  });
+
+  it('test_justify', () => {
+    let s = new DSAService();
+    console.log(s.fullJustify(["Science", "is", "what", "we", "understand", "well", "enough", "to", "explain", "to", "a", "computer.", "Art", "is", "everything", "else", "we", "do"], 20));
+    console.log(s.fullJustify(["What", "must", "be", "acknowledgment", "shall", "be"], 16));
+    console.log(s.fullJustify(["This", "is", "an", "example", "of", "text", "justification."], 16));
+
   })
-
-
 })

@@ -3238,6 +3238,70 @@ export class DSAService {
       }
     }
   };
+
+  fullJustify(words: string[], maxWidth: number): string[] {
+    let z = 0;
+    let result: string[] = [];
+    while (z < words.length) {
+      let j = z;
+      let selectedWords: string[] = [];
+      let selectedLength: number = 0;
+      while (1) {
+        if (j < words.length && selectedLength + words[j].length <= maxWidth) {
+          selectedWords.push(words[j]);
+          selectedLength += words[j].length;
+          selectedLength += 1;
+          j++;
+        } else {
+          break;
+        }
+      }
+      z = j;
+
+      let line: string = selectedWords[0];
+      if (z == words.length) {
+        for (let i = 1; i < selectedWords.length; i++) {
+          line += ' ';
+          line += selectedWords[i];
+        }
+        let spaces = maxWidth - line.length;
+        let str = '';
+        for (let i = 0; i < spaces; i++) {
+          str += ' ';
+        }
+        line += str;
+      } else if (selectedWords.length == 1) {
+        let str = '';
+        for (let i = 0; i < maxWidth - selectedWords[0].length; i++) {
+          str += ' ';
+        }
+        line += str;
+      } else {
+        let wordRemaining = selectedWords.length - 2;
+        let spaceDivs = wordRemaining + 1;
+        let start = maxWidth - (selectedLength - selectedWords.length);
+        let divs: number[] = [];
+        while (spaceDivs > 0) {
+          let space = Math.ceil(start / spaceDivs);
+          divs.push(space);
+          start -= space;
+          spaceDivs -= 1;
+        }
+
+        for (let i = 0; i < divs.length; i++) {
+          let str = '';
+          for (let j = 0; j < divs[i]; j++) {
+            str += ' ';
+          }
+          line += str;
+          line += selectedWords[i + 1];
+        }
+      }
+      result.push(line);
+    }
+    return result;
+  };
+
 };
 
 export class RecentCounter {
