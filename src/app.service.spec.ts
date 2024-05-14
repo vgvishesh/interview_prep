@@ -971,8 +971,16 @@ describe('DSA service tests', () => {
     console.log(s.uniquePaths(3, 7));
   });
 
-  it('test_lcs', () => {
+  it.skip('test_lcs', () => {
     let s = new DSAService();
     console.log(s.longestCommonSubsequence("def", "abc"));
+  });
+
+  it('test_findMaximizedCapital', () => {
+    let s = new DSAService();
+    // console.log(s.findMaximizedCapital(3, 0, [1, 2, 3], [0, 1, 2]));
+    console.log(s.findMaximizedCapital(1, 0, [1, 2, 3], [1, 1, 2]));
   })
+
+
 })

@@ -3146,6 +3146,98 @@ export class DSAService {
 
     return find(0, 0);
   };
+
+  findMaximizedCapital(k: number, w: number, profits: number[], capital: number[]): number {
+    let all: { p: number, c: number }[] = [];
+    capital.forEach((cap, i) => {
+      all.push({ p: profits[i], c: cap });
+    });
+    all.sort((a, b) => a.c - b.c);
+    let startCap = w;
+    let queuedId = -1;
+    let queue: number[] = [];
+    while (k > 0) {
+      let upperBound = findUpperBound(all, startCap);
+      updateQueue(queue, queuedId, upperBound);
+      let maxProfit = popQueue(queue);
+      if (!isNaN(maxProfit)) {
+        startCap += maxProfit;
+      }
+      queuedId = upperBound;
+      k--;
+    }
+    return startCap ?? 0;
+
+    function findUpperBound(all: { p: number, c: number }[], target: number): number {
+      let l = 0;
+      let h = all.length - 1;
+      let mid: number;
+      while (h >= l) {
+        mid = Math.floor((l + h) / 2);
+        if (all[mid].c > target) {
+          h = mid - 1;
+        } else {
+          l = mid + 1;
+        }
+      }
+      return all[mid].c == target ? mid : all[mid].c < target ? mid : mid - 1;
+    }
+
+    function updateQueue(queue: number[], begin: number, end: number) {
+      let i = begin + 1;
+      while (i <= end) {
+        queue.push(all[i].p);
+        let child = queue.length - 1;
+        let parent = child % 2 == 0 ? (child - 2) / 2 : (child - 1) / 2;
+        while (parent >= 0 && queue[parent] < queue[child]) {
+          let temp = queue[parent];
+          queue[parent] = queue[child];
+          queue[child] = temp;
+          child = parent;
+          parent = child % 2 == 0 ? (child - 2) / 2 : (child - 1) / 2;
+        }
+        i++;
+      }
+    }
+
+    function popQueue(queue: number[]): number {
+      let ret = queue[0];
+      queue[0] = queue[queue.length - 1];
+      queue.pop();
+      let parent = 0;
+      let isSwap: boolean = true;
+      while (isSwap) {
+        isSwap = false;
+        let c1 = 2 * parent + 1;
+        let c2 = 2 * parent + 2;
+        if (c2 < queue.length - 1) {
+          if (queue[parent] < queue[c1] && queue[c1] >= queue[c2]) {
+            swap(parent, c1);
+            parent = c1;
+            isSwap = true;
+          } else if (queue[parent] < queue[c2] && queue[c2] > queue[c1]) {
+            swap(parent, c2);
+            parent = c2;
+            isSwap = true;
+          }
+        } else if (c1 < queue.length - 1) {
+          if (queue[parent] < queue[c1]) {
+            swap(parent, c1);
+            parent = c1;
+            isSwap = true;
+          }
+        }
+      }
+
+      return ret;
+
+      function swap(parent: number, child: number) {
+        let temp = queue[parent];
+        queue[parent] = queue[child];
+        queue[child] = temp;
+      }
+    }
+  };
 };
 
 export class RecentCounter {
