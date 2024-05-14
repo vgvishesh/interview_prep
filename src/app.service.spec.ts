@@ -982,11 +982,16 @@ describe('DSA service tests', () => {
     console.log(s.findMaximizedCapital(1, 0, [1, 2, 3], [1, 1, 2]));
   });
 
-  it('test_justify', () => {
+  it.skip('test_justify', () => {
     let s = new DSAService();
     console.log(s.fullJustify(["Science", "is", "what", "we", "understand", "well", "enough", "to", "explain", "to", "a", "computer.", "Art", "is", "everything", "else", "we", "do"], 20));
     console.log(s.fullJustify(["What", "must", "be", "acknowledgment", "shall", "be"], 16));
     console.log(s.fullJustify(["This", "is", "an", "example", "of", "text", "justification."], 16));
+  });
 
-  })
+  it('test_maxCandies', () => {
+    let s = new DSAService();
+    console.log(s.maxCandies([1, 0, 1, 0], [7, 5, 4, 100], [[], [], [1], []], [[1, 2], [3], [], []], [0]));
+    console.log(s.maxCandies([1, 1, 1], [100, 1, 100], [[], [0, 2], []], [[], [], []], [1]));
+  });
 })

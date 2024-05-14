@@ -3302,6 +3302,31 @@ export class DSAService {
     return result;
   };
 
+  maxCandies(status: number[], candies: number[], keys: number[][], containedBoxes: number[][], initialBoxes: number[]): number {
+    let queue = initialBoxes;
+    let totalCandies = 0;
+    let canVisit: Set<number> = new Set();
+    while (queue.length > 0) {
+      let box = queue.pop();
+      if (status[box] == 0) {
+        canVisit.add(box);
+      } else if (status[box] == 1) {
+        totalCandies += candies[box];
+        let keysFound = keys[box];
+        let boxFound = containedBoxes[box];
+        keysFound.forEach(x => status[x] = 1);
+        keysFound.forEach(x => {
+          if (canVisit.has(x)) {
+            queue.push(x);
+            canVisit.delete(x);
+          }
+        });
+        boxFound.forEach(x => queue.push(x));
+        status[box] = 2;
+      }
+    }
+    return totalCandies;
+  };
 };
 
 export class RecentCounter {
