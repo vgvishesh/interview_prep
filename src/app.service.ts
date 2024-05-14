@@ -3327,6 +3327,93 @@ export class DSAService {
     }
     return totalCandies;
   };
+
+  maxPoints(points: number[][]): number {
+    if (points.length == 1) {
+      return 1;
+    }
+    let lines: Map<number, Map<number, Map<number, Set<number>>>> = new Map();
+    let yParallel: Map<number, Set<number>> = new Map();
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        let x1 = points[i][0];
+        let y1 = points[i][1];
+        let x2 = points[j][0];
+        let y2 = points[j][1];
+        let m: number;
+        let c: number;
+        if (x2 - x1 == 0) {
+          let pts = yParallel.get(x1);
+          pts == undefined ? pts = new Set<number>([y1, y2]) : pts.add(y1).add(y2);
+          yParallel.set(x1, pts);
+          continue;
+        }
+        m = (y2 - y1) / (x2 - x1);
+        c = y1 - m * x1;
+
+        if (lines.has(m) && lines.get(m).has(c)) {
+          let mp = lines.get(m);
+          let linepoints = mp.get(c);
+          if (linepoints.has(x2)) {
+            if (!linepoints.get(x2).has(y2)) {
+              let yCoords = linepoints.get(x2);
+              yCoords.add(y2);
+              linepoints.set(x2, yCoords);
+              mp.set(c, linepoints);
+              lines.set(m, mp);
+            }
+          } else {
+            linepoints.set(x2, new Set<number>().add(y2));
+            mp.set(c, linepoints);
+            lines.set(m, mp);
+          }
+        } else if (lines.has(m)) {
+          let mp = lines.get(m);
+          let linePoints: Map<number, Set<number>> = new Map();;
+          if (x1 == x2) {
+            let s = new Set<number>([y1, y2]);
+            linePoints.set(x1, s);
+          } else {
+            linePoints.set(x1, new Set<number>([y1]));
+            linePoints.set(x2, new Set<number>([y2]));
+          }
+          mp.set(c, linePoints);
+          lines.set(m, mp);
+        } else {
+          let linePoints: Map<number, Set<number>> = new Map();;
+          if (x1 == x2) {
+            let s = new Set<number>([y1, y2]);
+            linePoints.set(x1, s);
+          } else {
+            linePoints.set(x1, new Set<number>([y1]));
+            linePoints.set(x2, new Set<number>([y2]));
+          }
+
+          lines.set(m, new Map().set(c, linePoints));
+        }
+      }
+    }
+    let max = Number.MIN_VALUE;
+    lines.forEach((constantMap, m) => {
+      constantMap.forEach((linepointsMap, c) => {
+        let sum = 0;
+        linepointsMap.forEach((yc, x) => {
+          sum += yc.size;
+        });
+        if (sum > max) {
+          max = sum;
+        }
+      });
+    });
+
+    yParallel.forEach((pts, x) => {
+      if (pts.size > max) {
+        max = pts.size;
+      }
+    })
+
+    return max;
+  };
 };
 
 export class RecentCounter {
