@@ -3414,6 +3414,51 @@ export class DSAService {
 
     return max;
   };
+
+  minReverseOperations(n: number, p: number, banned: number[], k: number): number[] {
+    type dto = { curr: number, count: number };
+    let result: number[] = new Array(n).fill(-1);
+    let visited: number[] = new Array(n).fill(0);
+    banned.forEach(x => {
+      visited[x] = 2;
+    })
+
+    let queue = new GenericQueue<dto>({
+      curr: p,
+      count: 0,
+    })
+
+    while (queue.size() > 0) {
+      let pop = queue.dequeue();
+      if (visited[pop.curr] < 2) {
+        visited[pop.curr] = 2;
+        result[pop.curr] = pop.count;
+        let combinations = getReversable(pop.curr, pop.count + 1);
+        combinations.forEach(x => queue.enqueue(x))
+      }
+    }
+
+    return result;
+
+    function getReversable(curr: number, count: number) {
+      let start = (curr - (k - 1)) > 0 ? curr - (k - 1) : 0;
+      let possible: dto[] = [];
+      let left = (k - 1) - curr + 2 * start;
+      let right = (k - 1) - curr + 2 * curr;
+      right = right < n ? right : n;
+
+      for (let i = left; i <= right; i += 2) {
+        if (visited[i] == 0) {
+          possible.push({
+            curr: i,
+            count: count
+          });
+          visited[i] = 1;
+        }
+      }
+      return possible;
+    }
+  };
 };
 
 export class RecentCounter {
@@ -4422,26 +4467,26 @@ export class Node {
   }
 }
 
-export class G1ListNode {
-  val: Node
-  next: G1ListNode | null
-  constructor(val?: Node, next?: G1ListNode | null) {
-    this.val = (val === undefined ? null : val)
+export class G1ListNode<T> {
+  val: T
+  next: G1ListNode<T> | null
+  constructor(val?: T, next?: G1ListNode<T> | null) {
+    (this as any).val = (val === undefined ? null : val)
     this.next = (next === undefined ? null : next)
   }
 }
 
-export class GenericQueue {
-  private queueHead: G1ListNode;
-  private queuTail: G1ListNode;
+export class GenericQueue<T> {
+  private queueHead: G1ListNode<T>;
+  private queuTail: G1ListNode<T>;
   private count = 0;
 
-  constructor(n: Node) {
+  constructor(n: T) {
     this.queueHead = new G1ListNode(n);
     this.queuTail = this.queueHead;
     this.count = 1;
   }
-  enqueue(node: Node) {
+  enqueue(node: T) {
     this.queuTail.next = new G1ListNode(node);
     if (this.queueHead == null) {
       this.queueHead = this.queuTail.next;
@@ -4449,7 +4494,7 @@ export class GenericQueue {
     this.queuTail = this.queuTail.next;
     this.count++;
   }
-  dequeue(): Node {
+  dequeue(): T {
     if (this.queueHead == null) {
       return null;
     }
@@ -4462,7 +4507,6 @@ export class GenericQueue {
   size(): number {
     return this.count;
   }
-
 }
 
 export class Graph {
