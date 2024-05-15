@@ -3418,9 +3418,11 @@ export class DSAService {
   minReverseOperations(n: number, p: number, banned: number[], k: number): number[] {
     type dto = { curr: number, count: number };
     let result: number[] = new Array(n).fill(-1);
-    let visited: number[] = new Array(n).fill(0);
+    let visited: boolean[] = new Array(n).fill(false);
+    let evenSet: Set<number> = new Set();
+    let oddSet: Set<number> = new Set();
     banned.forEach(x => {
-      visited[x] = 2;
+      visited[x] = true;
     })
 
     let queue = new GenericQueue<dto>({
@@ -3428,10 +3430,12 @@ export class DSAService {
       count: 0,
     })
 
+    p % 2 == 0 ? evenSet.add(p) : oddSet.add(p);
+
     while (queue.size() > 0) {
       let pop = queue.dequeue();
-      if (visited[pop.curr] < 2) {
-        visited[pop.curr] = 2;
+      if (!visited[pop.curr]) {
+        visited[pop.curr] = true;
         result[pop.curr] = pop.count;
         let combinations = getReversable(pop.curr, pop.count + 1);
         combinations.forEach(x => queue.enqueue(x))
@@ -3441,20 +3445,46 @@ export class DSAService {
     return result;
 
     function getReversable(curr: number, count: number) {
-      let start = (curr - (k - 1)) > 0 ? curr - (k - 1) : 0;
-      let possible: dto[] = [];
-      let left = (k - 1) - curr + 2 * start;
-      let right = (k - 1) - curr + 2 * curr;
-      right = right < n ? right : n;
-
-      for (let i = left; i <= right; i += 2) {
-        if (visited[i] == 0) {
-          possible.push({
-            curr: i,
-            count: count
-          });
-          visited[i] = 1;
+      function selectSetParity(): number {
+        if (k % 2 == 0) {
+          if (curr % 2 == 0) {
+            return 1;
+          }
+          return 0;
+        } else {
+          if (curr % 2 == 0) {
+            return 0;
+          }
+          return 1;
         }
+      }
+      let leftStart = (curr - (k - 1)) > 0 ? curr - (k - 1) : 0;
+      let rightStop = (curr + (k - 1)) < n ? curr : n - k;
+      let possible: dto[] = [];
+      let leftRev = (k - 1) - curr + 2 * leftStart;
+      let rightRev = (k - 1) - curr + 2 * rightStop;
+
+      let selectedSet = selectSetParity() == 0 ? evenSet : oddSet;
+      for (let i = leftRev; i <= rightRev; i += 2) {
+        if (selectedSet.has(i)) {
+          break;
+        }
+        selectedSet.add(i);
+        possible.push({
+          curr: i,
+          count: count,
+        })
+      }
+
+      for (let i = rightRev; i >= leftRev; i -= 2) {
+        if (selectedSet.has(i)) {
+          break;
+        }
+        selectedSet.add(i);
+        possible.push({
+          curr: i,
+          count: count,
+        })
       }
       return possible;
     }
