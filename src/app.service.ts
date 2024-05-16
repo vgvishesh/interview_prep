@@ -3489,6 +3489,55 @@ export class DSAService {
       return possible;
     }
   };
+
+  maxUniqueSplit(s: string): number {
+    let uniqueSet: Set<string> = new Set();
+    let max = Number.MIN_VALUE;
+    let maxSubStrings: string[] = [];
+    function findUniques(i: number) {
+      if (i == s.length) {
+        if (uniqueSet.size > max) {
+          max = uniqueSet.size;
+          maxSubStrings = [];
+          uniqueSet.forEach(x => maxSubStrings.push(x));
+        }
+        return;
+      }
+
+      for (let j = i; j < s.length; j++) {
+        let subString = s.substring(i, j + 1);
+        if (!uniqueSet.has(subString)) {
+          uniqueSet.add(subString);
+          findUniques(j + 1);
+          uniqueSet.delete(subString);
+        }
+      }
+    }
+    findUniques(0);
+    console.log(maxSubStrings);
+    return max;
+  };
+
+  subtractProductAndSum(n: number): number {
+    if (n == 0) {
+      return 0;
+    }
+
+    function getDigits(n): number[] {
+      let nums: number[] = [];
+      while (n > 0) {
+        let mod = n % 10;
+        nums.push(mod);
+        n = Math.floor(n / 10);
+      }
+      return nums;
+    }
+    let digits = getDigits(n);
+    let product = digits.reduce((acc, curr) => acc *= curr, 1);
+    let sum = digits.reduce((acc, curr) => acc += curr, 0);
+
+    return product - sum;
+  };
 };
 
 export class RecentCounter {
