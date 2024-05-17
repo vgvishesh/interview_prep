@@ -3694,6 +3694,55 @@ export class DSAService {
     return findMaxMoney(0, false);
   };
 
+  maxMoves(grid: number[][]): number {
+    let dp: number[][] = new Array(grid.length);
+    for (let i = 0; i < grid.length; i++) {
+      dp[i] = new Array(grid[0].length).fill(-1);
+    }
+
+    let n = grid.length;
+    let m = grid[0].length;
+
+    function findPaths(i: number, j: number) {
+      if (i < 0 || i > grid.length) {
+        return 0;
+      }
+      if (j >= grid[0].length) {
+        return 0;
+      }
+      if (dp[i][j] != -1) {
+        return dp[i][j];
+      }
+
+      let p1 = 0;
+      let p2 = 0;
+      let p3 = 0;
+      let curr = grid[i][j];
+      if (i - 1 >= 0 && j + 1 < m && grid[i - 1][j + 1] > curr) {
+        p1 = 1 + findPaths(i - 1, j + 1);
+      }
+      if (j + 1 < m && grid[i][j + 1] > curr) {
+        p2 = 1 + findPaths(i, j + 1);
+      }
+      if (i + 1 < n && j + 1 < m && grid[i + 1][j + 1] > curr) {
+        p3 = 1 + findPaths(i + 1, j + 1);
+      }
+      let moves = Math.max(p1, p2, p3);
+      dp[i][j] = moves;
+      return moves;
+    }
+
+    let max = Number.MIN_VALUE;
+    for (let i = 0; i < n; i++) {
+      let paths = findPaths(i, 0);
+      if (paths > max) {
+        max = paths;
+      }
+    }
+    return max;
+  };
+
+
 };
 
 export class RecentCounter {
