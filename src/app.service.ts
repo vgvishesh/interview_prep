@@ -3742,6 +3742,28 @@ export class DSAService {
     return max;
   };
 
+  minCost(colors: string, neededTime: number[]): number {
+    let i = 0;
+    let j = 1;
+    let time = 0;
+    while (j < colors.length) {
+      if (colors[i] != colors[j]) {
+        j++;
+        i = j - 1;
+      } else {
+        if (neededTime[i] < neededTime[j]) {
+          time += neededTime[i];
+          j++;
+          i = j - 1;
+        } else {
+          time += neededTime[j];
+          j++;
+        }
+      }
+    }
+    return time;
+  };
+
 
 };
 
