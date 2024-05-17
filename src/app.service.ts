@@ -3538,6 +3538,162 @@ export class DSAService {
 
     return product - sum;
   };
+
+  sumZero(n: number): number[] {
+    if (n == 1) { return [0] };
+    if (n == 2) { return [-1, 1] }
+    let arr: number[] = [];
+    for (let i = 0; i < n - 1; i++) {
+      arr.push(i);
+    }
+
+    let sum = (n - 1) * (n - 2) / 2;
+    arr.push(-sum);
+    return arr;
+  };
+
+  generateTrees(n: number): Array<TreeNode | null> {
+    let allPermutations: number[][] = [];
+    function findPermutations(postition: number, numSet: Set<number>, nums: number[]) {
+      if (postition == n) {
+        allPermutations.push([...nums]);
+        return;
+      }
+
+      for (let i = 1; i <= n; i++) {
+        if (!numSet.has(i)) {
+          nums[postition] = i;
+          numSet.add(i);
+          findPermutations(postition + 1, numSet, nums);
+          numSet.delete(i);
+        }
+      }
+    }
+    findPermutations(0, new Set<number>(), new Array(n));
+    let treeNodes: TreeNode[] = [];
+    allPermutations.forEach(x => {
+      treeNodes.push(new BST(x).root);
+    });
+
+    // allPermutations.forEach(x => console.log(x));
+    let uniqueMap: Map<number, TreeNode> = new Map();
+    treeNodes.forEach(x => {
+      let pre = BinaryTree.preOrderTraversal(x);
+
+      let unit = pre.length - 1;
+      let fullNum = 0;
+      for (let i = pre.length - 1; i >= 0; i--) {
+        let base = Math.pow(10, (unit - i));
+        let partialNum = base * pre[i];
+        fullNum += partialNum;
+      }
+      uniqueMap.set(fullNum, x);
+    });
+
+    let uniqueRoots: TreeNode[] = [];
+    uniqueMap.forEach((v, k) => {
+      // console.log(k);
+      uniqueRoots.push(v);
+    });
+    return uniqueRoots;
+  };
+
+  maximumGap(nums: number[]): number {
+    if (nums.length == 0) {
+      return 0;
+    }
+
+    function initRaidx(): number[][] {
+      let radix: number[][] = new Array(10);
+      for (let i = 0; i < 10; i++) {
+        radix[i] = new Array();
+      }
+      return radix;
+    }
+    let max = Number.MIN_VALUE;
+    for (let i = 0; i < nums.length; i++) {
+      if (max < nums[i]) {
+        max = nums[i];
+      }
+    }
+
+    let count = 0;
+    while (max > 0) {
+      max = Math.floor(max / 10);
+      count++;
+    }
+
+    // let sortedResult: number[] = nums;
+    let radix = initRaidx();
+    let i = 0;
+    while (i < count) {
+      let divisor = Math.pow(10, i);
+      for (let j = 0; j < nums.length; j++) {
+        let index = Math.floor(nums[j] / divisor) % 10;
+        radix[index].push(nums[j]);
+      }
+
+      let k = 0;
+      let index = 0;
+      while (k < 10) {
+        let bin = radix[k++];
+        for (let m = 0; m < bin.length; m++) {
+          nums[index++] = bin[m];
+        }
+      }
+
+      radix = initRaidx();
+      i++;
+    }
+
+    console.log(nums);
+    let maxDiff = Number.MIN_VALUE;
+    for (i = 1; i < nums.length; i++) {
+      let diff = nums[i] - nums[i - 1];
+      if (diff > maxDiff) {
+        maxDiff = diff;
+      }
+    }
+    return maxDiff;
+  };
+
+  rob2(nums: number[]): number {
+    let dp: number[][] = new Array(nums.length);
+    for (let i = 0; i < nums.length; i++) {
+      dp[i] = new Array(2).fill(-1);
+    }
+    function findMaxMoney(houseIndex: number, hasFirstHouse: boolean) {
+      if (houseIndex >= nums.length) {
+        return 0;
+      }
+
+      if (houseIndex == nums.length - 1) {
+        return hasFirstHouse ? 0 : nums[houseIndex];
+      }
+
+      if (dp[houseIndex][hasFirstHouse ? 0 : 1] != -1) {
+        return dp[houseIndex][hasFirstHouse ? 0 : 1];
+      }
+
+      let maxMoney = Number.MIN_VALUE;
+      if (houseIndex == 0) {
+        maxMoney = Math.max(nums[houseIndex] + findMaxMoney(houseIndex + 2, true), findMaxMoney(houseIndex + 1, false));
+      } else {
+        maxMoney = Math.max(nums[houseIndex] + findMaxMoney(houseIndex + 2, hasFirstHouse), findMaxMoney(houseIndex + 1, hasFirstHouse));
+      }
+
+      if (hasFirstHouse) {
+        dp[houseIndex][0] = maxMoney;
+      } else {
+        dp[houseIndex][1] = maxMoney;
+      }
+
+      return maxMoney;
+    }
+
+    return findMaxMoney(0, false);
+  };
+
 };
 
 export class RecentCounter {
@@ -3825,8 +3981,8 @@ export class BST {
   root = new TreeNode();
   constructor(nums: number[]) {
     this.root.val = nums[0];
-    let ptr = this.root;
     for (let i = 1; i < nums.length; i++) {
+      let ptr = this.root;
       while (ptr != null) {
         if (nums[i] > ptr.val) {
           if (ptr.right != null) {
