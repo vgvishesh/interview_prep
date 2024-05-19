@@ -3784,7 +3784,392 @@ export class DSAService {
     return total;
   };
 
+  numSquares(n: number): number {
+    // let maxNums = Math.floor(Math.sqrt(n));
+    let maxNums = 1;
+    while (maxNums * maxNums <= n) {
+      maxNums++;
+    }
+
+    let dp: Map<number, Map<number, number>> = new Map();
+    function findMinNums(remainder: number, i: number) {
+      if (i == 0 || remainder < 0) {
+        return Number.MAX_VALUE
+      }
+      if (remainder == 0) {
+        return 0;
+      }
+
+      if (dp.has(remainder) && dp.get(remainder).has(i)) {
+        return dp.get(remainder).get(i);
+      }
+
+      let min: number;
+      if (remainder - i * i >= 0) {
+        min = Math.min(1 + findMinNums(remainder - i * i, i), findMinNums(remainder, i - 1));
+      } else {
+        min = findMinNums(remainder, i - 1);
+      }
+
+      if (!dp.has(remainder)) {
+        dp.set(remainder, new Map().set(i, min));
+      } else {
+        let mp = dp.get(remainder);
+        mp.set(i, min);
+        dp.set(remainder, mp);
+      }
+
+      return min;
+    }
+    return findMinNums(n, maxNums);
+  };
+
+  topKFrequent(nums: number[], k: number): number[] {
+    let freqMap: Map<number, number> = new Map();
+    for (let i = 0; i < nums.length; i++) {
+      if (freqMap.has(nums[i])) {
+        let val = freqMap.get(nums[i]);
+        freqMap.set(nums[i], val + 1);
+      } else {
+        freqMap.set(nums[i], 1);
+      }
+    }
+
+    type data = {
+      frequency: number;
+      value: number;
+    }
+
+    let dataItems = new Array<data>();
+    freqMap.forEach((v, k) => {
+      dataItems.push({
+        frequency: v,
+        value: k
+      });
+    });
+
+    function initRadix<T>() {
+      let arr: T[][] = new Array(10);
+      for (let i = 0; i < 10; i++) {
+        arr[i] = new Array();
+      }
+      return arr;
+    }
+
+    let radix = initRadix<data>();
+
+    let currRadix = 0;
+    while (currRadix < 5) {
+      let divisor = Math.pow(10, currRadix++);
+
+      for (let i = 0; i < dataItems.length; i++) {
+        let bin = Math.floor(dataItems[i].frequency / divisor) % 10;
+        radix[bin].push(dataItems[i]);
+      }
+
+      let k = 0;
+      for (let i = 0; i < radix.length; i++) {
+        let binlength = radix[i].length;
+        for (let j = 0; j < binlength; j++) {
+          dataItems[k++] = radix[i][j];
+        }
+      }
+
+      radix = initRadix<data>();
+    }
+
+    let mostfrequentElems: number[] = [];
+    for (let i = 0; i < k; i++) {
+      mostfrequentElems.push(dataItems[dataItems.length - 1 - i].value);
+    }
+    return mostfrequentElems;
+  };
+
+  kthSmallest(matrix: number[][], k: number): number {
+    let boundarySet: Map<number, Set<number>> = new Map();
+    boundarySet.set(0, new Set([1]));
+    boundarySet.set(1, new Set([0]));
+    let minR: number;
+    let minC: number;
+    let min: number = matrix[0][0];
+    k--;
+    while (k > 0) {
+      min = Number.MAX_VALUE;
+      boundarySet.forEach((cols, row) => {
+        cols.forEach(col => {
+          if (matrix[row][col] < min) {
+            min = matrix[row][col];
+            minR = row;
+            minC = col;
+          }
+        });
+      });
+      let cols = boundarySet.get(minR);
+      cols.delete(minC);
+      boundarySet.set(minR, cols);
+
+      if (minC + 1 < matrix.length) {
+        let colSet = boundarySet.get(minR);
+        colSet.add(minC + 1);
+        boundarySet.set(minR, colSet);
+      }
+
+      if (minR + 1 < matrix.length) {
+        if (boundarySet.has(minR + 1)) {
+          let colSet = boundarySet.get(minR + 1);
+          colSet.add(minC);
+          boundarySet.set(minR + 1, colSet);
+        } else {
+          boundarySet.set(minR + 1, new Set([minC]));
+        }
+      }
+      k--;
+    }
+
+    return min;
+  };
+
+  minimumTeachings(n: number, languages: number[][], friendships: number[][]): number {
+    //list of friends that can't talk
+    function createFriendsLanguageSets() {
+      let friendsLanguageSets: Set<number>[] = new Array(1);
+      for (let i = 0; i < languages.length; i++) {
+        let fLangs = new Set<number>();
+        languages[i].forEach(x => fLangs.add(x));
+        friendsLanguageSets.push(fLangs);
+      }
+      return friendsLanguageSets;
+
+    }
+
+    function findFriendsWithNoLanguage(languages: number[][], friendships: number[][], friendsLanguageSets: Set<number>[]) {
+      let friendsWithNoLanguage: number[][] = new Array(1);
+      for (let i = 0; i < friendships.length; i++) {
+        let f1Langs = friendsLanguageSets[friendships[i][0]]
+        let f2Langs = friendsLanguageSets[friendships[i][1]];
+
+        let canTalk = false;
+        for (let lang of f1Langs.keys()) {
+          if (f2Langs.has(lang)) {
+            canTalk = true;
+            break;
+          }
+        }
+        if (!canTalk) {
+          friendsWithNoLanguage.push(friendships[i]);
+        }
+      }
+      return friendsWithNoLanguage;
+    }
+
+    let friendsLanguageSets = createFriendsLanguageSets();
+    let brokenFriendships = findFriendsWithNoLanguage(languages, friendships, friendsLanguageSets);
+
+    let i = 1;
+    let min = Number.MAX_VALUE;
+    while (i <= n) {
+      let count = 0;
+      let visitedFrinds = new Set<number>();
+      for (let j = 1; j < brokenFriendships.length; j++) {
+        let f1 = brokenFriendships[j][0];
+        let f2 = brokenFriendships[j][1];
+        if (!friendsLanguageSets[f1].has(i) && !visitedFrinds.has(f1)) {
+          visitedFrinds.add(f1);
+          count++;
+        }
+        if (!friendsLanguageSets[f2].has(i) && !visitedFrinds.has(f2)) {
+          visitedFrinds.add(f2);
+          count++;
+        }
+      }
+      if (count < min) {
+        min = count;
+      }
+      i++;
+    }
+    return min;
+  };
+
+  minimumHammingDistance(source: number[], target: number[], allowedSwaps: number[][]): number {
+    function createGraph(): Map<number, Set<number>> {
+      let graph: Map<number, Set<number>> = new Map();
+      for (let i = 0; i < allowedSwaps.length; i++) {
+        let source = allowedSwaps[i][0];
+        let dest = allowedSwaps[i][1];
+        if (graph.has(source)) {
+          let val = graph.get(source);
+          val.add(dest);
+          graph.set(source, val);
+        } else {
+          graph.set(source, new Set<number>([dest]));
+        }
+
+        if (graph.has(dest)) {
+          let val = graph.get(dest);
+          val.add(source);
+          graph.set(dest, val);
+        } else {
+          graph.set(dest, new Set<number>([source]));
+        }
+      }
+      return graph;
+    }
+
+    function createSourcePositionMap() {
+      let sourcePositionMap: Map<number, Set<number>> = new Map();
+      source.forEach((e, i) => {
+        if (sourcePositionMap.has(e)) {
+          let val = sourcePositionMap.get(e);
+          val.add(i);
+          sourcePositionMap.set(e, val);
+        } else {
+          sourcePositionMap.set(e, new Set<number>([i]));
+        }
+      });
+      return sourcePositionMap;
+    }
+
+    function dfsPath(graph: Map<number, Set<number>>, source: number, destination: number): number[] {
+      let isVisited = new Set<number>();
+      let path: number[] = [];
+      function traverse(root: number) {
+        if (root == destination) {
+          path.push(root);
+          return root;
+        }
+        if (isVisited.has(root)) {
+          return -1;
+        }
+
+        let childern = graph.get(root) ?? new Set();
+        isVisited.add(root);
+        for (let i of childern.keys()) {
+          if (traverse(i) != -1) {
+            path.push(root);
+            return root;
+          }
+        }
+
+        return -1;
+      }
+      traverse(source)
+      return path.reverse();
+    }
+
+    function getFirstDiffPostion(sourcePositionMap: Map<number, Set<number>>, unsolvedSourcePostions: Set<number>): { source: number, destination: number } {
+      let sourcePosition: number = -1;
+      let desitnationPostion: number = -1;
+      let isDiffFound = false;
+      for (let i = 0; i < source.length; i++) {
+
+        if (source[i] != target[i] && sourcePositionMap.has(target[i]) && !unsolvedSourcePostions.has(i)) {
+          let positions = sourcePositionMap.get(target[i]);
+
+          for (let j of positions.keys()) {
+            if (source[j] != target[j]) {
+              desitnationPostion = j;
+              sourcePosition = i;
+              isDiffFound = true;
+              break;
+            }
+          }
+        }
+        if (isDiffFound) {
+          break;
+        }
+      }
+
+      return {
+        source: sourcePosition,
+        destination: desitnationPostion,
+      }
+    }
+
+    function getHammingDistance() {
+      let diff = 0;
+      for (let i = 0; i < source.length; i++) {
+        if (source[i] != target[i]) {
+          diff++;
+        }
+      }
+      return diff;
+    }
+
+    function updateSourcePositionMap(sourcePositionMap: Map<number, Set<number>>, oldPosition: number, newPosition: number, num1: number, num2: number) {
+      let num1Positions = sourcePositionMap.get(num1);
+      num1Positions.delete(oldPosition);
+      num1Positions.add(newPosition);
+
+      let num2Positions = sourcePositionMap.get(num2);
+      num2Positions.delete(newPosition);
+      num2Positions.add(oldPosition);
+    }
+
+    let graph = createGraph();
+    let sourcePositionMap: Map<number, Set<number>> = createSourcePositionMap();
+    let unsolvedSourcePostions: Set<number> = new Set();
+
+    while (1) {
+      let swapPair = getFirstDiffPostion(sourcePositionMap, unsolvedSourcePostions);
+      if (swapPair.source == -1 && swapPair.destination == -1) {
+        break;
+      }
+
+      let isSolved = false;
+      let swapPath = dfsPath(graph, swapPair.source, swapPair.destination);
+      for (let j = 1; j < swapPath.length; j++) {
+        let newPosition = swapPath[j];
+        let oldPosition = swapPath[j - 1];
+        let temp = source[newPosition];
+        source[newPosition] = source[oldPosition];
+        source[oldPosition] = temp;
+
+        updateSourcePositionMap(sourcePositionMap, oldPosition, newPosition, source[newPosition], source[oldPosition]);
+        isSolved = true;
+      }
+      if (!isSolved) {
+        unsolvedSourcePostions.add(swapPair.source);
+      }
+    }
+
+    return getHammingDistance();
+  };
 };
+
+export class MinStack {
+  private mainStack: number[] = [];
+  private minStack: number[] = [];
+  constructor() {
+  }
+
+  push(val: number): void {
+    this.mainStack.push(val);
+    if (this.minStack.length == 0) {
+      this.minStack.push(val);
+    } else {
+      let min = this.minStack[this.minStack.length - 1];
+      if (val <= min) {
+        this.minStack.push(val);
+      }
+    }
+  }
+
+  pop(): void {
+    let pop = this.mainStack.pop();
+    let minTop = this.minStack[this.minStack.length - 1];
+    if (pop == minTop) {
+      this.minStack.pop();
+    }
+  }
+
+  top(): number {
+    return this.mainStack[this.mainStack.length - 1];
+  }
+
+  getMin(): number {
+    return this.minStack[this.minStack.length - 1];
+  }
+}
 
 export class RecentCounter {
   private record: number[] = [];
@@ -3831,6 +4216,31 @@ export class LinkList {
       ptr = ptr.next;
     }
   }
+
+  removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
+    let ptr = head;
+    let length = 0;
+    while (ptr != null) {
+      ptr = ptr.next;
+      length++;
+    }
+
+    let target = length - n;
+    if (target == 0) {
+      head = head.next;
+      return head;
+    }
+
+    let i = 0;
+    ptr = head;
+    while (i < target - 1) {
+      ptr = ptr.next;
+      i++;
+    }
+
+    ptr.next = ptr.next.next;
+    return head;
+  };
 
   printLL() {
     let ptr = this.head;

@@ -1058,10 +1058,46 @@ describe('DSA service tests', () => {
     console.log(s.minCost('abaac', [1, 2, 3, 4, 5]));
   });
 
-  it('test_countVowels', () => {
+  it.skip('test_countVowels', () => {
     let s = new DSAService();
     console.log(s.countVowels('aba'));
     console.log(s.countVowels('abc'));
     console.log(s.countVowels('ltcd'));
+  });
+
+  it.skip('test_remove', () => {
+    let s = new LinkList([1, 2, 3, 4, 5]);
+    s.removeNthFromEnd(s.head, 5);
+    console.log(s.printLL());
+  });
+
+  it.skip('test_numSquers', () => {
+    let s = new DSAService();
+    console.log(s.numSquares(13));
+  });
+
+  it.skip('test_topkfrequent', () => {
+    let s = new DSAService();
+    console.log(s.topKFrequent([1, 1, 1, 2, 2, 3], 2));
+  });
+
+  it.skip('test_kthSmallest', () => {
+    let s = new DSAService();
+    console.log(s.kthSmallest([[1, 5, 9], [10, 11, 13], [12, 13, 15]], 8));
+    console.log(s.kthSmallest([[1, 3, 5], [6, 7, 12], [11, 14, 14]], 7));
+  });
+
+  it.skip('test_minTeachings', () => {
+    let s = new DSAService();
+    console.log(s.minimumTeachings(2, [[1], [2], [1, 2]], [[1, 2], [1, 3], [2, 3]]));
+    console.log(s.minimumTeachings(3, [[2], [1, 3], [1, 2], [3]], [[1, 4], [1, 2], [3, 4], [2, 3]]));
+  });
+
+  it('test_minHammingDist', () => {
+    let s = new DSAService();
+    // console.log(s.minimumHammingDistance([1, 2, 3, 4], [2, 1, 4, 5], [[0, 1], [2, 3]]));
+    console.log(s.minimumHammingDistance([5, 1, 2, 4, 3], [1, 5, 4, 2, 3], [[0, 4], [4, 2], [1, 3], [1, 4]]));
+    // console.log(s.minimumHammingDistance([1, 2, 3, 4], [1, 3, 2, 4], []));
+    console.log(s.minimumHammingDistance([5, 1, 4, 7, 6], [1, 3, 4, 6, 7], [[0, 1], [2, 4], [1, 3]]));
   })
 })
