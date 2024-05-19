@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner } from "./app.service"
+import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution } from "./app.service"
 
 describe('DSA service tests', () => {
   // it.skip('test_missing_number', () => {
@@ -1093,11 +1093,18 @@ describe('DSA service tests', () => {
     console.log(s.minimumTeachings(3, [[2], [1, 3], [1, 2], [3]], [[1, 4], [1, 2], [3, 4], [2, 3]]));
   });
 
-  it('test_minHammingDist', () => {
+  it.skip('test_minHammingDist', () => {
     let s = new DSAService();
     // console.log(s.minimumHammingDistance([1, 2, 3, 4], [2, 1, 4, 5], [[0, 1], [2, 3]]));
     console.log(s.minimumHammingDistance([5, 1, 2, 4, 3], [1, 5, 4, 2, 3], [[0, 4], [4, 2], [1, 3], [1, 4]]));
     // console.log(s.minimumHammingDistance([1, 2, 3, 4], [1, 3, 2, 4], []));
     console.log(s.minimumHammingDistance([5, 1, 4, 7, 6], [1, 3, 4, 6, 7], [[0, 1], [2, 4], [1, 3]]));
+  });
+
+  it('test_solution', () => {
+    let s = new Solution([1, 2, 3]);
+    console.log(s.shuffle());
+    console.log(s.reset());
+    console.log(s.shuffle());
   })
 })

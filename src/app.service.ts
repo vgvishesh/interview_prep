@@ -4194,6 +4194,27 @@ export class RecentCounter {
   }
 }
 
+export class Solution {
+  private arr: number[];
+  constructor(nums: number[]) {
+    this.arr = nums;
+  }
+
+  reset(): number[] {
+    return this.arr;
+  }
+
+  shuffle(): number[] {
+    let copy = [...this.arr];
+    let max = this.arr.length;
+    for (let i = 0; i < this.arr.length; i++) {
+      let randomIndex = Math.floor(Math.random() * (max - i)) + i;
+      [copy[i], copy[randomIndex]] = [copy[randomIndex], copy[i]];
+    }
+    return copy;
+  }
+}
+
 /**
  * Definition for singly-linked list.
  */
