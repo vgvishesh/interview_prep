@@ -4134,6 +4134,132 @@ export class DSAService {
 
     return getHammingDistance();
   };
+
+  maxDistance(grid: number[][]): number {
+    let land: number[][] = [];
+    let water: number[][] = [];
+    function getManhattanDistance(p1: number[], p2: number[]) {
+      return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+    }
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid.length; j++) {
+        if (grid[i][j] == 1) {
+          land.push([i, j]);
+        } else {
+          water.push([i, j]);
+        }
+      }
+    }
+    if (land.length == 0 || water.length == 0) {
+      return -1;
+    }
+
+
+    let minDistances: number[] = [];
+    water.forEach((waterCell => {
+      let min: number = Number.MAX_VALUE;
+      for (let i = 0; i < land.length; i++) {
+        let distance = getManhattanDistance(waterCell, land[i]);
+        if (distance < min) {
+          min = distance;
+        }
+      }
+      minDistances.push(min);
+    }));
+
+    let globalMax = Number.MIN_VALUE;
+    minDistances.forEach(x => {
+      if (x > globalMax) {
+        globalMax = x;
+      }
+    });
+    return globalMax;
+  };
+
+  minimumOperations(grid: number[][]): number {
+    let updateCount = 0;
+    let m = grid.length;
+    let n = grid[0].length;
+    function updateGrid(cell: number[]) {
+      let cellRow = cell[0];
+      let cellCol = cell[1];
+      let curr = grid[cellRow][cellCol];
+      let currLeft = cellCol - 1 >= 0 ? grid[cellRow][cellCol - 1] : -1;
+      let currRight = cellCol + 1 < n ? grid[cellRow][cellCol + 1] : -1;
+      let currRightBottom = cellCol + 1 < n ? cellRow + 1 < m ? grid[cellRow + 1][cellCol + 1] : -1 : -1;
+      let currDown = cellRow + 1 < m ? grid[cellRow + 1][cellCol] : -1;
+      if (curr == currLeft) {
+        //update the current;
+        if (curr == currDown) {
+          let nw = 0;
+          while (1) {
+            if (nw == curr || nw == currLeft || nw == currRight || nw == currRightBottom) {
+              nw++;
+              continue;
+            }
+            break;
+          }
+          grid[cellRow][cellCol] = nw;
+          grid[cellRow + 1][cellCol] = nw;
+          updateCount += 2;
+        } else {
+          grid[cellRow][cellCol] = currDown;
+          updateCount += 1;
+        }
+      } else if (currDown != -1 && curr != currDown) {
+        updateCount += 1;
+        grid[cellRow + 1][cellCol] = curr;
+      }
+    }
+
+    for (let i = 0; i < m; i++) {
+      for (let j = 0; j < n; j++) {
+        updateGrid([i, j]);
+      }
+    }
+
+    return updateCount;
+  };
+
+  longestIdealString(s: string, k: number): number {
+    let dp: Map<number, Map<string, number>> = new Map();
+    function getDiff(str1: string, str2: string) {
+      let v1 = str1.charCodeAt(0);
+      let v2 = str2.charCodeAt(0);
+      if (str1 == '`' || str2 == '`') {
+        return 0;
+      }
+      return Math.abs(v1 - v2);
+    }
+
+    function findLongest(index: number, str: string) {
+      if (index >= s.length) {
+        return 0;
+      }
+      if (dp.has(index) && dp.get(index).has(str)) {
+        return dp.get(index).get(str);
+      }
+
+      let max: number;
+      if (getDiff(s[index], str) <= k) {
+        max = Math.max(1 + findLongest(index + 1, s[index]), findLongest(index + 1, str));
+      } else {
+        max = findLongest(index + 1, str);
+      }
+
+      if (dp.has(index)) {
+        let val = dp.get(index);
+        val.set(str, max);
+        dp.set(index, val);
+      } else {
+        dp.set(index, new Map().set(str, max));
+      }
+
+      return max;
+    }
+
+    return findLongest(0, '`');
+  };
 };
 
 export class MinStack {

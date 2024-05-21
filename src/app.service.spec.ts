@@ -1101,10 +1101,27 @@ describe('DSA service tests', () => {
     console.log(s.minimumHammingDistance([5, 1, 4, 7, 6], [1, 3, 4, 6, 7], [[0, 1], [2, 4], [1, 3]]));
   });
 
-  it('test_solution', () => {
+  it.skip('test_solution', () => {
     let s = new Solution([1, 2, 3]);
     console.log(s.shuffle());
     console.log(s.reset());
     console.log(s.shuffle());
+  });
+
+  it.skip('test_maxDistance', () => {
+    let s = new DSAService();
+    console.log(s.maxDistance([[1, 0, 0], [0, 0, 0], [0, 0, 0]]));
+  });
+
+  it.skip('test_minOps', () => {
+    let s = new DSAService();
+    // console.log(s.minimumOperations([[0, 1, 1, 2], [1, 2, 1, 3], [2, 2, 2, 3], [3, 4, 3, 3]]));
+    console.log(s.minimumOperations([[2], [8], [6], [7], [8], [2], [0], [9], [0], [8]]));
+  });
+
+  it('test_longestIdeal', () => {
+    let s = new DSAService();
+    console.log(s.longestIdealString('pvjcci', 4));
+    console.log(s.longestIdealString('dll', 0));
   })
 })
