@@ -4260,6 +4260,37 @@ export class DSAService {
 
     return findLongest(0, '`');
   };
+
+  jump(nums: number[]): number {
+    const n = nums.length;
+    let dp: number[] = new Array(nums.length).fill(-1);
+    function shortestPath(currentStep: number) {
+      if (currentStep == n - 1) {
+        return 0;
+      }
+      if (currentStep > n - 1) {
+        return Number.MAX_VALUE;
+      }
+      if (dp[currentStep] != -1) {
+        return dp[currentStep];
+      }
+
+      let min = Number.MAX_VALUE;
+      for (let i = nums[currentStep]; i > 0; i--) {
+        const jumpLanding = currentStep + i;
+        if (jumpLanding > n - 1) continue;
+        const numJumps = 1 + shortestPath(jumpLanding);
+        if (numJumps < min) {
+          min = numJumps;
+        }
+      }
+      dp[currentStep] = min;
+      return dp[currentStep];
+    }
+
+    return shortestPath(0);
+  };
+
 };
 
 export class MinStack {

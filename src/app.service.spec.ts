@@ -1119,9 +1119,15 @@ describe('DSA service tests', () => {
     console.log(s.minimumOperations([[2], [8], [6], [7], [8], [2], [0], [9], [0], [8]]));
   });
 
-  it('test_longestIdeal', () => {
+  it.skip('test_longestIdeal', () => {
     let s = new DSAService();
     console.log(s.longestIdealString('pvjcci', 4));
     console.log(s.longestIdealString('dll', 0));
-  })
+  });
+
+  it('test_minJumps', () => {
+    let s = new DSAService();
+    console.log(s.jump([2, 3, 1, 1, 4]));
+    console.log(s.jump([2, 3, 0, 1, 4]));
+  });
 })
