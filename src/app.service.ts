@@ -4288,9 +4288,73 @@ export class DSAService {
       return dp[currentStep];
     }
 
-    return shortestPath(0);
+    function shortestPathFromEnd(i: number) {
+      if (i == 0) {
+        return 0;
+      }
+
+      if (dp[i] != -1) {
+        return dp[i];
+      }
+
+      let min = Number.MAX_VALUE;
+      for (let j = 1; j <= i; j++) {
+        const allowedMaxJump = nums[i - j];
+        if (allowedMaxJump >= j) {
+          let numJumps = 1 + shortestPathFromEnd(i - j);
+          if (numJumps < min) {
+            min = numJumps;
+          }
+        }
+      }
+
+      dp[i] = min;
+      return min;
+    }
+
+    // return shortestPath(0);
+    return shortestPathFromEnd(n - 1);
   };
 
+  isScramble(s1: string, s2: string): boolean {
+    const dp: Map<string, Set<string>> = new Map();
+    function getScrambledStrings(s: string): Set<string> {
+      if (s.length == 0) {
+        return null;
+      }
+      if (s.length == 1) {
+        return new Set([s]);
+      }
+      if (s.length == 2) {
+        return new Set([s, s.split('').reverse().join('')]);
+      }
+
+      if (dp.has(s)) {
+        return dp.get(s);
+      }
+
+      const allCombinations: Set<string> = new Set();
+      for (let i = 1; i < s.length; i++) {
+        const s1 = s.slice(0, i);
+        const s2 = s.slice(i);
+
+        const s1Subs = getScrambledStrings(s1);
+        const s2Subs = getScrambledStrings(s2);
+
+        s1Subs.forEach(presufStr => {
+          s2Subs.forEach(mainStr => {
+            allCombinations.add(mainStr + presufStr);
+            allCombinations.add(presufStr + mainStr);
+          });
+        });
+      }
+
+      dp.set(s, allCombinations);
+      return allCombinations;
+    }
+
+    return getScrambledStrings(s1).has(s2);
+  };
 };
 
 export class MinStack {
