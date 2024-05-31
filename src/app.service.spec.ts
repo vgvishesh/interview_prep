@@ -1131,10 +1131,17 @@ describe('DSA service tests', () => {
     console.log(s.jump([2, 3, 0, 1, 4]));
   });
 
-  it('test_srambleString', () => {
+  it.skip('test_srambleString', () => {
     let s = new DSAService();
-    console.log(s.isScramble('abcdefghijklmn', 'efghijklmncadb'));
-    // console.log(s.isScramble('abcde', 'caebd'));
+    // console.log(s.isScramble('abcdefghijklmn', 'efghijklmncadb'));
+    console.log(s.isScramble('abcd', 'cadb'));
+    console.log(s.isScramble('abcd', 'cabd'));
     // console.log(s.isScramble('a', 'a'));
+  });
+
+  it('test_paliandromeParis', () => {
+    // console.log(Trie.palindromePairs(["abcd", "dcba", "lls", "s", "sssll"]));
+    // console.log(Trie.palindromePairs(["bat", "tab", "cat"]));
+    console.log(Trie.palindromePairs(["a", ""]));
   })
 })

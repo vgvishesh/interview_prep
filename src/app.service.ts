@@ -5169,6 +5169,36 @@ export class BinaryTree {
     }
     return build(inorder);
   };
+
+  static reverseOddLevels(root: TreeNode | null): TreeNode | null {
+    let i = 0;
+    let queue = new Array<TreeNode>();
+    queue.push(root);
+    while (queue.length != 0) {
+      const nextLevel = new Array<TreeNode>();
+      for (let i = 0; i < queue.length; i++) {
+        if (queue[i].left != null && queue[i].right != null) {
+          nextLevel.push(queue[i].left);
+          nextLevel.push(queue[i].right);
+        }
+      }
+
+      //for every even level's children
+      if (i++ % 2 == 0) {
+        const values = nextLevel.map(x => x.val);
+        values.reverse();
+        let k = 0;
+        nextLevel.forEach(x => {
+          x.val = values[k++];
+        });
+      }
+
+      queue = nextLevel;
+    }
+
+    return root;
+
+  };
 }
 
 export class MaxHeap {
@@ -5324,11 +5354,13 @@ export class SmallestInfiniteSet {
 export class TrieNode {
   val: string;
   next: TrieNode[];
-  isWordEnd: boolean;
+  wordEnds: Set<number>;
+  wordSet: Set<number>;
   constructor(val: string) {
     this.val = val;
     this.next = new Array(26).fill(null);
-    this.isWordEnd = false;
+    this.wordEnds = new Set();
+    this.wordSet = new Set();
   }
 }
 
@@ -5337,16 +5369,21 @@ export class Trie {
   constructor() {
   }
 
-  insert(word: string): void {
+  insert(word: string, index?: number): void {
     let ptr = this.root;
+    if (word == "") {
+      ptr.wordSet.add(index);
+    }
+
     for (let w of word) {
       let ascii = w.charCodeAt(0) - 97;
       if (ptr.next[ascii] == null) {
         ptr.next[ascii] = new TrieNode(w);
       }
       ptr = ptr.next[ascii];
+      ptr.wordSet.add(index);
     }
-    ptr.isWordEnd = true;
+    ptr.wordEnds.add(index);
   }
 
   search(word: string): boolean {
@@ -5358,20 +5395,94 @@ export class Trie {
       }
       ptr = ptr.next[ascii];
     }
-    return ptr.isWordEnd;
+    return ptr.wordEnds.size > 0;
   }
 
-  startsWith(prefix: string): boolean {
+  startsWith(prefix: string): { endWords: Set<number>, wordIndexes: Set<number> } {
     let ptr = this.root;
     for (let w of prefix) {
       let ascii = w.charCodeAt(0) - 97;
       if (ptr.next[ascii] == null) {
-        return false;
+        return {
+          endWords: null,
+          wordIndexes: null,
+        }
       }
       ptr = ptr.next[ascii];
     }
-    return true;
+
+    let wE = new Set(ptr.wordEnds);
+    if (this.root.wordEnds.size > 0) {
+      this.root.wordEnds.forEach(x => wE.add(x));
+    }
+
+    let wS = ptr.wordSet;
+    if (this.root.wordSet.size > 0) {
+      this.root.wordSet.forEach(x => wS.add(x));
+    }
+
+    return {
+      endWords: wE,
+      wordIndexes: wS,
+    };
   }
+
+  static palindromePairs(words: string[]): number[][] {
+    const straightTrie = new Trie();
+    const reverseTrie = new Trie();
+    const pairs: Map<number, Set<number>> = new Map();
+
+    words.forEach((x, i) => {
+      straightTrie.insert(x, i);
+      reverseTrie.insert(x.split('').reverse().join(''), i);
+    });
+
+    words.forEach((x, i) => {
+      findStraightPairs(x.split('').reverse().join(''), i);
+      findReversePairs(x, i);
+    });
+
+    return getPairs();
+
+    function updatePairs(key: number, val: number) {
+      if (pairs.has(key)) {
+        pairs.get(key).add(val);
+      } else {
+        pairs.set(key, new Set([val]));
+      }
+    }
+
+    function getPairs(): number[][] {
+      let allPairs: number[][] = new Array();
+      pairs.forEach((v, k) => {
+        v.forEach(y => {
+          allPairs.push([k, y]);
+        });
+      });
+      return allPairs;
+    }
+
+    function findReversePairs(str: string, index: number) {
+      let res = reverseTrie.startsWith(str);
+      if (res.wordIndexes !== null) {
+        res.wordIndexes.forEach(y => {
+          if (y != index) {
+            updatePairs(index, y);
+          }
+        });
+      }
+    }
+    function findStraightPairs(str: string, index: number) {
+      let res = straightTrie.startsWith(str);
+      if (res.endWords) {
+        res.endWords.forEach(y => {
+          if (y != index) {
+            updatePairs(index, y);
+          }
+        });
+      }
+    }
+  };
 
   prefixWords(prefix: string): string[] {
     let suggesstions: string[] = []
@@ -5380,7 +5491,7 @@ export class Trie {
         return;
       }
 
-      if (ptr.isWordEnd) {
+      if (ptr.wordEnds) {
         let prod = prefix;
         suggesstions.push(prod);
       }
