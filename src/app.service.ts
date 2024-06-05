@@ -4450,7 +4450,60 @@ export class DSAService {
     const { row, col } = getNextEmptyCell();
     solve(row, col);
   };
+
+
 };
+
+export class SelectSolution {
+  private limit: number;
+  private blacklist: number[];
+  private allowedIntervals: number[][] = [];
+  constructor(n: number, blacklist: number[]) {
+    this.limit = n - 1;
+    blacklist.sort((a, b) => a - b);
+    this.blacklist = blacklist;
+    if (this.blacklist.length == 0) {
+      this.allowedIntervals.push([0, this.limit]);
+    } else {
+      let i = 0;
+      let j = 0;
+      while (j < blacklist.length) {
+        const { lowerLimit, blackListIndex } = this.getLowerLimit(i, j);
+        j = blackListIndex;
+        if (lowerLimit > this.limit) {
+          break;
+        }
+        const upperLimit = this.getUpperLimit(j);
+        this.allowedIntervals.push([lowerLimit, upperLimit]);
+        i = upperLimit + 1;
+      }
+    }
+  }
+
+  getUpperLimit(blackListIndex: number) {
+    return blackListIndex < this.blacklist.length ? this.blacklist[blackListIndex] - 1 : this.limit;
+  }
+
+  getLowerLimit(initLowerLimit: number, blackListIndex: number) {
+    while (initLowerLimit == this.blacklist[blackListIndex] && blackListIndex < this.blacklist.length) {
+      initLowerLimit++;
+      blackListIndex++;
+    }
+    return {
+      lowerLimit: initLowerLimit,
+      blackListIndex: blackListIndex,
+    }
+  }
+
+  pick(): number {
+    const pick = Math.floor(Math.random() * (this.allowedIntervals.length));
+    const min = this.allowedIntervals[pick][0];
+    const max = this.allowedIntervals[pick][1];
+    const rangePick = Math.floor(Math.random() * (max - min + 1)) + min;
+    return rangePick
+  }
+}
+
 
 export class MinStack {
   private mainStack: number[] = [];

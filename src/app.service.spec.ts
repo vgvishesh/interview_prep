@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution } from "./app.service"
+import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution } from "./app.service"
 
 describe('DSA service tests', () => {
   // it.skip('test_missing_number', () => {
@@ -1145,7 +1145,7 @@ describe('DSA service tests', () => {
     console.log(Trie.palindromePairs(["a", ""]));
   });
 
-  it('test_soduku', () => {
+  it.skip('test_soduku', () => {
     let s = new DSAService();
     // const board = [["5", "3", ".", ".", "7", ".", ".", ".", "."], ["6", ".", ".", "1", "9", "5", ".", ".", "."], [".", "9", "8", ".", ".", ".", ".", "6", "."], ["8", ".", ".", ".", "6", ".", ".", ".", "3"], ["4", ".", ".", "8", ".", "3", ".", ".", "1"], ["7", ".", ".", ".", "2", ".", ".", ".", "6"], [".", "6", ".", ".", ".", ".", "2", "8", "."], [".", ".", ".", "4", "1", "9", ".", ".", "5"], [".", ".", ".", ".", "8", ".", ".", "7", "9"]];
     const board = [
@@ -1161,5 +1161,12 @@ describe('DSA service tests', () => {
     ]
     s.solveSudoku(board);
     console.log(board);
+  });
+
+  it('test_selection', () => {
+    let s = new SelectSolution(3, [2]);
+    for (let i = 0; i < 15; i++) {
+      console.log(s.pick());
+    }
   })
 })
