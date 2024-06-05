@@ -1163,10 +1163,16 @@ describe('DSA service tests', () => {
     console.log(board);
   });
 
-  it('test_selection', () => {
+  it.skip('test_selection', () => {
     let s = new SelectSolution(3, [2]);
     for (let i = 0; i < 15; i++) {
       console.log(s.pick());
     }
+  });
+
+  it('test_kLargestNumber', () => {
+    let s = new DSAService();
+    // console.log(s.kthLargestNumber(["3", "6", "7", "10"], 4));
+    console.log(s.kthLargestNumber(["2", "21", "12", "1"], 3));
   })
 })

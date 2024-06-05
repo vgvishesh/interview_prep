@@ -4451,6 +4451,30 @@ export class DSAService {
     solve(row, col);
   };
 
+  kthLargestNumber(nums: string[], k: number): string {
+    nums.sort((a, b) => {
+      let result: number;
+      if (a.length > b.length) {
+        result = 1;
+      } else if (b.length > a.length) {
+        result = -1;
+      } else {
+        result = 0;
+        for (let i = 0; i < a.length; i++) {
+          if (a[i] > b[i]) {
+            result = 1;
+            break;
+          } else if (b[i] > a[i]) {
+            result = -1;
+            break;
+          }
+        }
+      }
+      return result;
+    });
+
+    return nums[nums.length - k];
+  };
 
 };
 
@@ -4503,7 +4527,6 @@ export class SelectSolution {
     return rangePick
   }
 }
-
 
 export class MinStack {
   private mainStack: number[] = [];
