@@ -4355,6 +4355,101 @@ export class DSAService {
 
     return getScrambledStrings(s1).has(s2);
   };
+
+  solveSudoku(board: string[][]): void {
+    function findMissingNumbersInRow(row: number) {
+      const missingNum: Set<string> = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+      for (let i = 0; i < 9; i++) {
+        if (board[row][i] != '.') {
+          missingNum.delete(board[row][i]);
+        }
+      }
+      return missingNum;
+    }
+
+    function findMissingNumbersInCol(col: number) {
+      const missingNum: Set<string> = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+      for (let i = 0; i < 9; i++) {
+        if (board[i][col] != '.') {
+          missingNum.delete(board[i][col]);
+        }
+      }
+      return missingNum;
+    }
+
+    function findMissingNumbersInBox(row: number, col: number) {
+      const boxStart = Math.floor(row / 3) * 3;
+      const boxEnd = Math.floor(col / 3) * 3;
+      const missingNum: Set<string> = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
+      for (let i = boxStart; i < boxStart + 3; i++) {
+        for (let j = boxEnd; j < boxEnd + 3; j++) {
+          if (board[i][j] != '.') {
+            missingNum.delete(board[i][j]);
+          }
+        }
+      }
+      return missingNum;
+    }
+
+    function getNextEmptyCell() {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (board[i][j] == '.') {
+            return {
+              row: i,
+              col: j,
+            }
+          }
+        }
+      }
+      return {
+        row: -1,
+        col: -1,
+      }
+    }
+
+    function solve(row: number, col: number) {
+      const missingInRow = findMissingNumbersInRow(row);
+      const missingInCol = findMissingNumbersInCol(col);
+      const missingInBox = findMissingNumbersInBox(row, col);
+      let min = Number.MAX_VALUE;
+      let minSet: Set<string>;
+      for (let set of [missingInBox, missingInCol, missingInRow]) {
+        if (set.size < min) {
+          min = set.size;
+          minSet = set;
+        }
+      }
+      const valueSet: Set<string> = new Set();
+      minSet.forEach(x => {
+        if (missingInBox.has(x) && missingInCol.has(x) && missingInRow.has(x)) {
+          valueSet.add(x);
+        }
+      });
+
+      if (valueSet.size == 0) {
+        return false;
+      }
+
+      for (let x of valueSet) {
+        board[row][col] = x;
+        const { row: nxtrow, col: nxtcol } = getNextEmptyCell();
+        if (nxtcol == -1 && nxtrow == -1) {
+          return true;
+        }
+        if (solve(nxtrow, nxtcol)) {
+          return true;
+        } else {
+          board[row][col] = '.';
+        }
+      }
+
+      return false;
+    }
+
+    const { row, col } = getNextEmptyCell();
+    solve(row, col);
+  };
 };
 
 export class MinStack {
