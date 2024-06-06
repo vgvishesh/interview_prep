@@ -4476,6 +4476,57 @@ export class DSAService {
     return nums[nums.length - k];
   };
 
+  removeOccurrences(s: string, part: string): string {
+    const stack: { c: string, num: number }[] = [];
+    let i = 0;
+    while (i < s.length) {
+      let top = stack[stack.length - 1];
+      if (top && top.num == part.length - 1) {
+        while (top.num != 0) {
+          stack.pop();
+          top = stack[stack.length - 1];
+        }
+        stack.pop();
+      } else if (top && s[i] == part[top.num + 1]) {
+        stack.push({ c: s[i], num: top.num + 1 });
+        i++;
+      } else if (s[i] == part[0]) {
+        stack.push({ c: s[i], num: 0 });
+        i++;
+      } else {
+        const firstoccurence = part.indexOf(s[i]);
+        let j = stack.length - 1;
+        let z = firstoccurence - 1;
+        while (z >= 0 && j >= 0 && stack[j].c == part[z]) {
+          j--;
+          z--;
+        }
+        if (z == -1) {
+          j++;
+          let count = 0;
+          while (j <= stack.length - 1) {
+            stack[j++].num = count++;
+          }
+          stack.push({ c: s[i], num: count });
+        } else {
+          stack.push({ c: s[i], num: -1 });
+        }
+        i++;
+      }
+    }
+
+    let top = stack[stack.length - 1];
+    if (top && top.num == part.length - 1) {
+      while (top.num != 0) {
+        stack.pop();
+        top = stack[stack.length - 1];
+      }
+      stack.pop();
+    }
+
+    const remainder = stack.map(x => x.c).join('');
+    return remainder;
+  };
 };
 
 export class SelectSolution {
