@@ -4539,6 +4539,34 @@ export class DSAService {
     }
     return -1;
   };
+
+  lengthOfLongestSubstring(s: string): number {
+    let i = 0;
+    const postitionMap: Map<string, number> = new Map();
+    let max = Number.MIN_VALUE;
+    let runLength = 0;
+    let start = 0;
+    while (i < s.length) {
+      if (postitionMap.has(s[i])) {
+        const pos = postitionMap.get(s[i]);
+        if (runLength > max) {
+          max = runLength;
+        }
+        runLength = runLength - (pos - start + 1);
+        for (let j = start; j <= pos; j++) {
+          postitionMap.delete(s[j]);
+        }
+        start = pos + 1;
+      }
+      postitionMap.set(s[i], i);
+      runLength++;
+      i++;
+    }
+    if (runLength > max) {
+      max = runLength;
+    }
+    return max;
+  };
 };
 
 export class SelectSolution {

@@ -1188,5 +1188,12 @@ describe('DSA service tests', () => {
     let s = new DSAService();
     // console.log(s.strStr('sadbutsad', 'sad'));
     console.log(s.strStr('hello', 'll'));
+  });
+
+  it('test_lenoflongestSubstring', () => {
+    let s = new DSAService();
+    // console.log(s.lengthOfLongestSubstring('abcabcbb'));
+    // console.log(s.lengthOfLongestSubstring('bbbbb'));
+    console.log(s.lengthOfLongestSubstring('abba'));
   })
 })
