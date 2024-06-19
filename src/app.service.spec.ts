@@ -1176,11 +1176,17 @@ describe('DSA service tests', () => {
     console.log(s.kthLargestNumber(["2", "21", "12", "1"], 3));
   });
 
-  it('test_remove', () => {
+  it.skip('test_remove', () => {
     let s = new DSAService();
     console.log(s.removeOccurrences('wwwwwwwwwwwwwwwwwwwwwvwwwwswxwwwwsdwxweeohapwwzwuwajrnogb', 'w'));
     // console.log(s.removeOccurrences('axxxxyyyyb', 'xy'));
     // console.log(s.removeOccurrences('kpygkivtlqoockpygkivtlqoocssnextkqzjpycbylkaondsskpygkpygkivtlqoocssnextkqzjpkpygkivtlqoocssnextkqzjpycbylkaondsycbylkaondskivtlqoocssnextkqzjpycbylkaondssnextkqzjpycbylkaondshijzgaovndkjiiuwjtcpdpbkrfsi', 'kpygkivtlqoocssnextkqzjpycbylkaonds'));
     // console.log(s.removeOccurrences('bipfqtluhgrzcufxmbhhdvcdyhbipfqtluhgrzcufxmbhhdvcdyhookwqbvlialefmubkumdkyffoqkjqgrbukmugldaabipfqtluhgrzcufxmbhhdvcdyhookwqbvlialefmubkumdbipfqtluhgrzcufxmbhhdvcdyhookwqbvlialefmubkumdkyffoqkjqgrbukmugldaabigtnvonqnwsvsieckyffoqkjqgrbukmugldaabigtnvonqnwsvsiecbigtnvonqnwsvsiecookwqbvlialefmubkumdkyffoqkjqgrbukmugldaabigtnvonbipfqtluhgrzcufxmbhhdvcdyhookwqbvlialefmubipfqtluhgrzcufxmbhhdvcdyhookwqbvlialefmubkbipfqtluhgrzcufxmbhhdvcdyhookwqbvlialefmubkumdkyffoqkjqgrbukmugldaabigtnvonqnwsvsiecumdkyffoqkjqgrbukmugldaabigtnvonqnwsvsiecbkumdkyffoqkjqgrbukmugldaabigbipfqtluhgrzcufxmbhhdvcdyhookwqbvlialefmubkumdkyffoqkjqgrbukmugldaabigtnvonqnwsvsiectnvonqnwsvsiecqnwsvsiecccuncvgyragnodjhijwgnmahtqpxqijkiwvadraqqvokx', 'bipfqtluhgrzcufxmbhhdvcdyhookwqbvlialefmubkumdkyffoqkjqgrbukmugldaabigtnvonqnwsvsiec'));
+  });
+
+  it.skip('test_strstr', () => {
+    let s = new DSAService();
+    // console.log(s.strStr('sadbutsad', 'sad'));
+    console.log(s.strStr('hello', 'll'));
   })
 })

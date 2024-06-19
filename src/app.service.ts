@@ -4527,6 +4527,18 @@ export class DSAService {
     const remainder = stack.map(x => x.c).join('');
     return remainder;
   };
+
+  strStr(haystack: string, needle: string): number {
+    let i = 0;
+    while (i + needle.length <= haystack.length) {
+      const subStr = haystack.slice(i, i + needle.length);
+      if (subStr === needle) {
+        return i;
+      }
+      i++;
+    }
+    return -1;
+  };
 };
 
 export class SelectSolution {
