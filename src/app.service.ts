@@ -4567,6 +4567,42 @@ export class DSAService {
     }
     return max;
   };
+
+  convert(s: string, numRows: number): string {
+    if (numRows == 1) {
+      return s;
+    }
+    const target = numRows - 1;
+    const dataMap = new Map<number, string>();
+    let count = 0;
+    let bit = 0
+    for (let i = 0; i < s.length; i++) {
+      if (dataMap.has(count)) {
+        dataMap.set(count, dataMap.get(count).concat(s[i]));
+      } else {
+        dataMap.set(count, s[i]);
+      }
+      if (bit == 0) {
+        count++;
+      } else if (bit == 1) {
+        count--;
+      }
+
+      if (count == target) {
+        bit = 1
+      } else if (count == 0) {
+        bit = 0
+      }
+    }
+
+    let result: string = '';
+    for (let i = 0; i < numRows; i++) {
+      if (dataMap.get(i)) {
+        result = result.concat(dataMap.get(i));
+      }
+    }
+    return result;
+  };
 };
 
 export class SelectSolution {

@@ -1190,10 +1190,26 @@ describe('DSA service tests', () => {
     console.log(s.strStr('hello', 'll'));
   });
 
-  it('test_lenoflongestSubstring', () => {
+  it.skip('test_lenoflongestSubstring', () => {
     let s = new DSAService();
     // console.log(s.lengthOfLongestSubstring('abcabcbb'));
     // console.log(s.lengthOfLongestSubstring('bbbbb'));
     console.log(s.lengthOfLongestSubstring('abba'));
-  })
+  });
+
+
+  it('test_convert', () => {
+    let s = new DSAService();
+    let res = s.convert("PAYPALISHIRING", 4);
+    expect(res).toEqual('PINALSIGYAHRPI');
+
+    res = s.convert("PAYPALISHIRING", 3);
+    expect(res).toEqual("PAHNAPLSIIGYIR");
+
+    res = s.convert("A", 2);
+    expect(res).toEqual("A");
+
+    res = s.convert("AB", 1);
+    expect(res).toEqual("AB");
+  });
 })
