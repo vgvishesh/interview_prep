@@ -1,5 +1,6 @@
 
 import { Injectable } from '@nestjs/common';
+import { count } from 'console';
 @Injectable()
 
 export class Master {
@@ -5940,5 +5941,39 @@ export class StockSpanner {
     }
     this.stack.push({ index: this.stockPrices.length - 1, span: count });
     return count;
+  }
+}
+
+export class newDsa {
+  coinChange(coins: number[], amount: number): number {
+    coins.sort((a, b) => b - a);
+    const coinMap: Map<number, number> = new Map();
+    return findCoinCount(amount, coins);
+
+    function findCoinCount(amount: number, coins: number[]) {
+      let min = Number.MAX_VALUE;
+      if (amount == 0) {
+        return 0;
+      }
+
+      if (coinMap.has(amount)) {
+        return coinMap.get(amount);
+      }
+
+      for (let i = 0; i < coins.length; i++) {
+        const nB = amount - coins[i];
+        if (nB >= 0) {
+          let jumps = findCoinCount(nB, coins);
+          if (jumps == -1) {
+            continue;
+          } else if (jumps + 1 < min) {
+            min = jumps + 1;
+          }
+        }
+      }
+
+      coinMap.set(amount, min);
+      return min == Number.MAX_VALUE ? -1 : min;
+    }
   }
 }
