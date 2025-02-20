@@ -5976,4 +5976,34 @@ export class newDsa {
       return min == Number.MAX_VALUE ? -1 : min;
     }
   }
+
+  minimumTotal(triangle: number[][]): number {
+    let height = triangle.length;
+    let dp: number[][] = new Array(height);
+
+    for (let i = 0; i < height; i++) {
+      dp[i] = new Array(triangle[i].length).fill(-1);
+    }
+
+    return findMinSumPath(0, 0);
+
+    function findMinSumPath(level: number, index: number) {
+      if (level >= height) {
+        return 0;
+      }
+
+      if (index > triangle[level].length) {
+        return 0;
+      }
+
+      if (dp[level][index] != -1) {
+        return dp[level][index];
+      }
+
+      let sum = triangle[level][index] + Math.min(findMinSumPath(level + 1, index), findMinSumPath(level + 1, index + 1));
+
+      dp[level][index] = sum;
+      return sum;
+    }
+  }
 }

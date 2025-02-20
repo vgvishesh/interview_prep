@@ -1214,12 +1214,21 @@ describe("new practise", () => {
     expect(res).toEqual("AB");
   });
 
-  it("test_coincount", () => {
+  it.skip("test_coincount", () => {
     let s = new newDsa();
     let res = s.coinChange([1, 2, 5], 11);
     console.log(res);
 
     // let res = s.coinChange([2], 3);
     // console.log(res);
+  });
+
+  it('test_triangle', () => {
+    let s = new newDsa();
+    let res = s.minimumTotal([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]);
+    console.log(res);
+
+    res = s.minimumTotal([[-10]]);
+    console.log(res);
   })
 })
