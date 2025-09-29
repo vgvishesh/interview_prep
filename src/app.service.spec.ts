@@ -1223,12 +1223,27 @@ describe("new practise", () => {
     // console.log(res);
   });
 
-  it('test_triangle', () => {
+  it.skip('test_triangle', () => {
     let s = new newDsa();
     let res = s.minimumTotal([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]);
     console.log(res);
 
     res = s.minimumTotal([[-10]]);
+    console.log(res);
+  });
+
+  it('test_myAtoI', () => {
+    let s = new newDsa();
+    let res = s.myAtoi("0-1");
+    console.log(res);
+
+    res = s.myAtoi("1337c0d3");
+    console.log(res);
+
+    res = s.myAtoi("-91283472332");
+    console.log(res);
+
+    res = s.myAtoi("21474836460");
     console.log(res);
   })
 })

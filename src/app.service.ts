@@ -6006,4 +6006,34 @@ export class newDsa {
       return sum;
     }
   }
+
+  myAtoi(s: string): number {
+    const trimmed = s.trim();
+    const numArray: number[] = [];
+    let isLeadingZero = true;
+    const sign = trimmed[0] == '-' || trimmed[0] == '+' ? trimmed[0] : "";
+    const startIndex = sign !== "" ? 1 : 0;
+    for (let i = startIndex; i < trimmed.length; i++) {
+      if (trimmed[i] == '0' && isLeadingZero) {
+        continue;
+      }
+      if (Number.isNaN(parseInt(trimmed[i]))) {
+        break;
+      }
+      isLeadingZero = false;
+      numArray.push(parseInt(trimmed[i]));
+    }
+
+    let multiplier = 1;
+    ///iterate over array
+    let finalNumber = 0;
+    for (let i = numArray.length - 1; i >= 0; i--) {
+      finalNumber += numArray[i] * multiplier;
+      multiplier *= 10;
+    }
+    finalNumber = sign == '+' || sign == '' ? finalNumber : -1 * finalNumber;
+    finalNumber = finalNumber < -2147483648 ? -2147483648 : finalNumber;
+    finalNumber = finalNumber > 2147483647 ? 2147483647 : finalNumber;
+    return finalNumber;
+  };
 }
