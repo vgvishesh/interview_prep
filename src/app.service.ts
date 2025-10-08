@@ -6036,4 +6036,68 @@ export class newDsa {
     finalNumber = finalNumber > 2147483647 ? 2147483647 : finalNumber;
     return finalNumber;
   };
+
+  isNumber(s: string): boolean {
+    const trimedStr = s.trim();
+    const { sign, isSign } = getSign(s);
+    const startIndex = isSign ? 1 : 0;
+    let isDecimalSeen = false;
+    let isExponentSeen = false;
+    let isFirstCharAfterExponent = false;
+    let isFoundLeadingDigit = false;
+    for (let i = startIndex; i < trimedStr.length; i++) {
+      const char = trimedStr[i];
+      const isNum = Number.isInteger(parseInt(char));
+      if (!isNum) {
+        if (char == ".") {
+          if (!isDecimalSeen && !isExponentSeen) {
+            isDecimalSeen = true;
+            continue;
+          } else {
+            return false;
+          }
+        } else if (char == "e" || char == 'E') {
+          if (!isExponentSeen && isFoundLeadingDigit) {
+            isExponentSeen = true;
+            isFirstCharAfterExponent = true;
+            continue;
+          } else {
+            return false;
+          }
+        } else if (char == "+" || char == "-") {
+          if (isExponentSeen && isFirstCharAfterExponent) {
+            isFirstCharAfterExponent = false;
+            continue;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        if (!isFoundLeadingDigit) {
+          isFoundLeadingDigit = true;
+        }
+        if (isExponentSeen && isFirstCharAfterExponent) {
+          isFirstCharAfterExponent = false;
+        }
+      }
+    }
+    const lastChar = trimedStr[trimedStr.length - 1]
+    if (lastChar == 'e' || lastChar == 'E' || lastChar == '+' || lastChar == '-') {
+      return false;
+    }
+
+    if (!isFoundLeadingDigit) {
+      return false;
+    }
+
+    return true;
+
+    function getSign(s: string) {
+      const sign = s[0] == '-' || s[0] == '+' ? s[0] : "";
+      const isSign = sign == "" ? false : true;
+      return { sign, isSign }
+    }
+  };
 }

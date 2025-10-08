@@ -1232,7 +1232,7 @@ describe("new practise", () => {
     console.log(res);
   });
 
-  it('test_myAtoI', () => {
+  it.skip('test_myAtoI', () => {
     let s = new newDsa();
     let res = s.myAtoi("0-1");
     console.log(res);
@@ -1245,5 +1245,17 @@ describe("new practise", () => {
 
     res = s.myAtoi("21474836460");
     console.log(res);
+  });
+
+  it('test_isNumber', () => {
+    let s = new newDsa();
+    const testNums = ["2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10", "-90E3", "3e+7", "+6e-1", "53.5e93", "-123.456e789", "0"];
+    const failNums = ["abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53", ".", "e"]
+
+    testNums.push(...failNums)
+    // const testNums = ["-0.1"];
+    testNums.forEach(x => {
+      console.log(x + ":" + s.isNumber(x));
+    });
   })
 })
