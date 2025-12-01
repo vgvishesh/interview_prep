@@ -6100,4 +6100,49 @@ export class newDsa {
       return { sign, isSign }
     }
   };
+
+  isStackSquence(pushed: number[], popped: number[]): boolean {
+    let stack: number[] = Array(pushed.length);
+    let top = 0;
+    let i = 0;
+    let j = 0;
+    const length = pushed.length;
+    while (i < length || j < length) {
+      if (i < length) {
+        if (top == 0) {
+          stack[top++] = pushed[i++];
+        } else {
+          if (stack[top - 1] == popped[j]) {
+            top--;
+            j++;
+          } else {
+            stack[top++] = pushed[i++];
+          }
+        }
+      } else {
+        if (stack[top - 1] != popped[j]) {
+          break;
+        }
+        top--;
+        j++;
+      }
+    }
+    return top == 0;
+  }
+}
+
+export class NumArray {
+  private prefixSum: number[] = [];
+  private nums: number[] = [];
+  constructor(nums: number[]) {
+    this.prefixSum.push(nums[0]);
+    for (let i = 1; i < nums.length; i++) {
+      this.prefixSum.push(this.prefixSum[i - 1] + nums[i]);
+    }
+    this.nums = nums;
+  }
+
+  sumRange(left: number, right: number): number {
+    return this.prefixSum[right] - this.prefixSum[left] + this.nums[left];
+  }
 }
