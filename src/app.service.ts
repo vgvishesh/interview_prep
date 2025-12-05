@@ -6129,6 +6129,104 @@ export class newDsa {
     }
     return top == 0;
   }
+
+  findRepeatedDnaSequences(s: string): string[] {
+    const set: Map<string, number> = new Map<string, number>();
+    for (let i = 0, j = 9; i <= s.length - 9; i++, j++) {
+      const subString = s.slice(i, j + 1);
+      if (!set.has(subString)) {
+        set.set(subString, 1);
+      } else {
+        set.set(subString, set.get(subString) + 1);
+      }
+    }
+    return Array.from(set.keys()).filter(x => set.get(x) > 1);
+  }
+
+  minSubArrayLen(target: number, nums: number[]): number {
+    let sum = 0;
+    let min = Number.MAX_VALUE;
+    let i = 0;
+    let j = 0;
+    while (j < nums.length) {
+      sum += nums[j];
+      if (sum >= target) {
+        const length = j - i + 1;
+        if (length < min) {
+          min = length;
+        }
+        while (sum >= target && i <= j) {
+          if (sum >= target) {
+            const length = j - i + 1;
+            if (length < min) {
+              min = length;
+            }
+          }
+          sum -= nums[i];
+          i++;
+        }
+      }
+      j++;
+    }
+    return min == Number.MAX_VALUE ? 0 : min;
+  };
+
+  containsNearbyAlmostDuplicate(nums: number[], indexDiff: number, valueDiff: number): boolean {
+    let i = 0;
+    let j = i + indexDiff;
+    while (j < nums.length) {
+      let k = j
+      if (Math.abs(nums[j] - nums[i]) <= valueDiff) {
+        return true;
+      }
+      while (k > i && Math.abs(nums[k] - nums[i]) >= valueDiff) {
+        if (Math.abs(nums[k] - nums[i]) <= valueDiff) {
+          return true;
+        }
+        k--;
+      }
+      j++; i++;
+    }
+    return false;
+  };
+
+  generateParenthesis(n: number): string[] {
+    const results: Map<number, Map<number, string[]>> = new Map();
+    const totalLength = 2 * n;
+
+    function createParanthesis(open: number, base: string): string[] {
+      const length = base.length;
+      if (open < 0 || open > n || totalLength - length < open) {
+        return [];
+      }
+
+      if (length == totalLength) {
+        return [base];
+      }
+
+      if (results.has(length) && results.get(length).has(open)) {
+        const storedStrings = results.get(length).get(open);
+        const newStrings = storedStrings.map(x => {
+          const sclicedString = x.slice(length);
+          return base + sclicedString;
+        })
+        return newStrings;
+      }
+
+      const leftResult = createParanthesis(open - 1, base + ')').filter(x => x.length > 0);
+      const rightResult = createParanthesis(open + 1, base + '(').filter(x => x.length > 0);
+
+      if (results.has(length)) {
+        const storedStrings = results.get(length).get(open) ?? [];
+        storedStrings.push(...leftResult, ...rightResult);
+      } else {
+        results.set(length, new Map().set(open, [...leftResult, ...rightResult]));
+      }
+
+      return [...leftResult, ...rightResult];
+    }
+    return createParanthesis(0, '');
+  }
 }
 
 export class NumArray {

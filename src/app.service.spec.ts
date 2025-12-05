@@ -1259,12 +1259,36 @@ describe("new practise", () => {
     });
   })
 
-  it('test_isStackSquence', () => {
+  it.skip('test_isStackSquence', () => {
     let s = new newDsa();
     let res = s.isStackSquence([1], [1]);
     console.log(res);
 
     res = s.isStackSquence([1, 2, 3, 4, 5], [4, 3, 5, 1, 2]);
+    console.log(res);
+  });
+
+  it.skip('test_findRepeatedDnaSequences', () => {
+    let s = new newDsa();
+    let res = s.findRepeatedDnaSequences("AAAAAAAAAAAAA");
+    console.log(res);
+  });
+
+  it.skip('test_minSubArrayLen', () => {
+    let s = new newDsa();
+    let res = s.minSubArrayLen(11, [1, 2, 3, 4, 5]);
+    console.log(res);
+  });
+
+  it.skip('test_containsNearbyAlmostDuplicate', () => {
+    let s = new newDsa();
+    let res = s.containsNearbyAlmostDuplicate([-2, 3], 2, 5);
+    console.log(res);
+  });
+
+  it('test_generateParenthesis', () => {
+    let s = new newDsa();
+    let res = s.generateParenthesis(8);
     console.log(res);
   });
 })

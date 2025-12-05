@@ -3,3 +3,4 @@
 dist/
 nest-cli.json
 node_modules/
+coverage/
