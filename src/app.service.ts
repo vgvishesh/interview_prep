@@ -5089,6 +5089,20 @@ export class BST {
   };
 }
 
+export class LevelTreeNode {
+  val: number
+  left: LevelTreeNode | null
+  right: LevelTreeNode | null
+  next: LevelTreeNode | null
+
+  constructor(val?: number, left?: LevelTreeNode, right?: LevelTreeNode, next?: LevelTreeNode) {
+    this.val = (val === undefined ? 0 : val)
+    this.left = (left === undefined ? null : left)
+    this.right = (right === undefined ? null : right)
+    this.next = (next === undefined ? null : next)
+  }
+}
+
 export class BinaryTree {
   root = new TreeNode();
   constructor(nums: (number | null)[]) {
@@ -5538,6 +5552,57 @@ export class BinaryTree {
       swaps[0].val = backup.val;
       backup.val = temp;
     }
+  }
+
+  static levelOrderBottom(root: TreeNode | null): number[][] {
+    if (root == null) {
+      return [];
+    }
+    let queue: TreeNode[] = [root];
+    let nums: number[][] = [];
+    while (queue.length > 0) {
+      let nextLevel = new Array<TreeNode>();
+      nums.push(queue.map(x => x.val));
+      for (let i = 0; i < queue.length; i++) {
+        if (queue[i].left) {
+          nextLevel.push(queue[i].left);
+        }
+        if (queue[i].right) {
+          nextLevel.push(queue[i].right);
+        }
+      }
+      queue = nextLevel;
+    }
+
+    return nums.reverse();
+  };
+
+  static connect(root: LevelTreeNode | null): LevelTreeNode | null {
+    if (root == null) {
+      return null;
+    }
+
+    const levelLefts: LevelTreeNode[] = [];
+    function preorder(root: LevelTreeNode | null, level: number) {
+      if (root == null) {
+        return;
+      }
+
+      if (levelLefts.length <= level) {
+        levelLefts.push(root);
+      } else {
+        levelLefts[level].next = root;
+        levelLefts[level] = root;
+      }
+
+      preorder(root.left, level + 1);
+      preorder(root.right, level + 1);
+    }
+    preorder(root, 0);
+    for (let i = 0; i < levelLefts.length; i++) {
+      levelLefts[i].next = null;
+    }
+    return root;
   }
 }
 

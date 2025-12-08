@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary } from "./app.service"
+import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary, LevelTreeNode } from "./app.service"
 
 // describe.skip('DSA service tests', () => {
 //   // it.skip('test_missing_number', () => {
@@ -1307,7 +1307,7 @@ describe("new practise", () => {
     console.log(result);
   });
 
-  it('test_WordDictionary', () => {
+  it.skip('test_WordDictionary', () => {
     let s = new WordDictionary();
     s.addWord("bad");
     s.addWord("dad");
@@ -1316,5 +1316,17 @@ describe("new practise", () => {
     console.log(s.search("bad"));
     console.log(s.search(".ad"));
     console.log(s.search("b.."));
+  });
+
+  it.skip('test_levelOrderBottom', () => {
+    let root = new TreeNode(3, new TreeNode(9, null, null), new TreeNode(20, new TreeNode(15, null, null), new TreeNode(7, null, null)));
+    let res = BinaryTree.levelOrderBottom(root);
+    console.log(res);
+  });
+
+  it('test_connect', () => {
+    let root = new LevelTreeNode(1, new LevelTreeNode(2, new LevelTreeNode(4, null, null, null), new LevelTreeNode(5, null, null, null)), new LevelTreeNode(3, new LevelTreeNode(6, null, null, null), new LevelTreeNode(7, null, null, null)));
+    let res = BinaryTree.connect(root);
+    console.log(res);
   });
 })
