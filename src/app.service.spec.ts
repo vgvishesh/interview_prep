@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa } from "./app.service"
+import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary } from "./app.service"
 
 // describe.skip('DSA service tests', () => {
 //   // it.skip('test_missing_number', () => {
@@ -1286,9 +1286,35 @@ describe("new practise", () => {
     console.log(res);
   });
 
-  it('test_generateParenthesis', () => {
+  it.skip('test_generateParenthesis', () => {
     let s = new newDsa();
     let res = s.generateParenthesis(8);
     console.log(res);
+  });
+
+  it.skip('test_exist', () => {
+    let s = new newDsa();
+    let res = s.exist([["A", "B", "C", "E"], ["S", "F", "E", "S"], ["A", "D", "E", "E"]], "ABCESEEEFS");
+    console.log(res);
+  });
+
+  it.skip('test_recoverTree', () => {
+    //root = [3,1,4,null,null,2]
+    let root = new TreeNode(3, new TreeNode(1, null, null), new TreeNode(4, new TreeNode(2), null));
+    // let root = new TreeNode(1, new TreeNode(3, null, new TreeNode(2)), null);
+    BinaryTree.recoverTree(root);
+    const result = BinaryTree.inorderTraversal(root);
+    console.log(result);
+  });
+
+  it('test_WordDictionary', () => {
+    let s = new WordDictionary();
+    s.addWord("bad");
+    s.addWord("dad");
+    s.addWord("mad");
+    console.log(s.search("pad"));
+    console.log(s.search("bad"));
+    console.log(s.search(".ad"));
+    console.log(s.search("b.."));
   });
 })

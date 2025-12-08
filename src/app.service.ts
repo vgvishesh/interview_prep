@@ -5111,7 +5111,7 @@ export class BinaryTree {
     }
   }
 
-  inorderTraversal(root: TreeNode): number[] {
+  static inorderTraversal(root: TreeNode): number[] {
     let arr: number[] = [];
     function traverse(root: TreeNode) {
       if (root == null) {
@@ -5498,6 +5498,47 @@ export class BinaryTree {
     return root;
 
   };
+
+  static recoverTree(root: TreeNode | null): void {
+    const swaps: TreeNode[] = [];
+    let backup: TreeNode | null = null;
+    let count = 0;
+    function findNodes(root: TreeNode | null, prev: TreeNode | null): TreeNode | null {
+      if (root == null) {
+        return prev;
+      }
+
+      if (count == 2) {
+        return null;
+      }
+
+      let newPrev: TreeNode | null;
+      newPrev = findNodes(root.left, prev);
+      if (newPrev != null && root.val < newPrev.val) {
+        if (count == 0) {
+          swaps.push(newPrev);
+          backup = root;
+          count++;
+        } else if (count == 1) {
+          swaps.push(root);
+          count++;
+        }
+      }
+      newPrev = root;
+      newPrev = findNodes(root.right, newPrev);
+      return newPrev;
+    }
+    findNodes(root, null);
+    if (swaps.length == 2) {
+      let temp = swaps[0].val;
+      swaps[0].val = swaps[1].val;
+      swaps[1].val = temp;
+    } else if (swaps.length == 1) {
+      let temp = swaps[0].val;
+      swaps[0].val = backup.val;
+      backup.val = temp;
+    }
+  }
 }
 
 export class MaxHeap {
@@ -6227,6 +6268,40 @@ export class newDsa {
     }
     return createParanthesis(0, '');
   }
+
+  exist(board: string[][], word: string): boolean {
+    function findWord(i: number, j: number, wordIndex: number): boolean {
+      if (wordIndex == word.length) {
+        return true;
+      }
+
+      if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] != word[wordIndex] || board[i][j] == '*') {
+        return false;
+      }
+
+      const tmp = board[i][j];
+      board[i][j] = '*';
+
+      const result = findWord(i - 1, j, wordIndex + 1) || findWord(i + 1, j, wordIndex + 1) || findWord(i, j - 1, wordIndex + 1) || findWord(i, j + 1, wordIndex + 1);
+
+      board[i][j] = word[wordIndex];
+
+      return result;
+    }
+
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[0].length; j++) {
+        if (board[i][j] == word[0]) {
+          if (findWord(i, j, 0)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  };
+
+
 }
 
 export class NumArray {
@@ -6242,5 +6317,66 @@ export class NumArray {
 
   sumRange(left: number, right: number): number {
     return this.prefixSum[right] - this.prefixSum[left] + this.nums[left];
+  }
+}
+
+class TrieNodeCompact {
+  val: string;
+  next: TrieNodeCompact[];
+  wordEnds: boolean;
+
+  constructor() {
+    this.val = "";
+    this.next = new Array(26).fill(null);
+    this.wordEnds = false;
+  }
+}
+export class WordDictionary {
+  private root: TrieNodeCompact;
+  constructor() {
+    this.root = new TrieNodeCompact();
+  }
+
+  addWord(word: string): void {
+    let ptr = this.root;
+    for (let w of word) {
+      let ascii = w.charCodeAt(0) - 97;
+      if (ptr.next[ascii] == null) {
+        ptr.next[ascii] = new TrieNodeCompact();
+        ptr.next[ascii].val = w;
+      }
+      ptr = ptr.next[ascii];
+    }
+    ptr.wordEnds = true;
+  }
+
+  search(word: string): boolean {
+    function find(ptr: TrieNodeCompact, index: number): boolean {
+      if (index == word.length) {
+        return ptr.wordEnds;
+      }
+
+      const char = word[index];
+      if (char == ".") {
+        for (let i = 0; i < ptr.next.length; i++) {
+          let current = ptr.next[i];
+          if (current != null) {
+            const isFound = find(current, index + 1);
+            if (isFound) {
+              return true;
+            }
+          }
+        }
+      } else {
+        let ascii = char.charCodeAt(0) - 97;
+        let current = ptr.next[ascii];
+        if (current != null && current.val == char) {
+          return find(current, index + 1);
+        }
+      }
+      return false;
+    }
+
+    return find(this.root, 0);
   }
 }
