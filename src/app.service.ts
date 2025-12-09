@@ -6366,7 +6366,120 @@ export class newDsa {
     return false;
   };
 
+  canFinish(numCourses: number, prerequisites: number[][]): boolean {
+    let visited: Set<number> = new Set();
+    let done: Set<number> = new Set();
+    let adjacents: Map<number, number[]> = new Map();
 
+    function canBeDone(i: number) {
+      if (done.has(i)) {
+        return true;
+      }
+
+      if (visited.has(i)) {
+        return false;
+      }
+
+      visited.add(i);
+      let todos = adjacents.get(i);
+      if (!todos) {
+        done.add(i);
+        return true;
+      }
+
+      for (let j = 0; j < todos.length; j++) {
+        if (!canBeDone(todos[j])) {
+          return false;
+        }
+      }
+
+      done.add(i);
+      return true;
+    }
+
+    for (let i = 0; i < prerequisites.length; i++) {
+      let source = prerequisites[i][0];
+      let dest = prerequisites[i][1];
+      if (adjacents.has(source)) {
+        let val = adjacents.get(source);
+        val.push(dest);
+        adjacents.set(source, val);
+      } else {
+        adjacents.set(source, [dest]);
+      }
+    }
+
+    for (let i = 0; i < numCourses; i++) {
+      if (!canBeDone(i)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  findMinHeightTrees(n: number, edges: number[][]): number[] {
+    let minLevel = Number.MAX_VALUE;
+    let labels: number[] = [];
+    const adjacents: Map<number, number[]> = new Map();
+
+    for (let i = 0; i < edges.length; i++) {
+      let start = edges[i][0];
+      let end = edges[i][1];
+      if (adjacents.has(start)) {
+        let val = adjacents.get(start);
+        val.push(end);
+        adjacents.set(start, val);
+      } else {
+        adjacents.set(start, [end]);
+      }
+
+      if (adjacents.has(end)) {
+        let val = adjacents.get(end);
+        val.push(start);
+        adjacents.set(end, val);
+      } else {
+        adjacents.set(end, [start]);
+      }
+    }
+
+    function findLevels(root: number) {
+      let queue: number[] = [];
+      let level = 0;
+      queue.push(root);
+      const visited: Set<number> = new Set();
+      while (queue.length > 0) {
+        if (level > minLevel) {
+          return level;
+        }
+        const nextQueue: number[] = [];
+        for (let i = 0; i < queue.length; i++) {
+          visited.add(queue[i]);
+          const children = adjacents.get(queue[i]) ?? [];
+          for (let j = 0; j < children.length; j++) {
+            if (!visited.has(children[j])) {
+              nextQueue.push(children[j]);
+            }
+          }
+        }
+        if (nextQueue.length > 0) {
+          level++;
+        }
+        queue = nextQueue;
+      }
+      return level;
+    }
+
+    for (let i = 0; i < n; i++) {
+      const level = findLevels(i);
+      if (level < minLevel) {
+        minLevel = level;
+        labels = [i];
+      } else if (level == minLevel) {
+        labels.push(i);
+      }
+    }
+    return labels;
+  };
 }
 
 export class NumArray {

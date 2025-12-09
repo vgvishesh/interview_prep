@@ -1324,9 +1324,30 @@ describe("new practise", () => {
     console.log(res);
   });
 
-  it('test_connect', () => {
+  it.skip('test_connect', () => {
     let root = new LevelTreeNode(1, new LevelTreeNode(2, new LevelTreeNode(4, null, null, null), new LevelTreeNode(5, null, null, null)), new LevelTreeNode(3, new LevelTreeNode(6, null, null, null), new LevelTreeNode(7, null, null, null)));
     let res = BinaryTree.connect(root);
+    console.log(res);
+  });
+
+  it.skip('test_canFinish', () => {
+    let s = new newDsa();
+    let res = s.canFinish(2, [[1, 0]]);
+    console.log(res);
+
+    res = s.canFinish(2, [[1, 0], [0, 1]]);
+    console.log(res);
+
+    res = s.canFinish(4, [[2, 3], [3, 0], [3, 1], [0, 1], [1, 2]]);
+    console.log(res);
+  });
+
+  it('test_findMinHeightTrees', () => {
+    let s = new newDsa();
+    let res = s.findMinHeightTrees(4, [[1, 0], [1, 2], [1, 3]]);
+    console.log(res);
+
+    res = s.findMinHeightTrees(6, [[3, 0], [3, 1], [3, 2], [3, 4], [5, 4]]);
     console.log(res);
   });
 })
