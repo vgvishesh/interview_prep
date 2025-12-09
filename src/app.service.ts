@@ -6491,7 +6491,6 @@ export class newDsa {
       let start = 0;
       let end = num.length - 1;
       let mid: number;
-      let finalMid: number;
       while (start <= end) {
         mid = Math.floor((start + end) / 2);
         if (num[mid] == target) {
@@ -6503,16 +6502,9 @@ export class newDsa {
         }
       }
 
-      if (num[mid] == target) {
-        finalMid = mid + 1;
-      } else if (num[mid] > target) {
-        finalMid = mid;
-      } else {
-        finalMid = mid + 1;
-      }
-      return finalMid <= num.length - 1 && finalMid >= 0 ? {
-        index: finalMid,
-        position: num[finalMid]
+      return mid <= num.length - 1 && mid >= 0 ? {
+        index: mid,
+        position: num[mid]
       } : {
         index: Number.MAX_VALUE,
         position: -1
@@ -6531,44 +6523,36 @@ export class newDsa {
       }
     }
 
-    for (let i = 0; i < num.length; i++) {
-      if (discardISet.has(i)) {
+    for (let j = 0; j < num.length; j++) {
+      const aj = num[j];
+      const ai = aj * 2;
+      const ak = aj;
+
+      const aikPositions = postitionMap.get(ai);
+      if (!aikPositions || aikPositions.length < 2) {
         continue;
       }
 
-      if (num[i] % 2 != 0) {
-        discardISet.add(i);
-        continue;
-      }
-
-      const ai = num[i];
-      const aj = num[i] / 2;
-      const ak = ai;
-
-      const ajPositions = postitionMap.get(aj);
-      const aikPositions = postitionMap.get(ak);
-
-      if (!ajPositions || aikPositions.length < 2) {
-        discardISet.add(i);
-        continue;
-      }
-
-      const validJIndexPostion = modBinSearch(ajPositions, i);
-      let jStartIndex = validJIndexPostion.index;
-      while (jStartIndex < ajPositions.length) {
-        const validJPostion = ajPositions[jStartIndex];
-        const validK = modBinSearch(aikPositions, validJPostion);
-
-        if (validK.position == -1) {
-          break;
+      const validikIndexPostion = modBinSearch(aikPositions, j);
+      let toLeft: number;
+      let toRight: number;
+      if (validikIndexPostion.index == Number.MAX_VALUE) {
+        toLeft = 0;
+        toRight = aikPositions.length - 1;
+      } else {
+        if (validikIndexPostion.position == j) {
+          toLeft = validikIndexPostion.index;
+          toRight = aikPositions.length - validikIndexPostion.index - 1;
+        } else if (validikIndexPostion.position > j) {
+          toLeft = validikIndexPostion.index;
+          toRight = aikPositions.length - validikIndexPostion.index;
+        } else {
+          toLeft = validikIndexPostion.index + 1;
+          toRight = aikPositions.length - validikIndexPostion.index - 1;
         }
-
-        if (validK.position > validJPostion && validJPostion > i) {
-          const toAdd = aikPositions.length - validK.index;
-          count += toAdd
-        }
-        jStartIndex++;
       }
+
+      count += toLeft * toRight;
     }
     return count;
   }
