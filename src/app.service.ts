@@ -5087,6 +5087,38 @@ export class BST {
     }
     return true;
   };
+
+  static sortedLinkListToBST(head: ListNode | null): TreeNode | null {
+    if (head == null) {
+      return null;
+    }
+
+    function createBST(start: ListNode, end: ListNode): TreeNode | null {
+      const mid = findMid(start, end);
+      let root: TreeNode | null = null;
+      if (mid != null) {
+        root = new TreeNode(mid.val);
+        root.left = createBST(start, mid);
+        root.right = createBST(mid.next, end);
+      }
+      return root;
+    }
+
+    function findMid(start: ListNode, end: ListNode): ListNode {
+      if (start == end) {
+        return null;
+      }
+      let slow = start;
+      let fast = start;
+      while (fast != end && fast.next != end) {
+        slow = slow.next;
+        fast = fast.next.next;
+      }
+      return slow;
+    }
+
+    return createBST(head, null);
+  }
 }
 
 export class LevelTreeNode {
@@ -6554,7 +6586,7 @@ export class newDsa {
 
       count += toLeft * toRight;
     }
-    return count;
+    return count % 1000000007;
   }
 }
 

@@ -1351,9 +1351,15 @@ describe("new practise", () => {
     console.log(res);
   });
 
-  it('test_specialTriplets', () => {
+  it.skip('test_specialTriplets', () => {
     let s = new newDsa();
     let res = s.specialTriplets([84, 2, 93, 1, 2, 2, 26]);
+    console.log(res);
+  });
+
+  it('test_sortedLinkListToBST', () => {
+    let s = new LinkList([-10, -3, 0, 5, 9]);
+    let res = BST.sortedLinkListToBST(s.head);
     console.log(res);
   });
 })
