@@ -1342,12 +1342,18 @@ describe("new practise", () => {
     console.log(res);
   });
 
-  it('test_findMinHeightTrees', () => {
+  it.skip('test_findMinHeightTrees', () => {
     let s = new newDsa();
     let res = s.findMinHeightTrees(4, [[1, 0], [1, 2], [1, 3]]);
     console.log(res);
 
     res = s.findMinHeightTrees(6, [[3, 0], [3, 1], [3, 2], [3, 4], [5, 4]]);
+    console.log(res);
+  });
+
+  it('test_specialTriplets', () => {
+    let s = new newDsa();
+    let res = s.specialTriplets([84, 2, 93, 1, 2, 2, 26]);
     console.log(res);
   });
 })

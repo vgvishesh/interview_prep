@@ -6480,6 +6480,98 @@ export class newDsa {
     }
     return labels;
   };
+
+  specialTriplets(num: number[]): number {
+    let count = 0;
+    const postitionMap = new Map<number, number[]>();
+    const discardISet = new Set<number>();
+    generatePostionMap(num);
+
+    function modBinSearch(num: number[], target: number): { index: number, position: number } {
+      let start = 0;
+      let end = num.length - 1;
+      let mid: number;
+      let finalMid: number;
+      while (start <= end) {
+        mid = Math.floor((start + end) / 2);
+        if (num[mid] == target) {
+          break;
+        } else if (num[mid] > target) {
+          end = mid - 1;
+        } else {
+          start = mid + 1;
+        }
+      }
+
+      if (num[mid] == target) {
+        finalMid = mid + 1;
+      } else if (num[mid] > target) {
+        finalMid = mid;
+      } else {
+        finalMid = mid + 1;
+      }
+      return finalMid <= num.length - 1 && finalMid >= 0 ? {
+        index: finalMid,
+        position: num[finalMid]
+      } : {
+        index: Number.MAX_VALUE,
+        position: -1
+      };
+    }
+
+    function generatePostionMap(num: number[]) {
+      for (let i = 0; i < num.length; i++) {
+        if (postitionMap.has(num[i])) {
+          let val = postitionMap.get(num[i]);
+          val.push(i);
+          postitionMap.set(num[i], val);
+        } else {
+          postitionMap.set(num[i], [i]);
+        }
+      }
+    }
+
+    for (let i = 0; i < num.length; i++) {
+      if (discardISet.has(i)) {
+        continue;
+      }
+
+      if (num[i] % 2 != 0) {
+        discardISet.add(i);
+        continue;
+      }
+
+      const ai = num[i];
+      const aj = num[i] / 2;
+      const ak = ai;
+
+      const ajPositions = postitionMap.get(aj);
+      const aikPositions = postitionMap.get(ak);
+
+      if (!ajPositions || aikPositions.length < 2) {
+        discardISet.add(i);
+        continue;
+      }
+
+      const validJIndexPostion = modBinSearch(ajPositions, i);
+      let jStartIndex = validJIndexPostion.index;
+      while (jStartIndex < ajPositions.length) {
+        const validJPostion = ajPositions[jStartIndex];
+        const validK = modBinSearch(aikPositions, validJPostion);
+
+        if (validK.position == -1) {
+          break;
+        }
+
+        if (validK.position > validJPostion && validJPostion > i) {
+          const toAdd = aikPositions.length - validK.index;
+          count += toAdd
+        }
+        jStartIndex++;
+      }
+    }
+    return count;
+  }
 }
 
 export class NumArray {
