@@ -1,6 +1,4 @@
-
 import { Injectable } from '@nestjs/common';
-import { count } from 'console';
 @Injectable()
 
 export class Master {
@@ -6082,6 +6080,33 @@ export class StockSpanner {
   }
 }
 
+export class StackLocal<T> {
+  private stack: T[] = [];
+  constructor() {
+    this.stack = [];
+  }
+
+  push(iten: T) {
+    this.stack.push(iten);
+  }
+
+  pop(): T {
+    return this.stack.pop();
+  }
+
+  top(): T {
+    return this.stack.length > 0 ? this.stack[this.stack.length - 1] : undefined;
+  }
+
+  size(): number {
+    return this.stack.length;
+  }
+
+  getAll(): T[] {
+    return this.stack;
+  }
+}
+
 export class newDsa {
   coinChange(coins: number[], amount: number): number {
     coins.sort((a, b) => b - a);
@@ -6627,7 +6652,6 @@ export class newDsa {
         const closestMatch = modBinSearch(matrix[i].slice(0, currentMaxCol), target);
         searchCount++;
         if (closestMatch.value == target) {
-          console.log(`opsCount: ${opsCount}, searchCount: ${searchCount}`);
           return true;
         } else {
           currentMaxCol = closestMatch.index;
@@ -6636,8 +6660,43 @@ export class newDsa {
         }
       }
     }
-    console.log(`opsCount: ${opsCount}, searchCount: ${searchCount}`);
     return false;
+  };
+
+  removeDuplicateLetters(s: string): string {
+    function compareLex(str1: string, str2: string): string {
+      const end = Math.min(str1.length, str2.length);
+      for (let i = 0; i < end; i++) {
+        if (str1[i] < str2[i]) {
+          return str1;
+        } else if (str1[i] > str2[i]) {
+          return str2;
+        }
+      }
+      return str1.length < str2.length ? str1 : str2;
+    }
+    const stackMain = new StackLocal<string>();
+    const unique = new Set<string>();
+    const stack = new StackLocal<string>();
+    for (let i = 0; i < s.length; i++) {
+      if (!unique.has(s[i])) {
+        stack.push(s[i]);
+        unique.add(s[i]);
+      } else {
+        let stackStr = '';
+        const ogStackStr = stack.getAll().join('');
+        while (stack.size() > 0) {
+          const pop = stack.pop();
+          if (pop != s[i]) {
+            stackStr += pop;
+          }
+        }
+        stackStr = Array.from(stackStr).reverse().join('') + s[i];
+        const smallLexStr = compareLex(stackStr, ogStackStr);
+        smallLexStr.split('').forEach(x => stack.push(x));
+      }
+    }
+    return stack.getAll().join('');
   };
 }
 
