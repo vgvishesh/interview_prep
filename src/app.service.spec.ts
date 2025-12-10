@@ -1357,9 +1357,15 @@ describe("new practise", () => {
     console.log(res);
   });
 
-  it('test_sortedLinkListToBST', () => {
+  it.skip('test_sortedLinkListToBST', () => {
     let s = new LinkList([-10, -3, 0, 5, 9]);
     let res = BST.sortedLinkListToBST(s.head);
+    console.log(res);
+  });
+
+  it('test_searchMatrix', () => {
+    let s = new newDsa();
+    let res = s.searchMatrix([[1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], 23);
     console.log(res);
   });
 })

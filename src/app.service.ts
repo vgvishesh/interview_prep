@@ -6588,6 +6588,57 @@ export class newDsa {
     }
     return count % 1000000007;
   }
+
+  searchMatrix(matrix: number[][], target: number): boolean {
+    function modBinSearch(num: number[], target: number): { index: number, value: number } {
+      let start = 0;
+      let end = num.length - 1;
+      let mid: number;
+      while (start <= end) {
+        mid = Math.floor((start + end) / 2);
+        if (num[mid] == target) {
+          return { index: mid, value: num[mid] };
+        } else if (num[mid] > target) {
+          end = mid - 1;
+        } else {
+          start = mid + 1;
+        }
+      }
+      if (num[mid] < target && mid + 1 < num.length) {
+        return { index: mid + 1, value: num[mid + 1] };
+      } else {
+        return { index: mid, value: num[mid] };
+      }
+    }
+
+    let i = 0;
+    let opsCount = 0;
+    let searchCount = 0;
+    const rows = matrix.length;
+    const cols = matrix[0].length;
+    let currentMaxCol = cols;
+    while (i < rows) {
+      const rowEndValue = matrix[i][currentMaxCol - 1];
+      if (rowEndValue < target) {
+        i++;
+        opsCount++;
+        continue;
+      } else {
+        const closestMatch = modBinSearch(matrix[i].slice(0, currentMaxCol), target);
+        searchCount++;
+        if (closestMatch.value == target) {
+          console.log(`opsCount: ${opsCount}, searchCount: ${searchCount}`);
+          return true;
+        } else {
+          currentMaxCol = closestMatch.index;
+          i++;
+          opsCount++;
+        }
+      }
+    }
+    console.log(`opsCount: ${opsCount}, searchCount: ${searchCount}`);
+    return false;
+  };
 }
 
 export class NumArray {
