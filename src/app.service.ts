@@ -6776,3 +6776,118 @@ export class WordDictionary {
     return find(this.root, 0);
   }
 }
+
+type DoublyLinkListNode<K, V> = {
+  key: K;
+  value: V;
+  prev: DoublyLinkListNode<K, V>;
+  next: DoublyLinkListNode<K, V>;
+}
+
+class DoublyLinkList<K, V> {
+  private head: DoublyLinkListNode<K, V>;
+  private tail: DoublyLinkListNode<K, V>;
+  constructor() {
+    this.head = null;
+    this.tail = null;
+  }
+
+  add(key: K, value: V) {
+    if (this.head == null) {
+      this.head = {
+        key: key,
+        value: value,
+        prev: null,
+        next: null,
+      }
+      this.tail = this.head;
+    } else {
+      this.tail.next = {
+        key: key,
+        value: value,
+        prev: this.tail,
+        next: null,
+      }
+      this.tail = this.tail.next;
+    }
+    return this.tail;
+  }
+
+  remove() {
+    let removedHead: DoublyLinkListNode<K, V>;
+    if (this.head == this.tail) {
+      removedHead = this.tail;
+      this.head = null;
+      this.tail = null;
+    } else {
+      removedHead = this.head;
+      this.head = this.head.next;
+      this.head.prev = null;
+    }
+    return removedHead;
+  }
+
+  bringToFront(node: DoublyLinkListNode<K, V>) {
+    if (this.head == this.tail || node == this.tail) {
+      return;
+    }
+
+    if (node == this.head) {
+      this.head = this.head.next;
+    }
+
+    this.tail.next = node;
+    node.next.prev = node.prev;
+    if (node.prev) {
+      node.prev.next = node.next;
+    }
+    node.prev = this.tail;
+    node.next = null;
+    this.tail = node;
+  }
+}
+
+export class LRUCache {
+  private currentLength: number;
+  private capacity: number;
+  private doublyLinkList: DoublyLinkList<number, number>;
+  private index: Map<number, DoublyLinkListNode<number, number>>;
+  constructor(capacity: number) {
+    this.currentLength = 0;
+    this.capacity = capacity;
+    this.doublyLinkList = new DoublyLinkList();
+    this.index = new Map();
+  }
+
+  get(key: number): number {
+    if (this.index.has(key)) {
+      const data = this.index.get(key);
+      this.doublyLinkList.bringToFront(data);
+      return data.value;
+    }
+    return -1;
+  }
+
+  put(key: number, value: number): void {
+    const existingRecord = this.index.get(key);
+    if (existingRecord) {
+      existingRecord.value = value;
+      this.index.set(key, existingRecord);
+      this.doublyLinkList.bringToFront(existingRecord);
+    } else {
+      this.insertInCache(key, value);
+    }
+  }
+
+  private insertInCache(key: number, value: number) {
+    if (this.currentLength >= this.capacity) {
+      const removedNode = this.doublyLinkList.remove();
+      this.index.delete(removedNode.key);
+      this.currentLength--;
+    }
+
+    const addedNode = this.doublyLinkList.add(key, value);
+    this.index.set(key, addedNode);
+    this.currentLength++;
+  }
+}

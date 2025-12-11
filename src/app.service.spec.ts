@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary, LevelTreeNode } from "./app.service"
+import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary, LevelTreeNode, LRUCache } from "./app.service"
 
 // describe.skip('DSA service tests', () => {
 //   // it.skip('test_missing_number', () => {
@@ -1375,4 +1375,26 @@ describe("new practise", () => {
     expect(res).toEqual("abc");
     console.log(res);
   });
+
+  it('test_LRU_CAche', () => {
+    let lRUCache = new LRUCache(2);
+    //[[2],[2,1],[1,1],[2,3],[4,1],[1],[2]]
+    //["LRUCache","put","put","put","put","get","get"]
+    lRUCache.put(2, 1);
+    lRUCache.put(1, 1);
+    lRUCache.put(2, 3);
+    lRUCache.put(4, 1);
+    expect(lRUCache.get(1)).toEqual(-1);
+    expect(lRUCache.get(2)).toEqual(3);
+
+    // lRUCache.put(1, 1);
+    // lRUCache.put(2, 2);
+    // expect(lRUCache.get(1)).toEqual(1);
+    // lRUCache.put(3, 3);
+    // expect(lRUCache.get(2)).toEqual(-1);
+    // lRUCache.put(4, 4);
+    // expect(lRUCache.get(1)).toEqual(-1);
+    // expect(lRUCache.get(3)).toEqual(3);
+    // expect(lRUCache.get(4)).toEqual(4);
+  })
 })
