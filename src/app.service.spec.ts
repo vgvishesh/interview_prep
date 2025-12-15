@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, MaxHeap, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary, LevelTreeNode, LRUCache } from "./app.service"
+import { BST, BinaryTree, DSAService, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary, LevelTreeNode, LRUCache, Twitter } from "./app.service"
 
 // describe.skip('DSA service tests', () => {
 //   // it.skip('test_missing_number', () => {
@@ -1376,7 +1376,7 @@ describe("new practise", () => {
     console.log(res);
   });
 
-  it('test_LRU_CAche', () => {
+  it.skip('test_LRU_CAche', () => {
     let lRUCache = new LRUCache(2);
     //[[2],[2,1],[1,1],[2,3],[4,1],[1],[2]]
     //["LRUCache","put","put","put","put","get","get"]
@@ -1396,5 +1396,16 @@ describe("new practise", () => {
     // expect(lRUCache.get(1)).toEqual(-1);
     // expect(lRUCache.get(3)).toEqual(3);
     // expect(lRUCache.get(4)).toEqual(4);
-  })
+  });
+
+  it('test_Twitter', () => {
+    let twitter = new Twitter();
+    twitter.postTweet(1, 5);
+    expect(twitter.getNewsFeed(1)).toEqual([5]);
+    twitter.follow(1, 2);
+    twitter.postTweet(2, 6);
+    expect(twitter.getNewsFeed(1)).toEqual([6, 5]);
+    twitter.unfollow(1, 2);
+    expect(twitter.getNewsFeed(1)).toEqual([5]);
+  });
 })

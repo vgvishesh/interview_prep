@@ -6891,3 +6891,154 @@ export class LRUCache {
     this.currentLength++;
   }
 }
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * var obj = new Twitter()
+ * obj.postTweet(userId,tweetId)
+ * var param_2 = obj.getNewsFeed(userId)
+ * obj.follow(followerId,followeeId)
+ * obj.unfollow(followerId,followeeId)
+ */
+
+type heapNode = {
+  priority: number;
+}
+
+type Tweet<T> = heapNode & {
+  data: T;
+  userId: number;
+}
+
+class Maxheap<T extends heapNode> {
+  private heap: T[];
+  private length: number;
+
+  constructor() {
+    this.heap = [];
+    this.length = 0;
+  }
+
+  insert(items: T[]) {
+    for (let item of items) {
+      this.heap[this.length++] = item;
+      this.heapify();
+    }
+  }
+
+  get() {
+    let top = this.pop();
+    const newArr: T[] = [];
+    while (top) {
+      newArr.push(top);
+      top = this.pop();
+    }
+    return newArr;
+  }
+
+  private heapify() {
+    let child = this.length - 1;
+    while (child > 0) {
+      const parent = child % 2 == 0 ? (child - 2) / 2 : (child - 1) / 2;
+      if (this.heap[child].priority > this.heap[parent].priority) {
+        const temp = this.heap[parent];
+        this.heap[parent] = this.heap[child];
+        this.heap[child] = temp;
+      }
+      child = parent;
+    }
+  }
+
+  private pop() {
+    if (this.length == 0) {
+      return null;
+    }
+    const top = this.heap[0];
+    const last = this.length - 1;
+    if (last >= 0) {
+      this.heap[0] = this.heap[last];
+      this.length--;
+      this.deHeapify();
+    }
+    return top;
+  }
+
+  private deHeapify() {
+    let p = 0;
+    while (p < this.length) {
+      let rc: number = p * 2 + 2;
+      let lc: number = p * 2 + 1;
+      let max: number;
+      if (rc < this.length && lc < this.length) {
+        max = Math.max(this.heap[rc].priority, this.heap[lc].priority) == this.heap[rc].priority ? rc : lc;
+      } else if (lc < this.length) {
+        max = lc;
+      } else {
+        break;
+      }
+
+      if (this.heap[max] > this.heap[p]) {
+        const temp = this.heap[p];
+        this.heap[p] = this.heap[max];
+        this.heap[max] = temp;
+        p = max;
+      }
+      break;
+    }
+  }
+}
+
+export class Twitter {
+  private tweetCount: number;
+  private userTimelines = new Map<number, Tweet<number>[]>();
+  private followMap = new Map<number, Set<number>>();
+  constructor() {
+    this.tweetCount = 0;
+  }
+
+  postTweet(userId: number, tweetId: number): void {
+    if (this.userTimelines.has(userId)) {
+      const tweets = this.userTimelines.get(userId);
+      tweets.push({
+        priority: this.tweetCount++,
+        data: tweetId,
+        userId: userId,
+      });
+    } else {
+      this.userTimelines.set(userId, [{
+        priority: this.tweetCount++,
+        data: tweetId,
+        userId: userId,
+      }]);
+    }
+  }
+
+  getNewsFeed(userId: number): number[] {
+    const following = this.followMap.get(userId);
+    const heap = new Maxheap<Tweet<number>>();
+    heap.insert(this.userTimelines.get(userId));
+    if (following) {
+      for (let followeeId of following) {
+        const followeeTweets = this.userTimelines.get(followeeId);
+        heap.insert(followeeTweets);
+      }
+    }
+    const feed = heap.get();
+    return feed.slice(0, 10).map(x => x.data);
+  }
+
+  follow(followerId: number, followeeId: number): void {
+    if (this.followMap.has(followerId)) {
+      this.followMap.get(followerId).add(followeeId);
+    } else {
+      this.followMap.set(followerId, new Set([followeeId]));
+    }
+  }
+
+  unfollow(followerId: number, followeeId: number): void {
+    if (this.followMap.has(followerId)) {
+      this.followMap.get(followerId).delete(followeeId);
+    }
+  }
+}
+
