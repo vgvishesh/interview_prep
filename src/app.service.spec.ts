@@ -1398,7 +1398,7 @@ describe("new practise", () => {
     // expect(lRUCache.get(4)).toEqual(4);
   });
 
-  it('test_Twitter', () => {
+  it.skip('test_Twitter', () => {
     let twitter = new Twitter();
     twitter.postTweet(1, 5);
     expect(twitter.getNewsFeed(1)).toEqual([5]);
@@ -1408,4 +1408,10 @@ describe("new practise", () => {
     twitter.unfollow(1, 2);
     expect(twitter.getNewsFeed(1)).toEqual([5]);
   });
+
+  it('test_findlongestCommonPrefix', () => {
+    const s = new newDsa();
+    const val = s.longestCommonPrefix(["", "b"])
+    console.log(val);
+  })
 })

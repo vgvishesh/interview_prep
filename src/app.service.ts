@@ -6698,6 +6698,12 @@ export class newDsa {
     }
     return stack.getAll().join('');
   };
+
+  longestCommonPrefix(strs: string[]): string {
+    const dictionary = new WordDictionary();
+    strs.forEach(x => dictionary.addWord(x));
+    return dictionary.findLonestCommonPrefix();
+  };
 }
 
 export class NumArray {
@@ -6774,6 +6780,30 @@ export class WordDictionary {
     }
 
     return find(this.root, 0);
+  }
+
+  findLonestCommonPrefix(): string {
+    if (this.root == null) {
+      return "";
+    }
+
+    let result = "";
+    let ptr = this.root;
+    let endCount = 0;
+
+    while (ptr != null && endCount < 1) {
+      result += ptr.val;
+      const validChildren = ptr.next.filter(x => x != null);
+      if (validChildren.length > 1) {
+        break;
+      }
+      if (ptr.wordEnds) {
+        endCount++;
+      }
+      ptr = validChildren[0];
+    }
+
+    return result;
   }
 }
 
@@ -7041,4 +7071,3 @@ export class Twitter {
     }
   }
 }
-
