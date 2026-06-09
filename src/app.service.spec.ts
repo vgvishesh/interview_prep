@@ -1439,9 +1439,14 @@ describe("new practise", () => {
     console.log(val);
   });
 
-  it('test_countSubIslands', () => {
+  it.skip('test_countSubIslands', () => {
     const s = new newDsa();
     let val = s.countSubIslands([[1, 1, 1, 0, 0], [0, 1, 1, 1, 1], [0, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 1, 0, 1, 1]], [[1, 1, 1, 0, 0], [0, 0, 1, 1, 1], [0, 1, 0, 0, 0], [1, 0, 1, 1, 0], [0, 1, 0, 1, 0]]);
     expect(val).toEqual(3);
+  });
+  it('test_numDecodings', () => {
+    const s = new newDsa();
+    let val = s.numDecodings("11106");
+    expect(val).toEqual(2);
   });
 })

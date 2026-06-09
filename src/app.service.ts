@@ -6878,6 +6878,45 @@ export class newDsa {
     }
     return subIslandsCount;
   };
+
+  numDecodings(s: string): number {
+    const dp = new Map<number, Map<number, number>>();
+    return findDecodings(0, s, -1);
+    function findDecodings(index: number, s: string, lookup: number): number {
+      if (index >= s.length) {
+        return 1;
+      }
+
+      //dp lookup
+      if (dp.has(index - 1) && dp.get(index - 1).has(lookup)) {
+        return dp.get(index - 1).get(lookup);
+      }
+
+      //main logic
+      let x = 0, y = 0;
+      const first = Number.parseInt(s.slice(index, index + 1));
+      if (first >= 1 && first <= 26) {
+        x = findDecodings(index + 1, s, first);
+        updateDp(index, first, x)
+      }
+      if (index + 2 <= s.length && s[index] != '0') {
+        const second = Number.parseInt(s.slice(index, index + 2));
+        if (second >= 1 && second <= 26) {
+          y = findDecodings(index + 2, s, second);
+          updateDp(index + 1, second, y)
+        }
+      }
+      return x + y;
+    }
+
+    function updateDp(index: number, key: number, value: number) {
+      if (dp.has(index)) {
+        dp.get(index).set(key, value);
+      } else {
+        dp.set(index, new Map().set(key, value));
+      }
+    }
+  };
 }
 
 export class NumArray {
