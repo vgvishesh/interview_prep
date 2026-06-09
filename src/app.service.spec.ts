@@ -1,5 +1,5 @@
 import { max } from "rxjs";
-import { BST, BinaryTree, DSAService, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary, LevelTreeNode, LRUCache, Twitter } from "./app.service"
+import { BST, BinaryTree, DSAService, HeapMod, LinkList, RecentCounter, SmallestInfiniteSet, TreeNode, Trie, TrieNode, Master, BSTIterator, StockSpanner, Solution, SelectSolution, newDsa, WordDictionary, LevelTreeNode, LRUCache, Twitter, SomeCode } from "./app.service"
 
 // describe.skip('DSA service tests', () => {
 //   // it.skip('test_missing_number', () => {
@@ -1409,9 +1409,33 @@ describe("new practise", () => {
     expect(twitter.getNewsFeed(1)).toEqual([5]);
   });
 
-  it('test_findlongestCommonPrefix', () => {
+  it.skip('test_findlongestCommonPrefix', () => {
     const s = new newDsa();
     const val = s.longestCommonPrefix(["", "b"])
     console.log(val);
-  })
+  });
+
+  it.skip('test_validIPAddress', () => {
+    const s = new newDsa();
+    const val = s.validIPAddress("192.168.1.1");
+    console.log(val);
+  });
+
+  it.skip('test_validIPAddress', () => {
+    const s = new newDsa();
+    const val = s.validIPAddress("2001:0db8:85a3:0:0:8A2E:0370:7334");
+    console.log(val);
+  });
+
+  it.skip('test_snakeAndLadder', () => {
+    const s = new SomeCode();
+    const val = s.snakeAndLadder([-1, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 35, -1, -1, 13, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], 0, 0);
+    console.log(val);
+  });
+
+  it('test_findDuplicateSubtrees', () => {
+    const s = new newDsa();
+    let val = s.findDuplicateSubtrees(new TreeNode(2, new TreeNode(1, null, null), new TreeNode(1, null, null)));
+    console.log(val);
+  });
 })

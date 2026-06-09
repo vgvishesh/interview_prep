@@ -6704,6 +6704,112 @@ export class newDsa {
     strs.forEach(x => dictionary.addWord(x));
     return dictionary.findLonestCommonPrefix();
   };
+
+  isValidIpv4(bits: string[]) {
+    //check-1
+    if (bits.length != 4) {
+      return false;
+    }
+
+    for (let i = 0; i < 4; i++) {
+      const section = bits[i];
+
+      if (section.length > 1 && section[0] == '0') {
+        return false;
+      }
+      if (section.length > 3) {
+        return false;
+      }
+
+      for (let j = 0; j < section.length; j++) {
+        if (section[j] == '1' ||
+          section[j] == '2' ||
+          section[j] == '3' ||
+          section[j] == '4' ||
+          section[j] == '5' ||
+          section[j] == '6' ||
+          section[j] == '7' ||
+          section[j] == '8' ||
+          section[j] == '9' ||
+          section[j] == '0'
+        ) {
+          continue;
+        }
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  isValidIpv6(bits: string[]) {
+    if (bits.length != 8) {
+      return false;
+    }
+
+    for (let i = 0; i < 8; i++) {
+      const section = bits[i];
+
+      if (section.length > 4) {
+        return false;
+      }
+
+      for (let j = 0; j < section.length; j++) {
+        const alphanumericRegex = /^[a-zA-Z0-9]$/;
+        if (!alphanumericRegex.test(section[j])) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  validIPAddress(queryIP: string): string {
+    const ipv4 = queryIP.split(".");
+    const ipv6 = queryIP.split(":");
+    const l4 = ipv4 == undefined ? 0 : ipv4.length;
+    const l6 = ipv6 == undefined ? 0 : ipv6.length;
+
+    if (l4 > 1 && l6 > 1) {
+      return 'Neither';
+    }
+
+    if (ipv4.length > 1) {
+      return this.isValidIpv4(ipv4) ? "IPv4" : "Neither";
+    }
+
+    if (ipv6.length > 1) {
+      return this.isValidIpv6(ipv6) ? "IPv6" : "Neither";
+    }
+  };
+
+
+  findDuplicateSubtrees(root: TreeNode | null): Array<TreeNode | null> {
+    const map = new Map<string, TreeNode[]>();
+    const result = new Array<TreeNode>();
+
+    function traverse(root: TreeNode | null): string {
+      if (root == null) {
+        return "#";
+      }
+      const left = traverse(root.left);
+      const right = traverse(root.right);
+      const hash = `${root.val},${left},${right}`;
+      if (map.has(hash)) {
+        map.get(hash).push(root);
+      } else {
+        map.set(hash, [root]);
+      }
+      return hash;
+    }
+    traverse(root);
+    map.forEach((value, key) => {
+      if (value.length > 1) {
+        result.push(value[0]);
+      }
+    });
+    return result;
+  };
 }
 
 export class NumArray {
@@ -7069,5 +7175,67 @@ export class Twitter {
     if (this.followMap.has(followerId)) {
       this.followMap.get(followerId).delete(followeeId);
     }
+  }
+}
+
+
+export class SomeCode {
+  findSnake(sqaures: number[], start: number, end: number) {
+    for (let i = start; i < end; i++) {
+      if (sqaures[i] != -1 && sqaures[i] < i) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  findLadder(sqaures: number[], start: number, end: number) {
+    for (let i = start; i < end; i++) {
+      if (sqaures[i] != -1 && sqaures[i] > i) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  findMaxEmptyPlace(snakePos: number, ladderPos: number, currentPos: number) {
+    for (let i = currentPos + 6; i >= currentPos; i--) {
+      if (i != snakePos && i != ladderPos) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  private positionVisited = new Map<number, number>();
+
+  snakeAndLadder(squares: number[], moves: number, currentPos: number): number {
+    if (currentPos >= squares.length) {
+      return moves;
+    }
+
+    if (this.positionVisited.has(currentPos)) {
+      return Number.MAX_VALUE;
+    }
+
+    const snakePos = this.findSnake(squares, currentPos, currentPos + 6);
+    const ladderPos = this.findLadder(squares, currentPos, currentPos + 6);
+
+    this.positionVisited.set(currentPos, moves + 1);
+    let p1 = Number.MAX_VALUE, p2 = Number.MAX_VALUE, p3 = Number.MAX_VALUE;
+
+    if (snakePos != -1) {
+      p1 = this.snakeAndLadder(squares, moves + 1, squares[snakePos]);
+    }
+
+    if (ladderPos != -1) {
+      p2 = this.snakeAndLadder(squares, moves + 1, squares[ladderPos]);
+    }
+
+    //jump to a position where there is no snake or ladder
+    const newPos = this.findMaxEmptyPlace(snakePos, ladderPos, currentPos);
+    p3 = this.snakeAndLadder(squares, moves + 1, newPos);
+
+    return Math.min(p1, p2, p3);
   }
 }
