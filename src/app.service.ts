@@ -6810,6 +6810,74 @@ export class newDsa {
     });
     return result;
   };
+
+  countSubIslands(grid1: number[][], grid2: number[][]): number {
+    function islandMapping(grid: number[][]): { islandColorMap: number[][], islandmap: Map<number, number[][]> } {
+      const islandColorMap: number[][] = new Array(grid.length).fill(null).map(() => new Array(grid[0].length).fill(0));
+
+      let islandCount = 0;
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+          if (islandColorMap[i][j] == 0 && grid[i][j] == 1) {
+            fillIsland(i, j, ++islandCount, islandColorMap, grid);
+          }
+        }
+      }
+
+      let islandmap = new Map<number, number[][]>();
+      for (let i = 0; i < islandColorMap.length; i++) {
+        for (let j = 0; j < islandColorMap[i].length; j++) {
+          const color = islandColorMap[i][j];
+          if (color != 0) {
+            if (islandmap.has(color)) {
+              islandmap.get(color).push([i, j]);
+            } else {
+              islandmap.set(color, [[i, j]]);
+            }
+          }
+        }
+      }
+
+      return { islandColorMap, islandmap };
+    }
+
+    function fillIsland(i: number, j: number, islandCount: number, islandMap: number[][], grid: number[][]) {
+      if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length) {
+        return;
+      }
+
+      if (grid[i][j] == 0 || islandMap[i][j] != 0) {
+        return;
+      }
+
+      if (grid[i][j] == 1) {
+        islandMap[i][j] = islandCount;
+        fillIsland(i, j + 1, islandCount, islandMap, grid);
+        fillIsland(i, j - 1, islandCount, islandMap, grid);
+        fillIsland(i + 1, j, islandCount, islandMap, grid);
+        fillIsland(i - 1, j, islandCount, islandMap, grid);
+      }
+    }
+
+    // const island1Map = islandMapping(grid1);
+    const { islandColorMap: island2ColorMap, islandmap: island2map } = islandMapping(grid2);
+
+    let subIslandsCount = 0;
+    for (let [k, v] of island2map.entries()) {
+      const islandCoordinates = v;
+      let i = 0;
+      for (i = 0; i < islandCoordinates.length; i++) {
+        const coordinate = islandCoordinates[i];
+        if (grid1[coordinate[0]][coordinate[1]] == 0) {
+          break;
+        }
+      }
+      if (i == islandCoordinates.length) {
+        subIslandsCount++;
+      }
+    }
+    return subIslandsCount;
+  };
 }
 
 export class NumArray {

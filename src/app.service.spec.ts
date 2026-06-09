@@ -1433,9 +1433,15 @@ describe("new practise", () => {
     console.log(val);
   });
 
-  it('test_findDuplicateSubtrees', () => {
+  it.skip('test_findDuplicateSubtrees', () => {
     const s = new newDsa();
     let val = s.findDuplicateSubtrees(new TreeNode(2, new TreeNode(1, null, null), new TreeNode(1, null, null)));
     console.log(val);
+  });
+
+  it('test_countSubIslands', () => {
+    const s = new newDsa();
+    let val = s.countSubIslands([[1, 1, 1, 0, 0], [0, 1, 1, 1, 1], [0, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 1, 0, 1, 1]], [[1, 1, 1, 0, 0], [0, 0, 1, 1, 1], [0, 1, 0, 0, 0], [1, 0, 1, 1, 0], [0, 1, 0, 1, 0]]);
+    expect(val).toEqual(3);
   });
 })
